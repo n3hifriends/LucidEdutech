@@ -5,7 +5,12 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen } from "../screens"
+import {
+  DemoCommunityScreen,
+  DemoShowroomScreen,
+  DemoDebugScreen,
+  ExamListScreen,
+} from "../screens"
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
@@ -15,6 +20,9 @@ export type DemoTabParamList = {
   DemoShowroom: { queryIndex?: string; itemIndex?: string }
   DemoDebug: undefined
   DemoPodcastList: undefined
+  EducationTabScreen: undefined
+  GeneralInstruction: undefined
+  ExamList: undefined
 }
 
 /**
@@ -95,6 +103,16 @@ export function DemoNavigator() {
           ),
         }}
       />
+      <Tab.Screen
+        name="ExamList"
+        component={ExamListScreen}
+        options={{
+          tabBarLabel: translate("demoNavigator.educationTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="components" color={focused && colors.tint} size={30} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   )
 }
@@ -112,4 +130,5 @@ const $tabBarLabel: TextStyle = {
   fontSize: 12,
   fontFamily: typography.primary.medium,
   lineHeight: 16,
+  flex: 1,
 }

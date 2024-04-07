@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "d6a5f734-6dfb-4572-a5ac-d382e7e7c061",
+		"name": "ELearning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/authenticate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzA0MDI5MzIzLCJleHAiOjE3MDQwMzI5MjN9.ewftLcmCl-Y_S4Xwlc7ExiGv2WySaCGk1WVpWyD5WWAAhyaDGk8jz_oCg9M7qFas1aqotKjdgl7_rSrb-NfCkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"courseSubjects\": [\r\n            {\r\n                \"courseSubjectMedia\": [],\r\n                \"courseSubjectQuiz\": [],\r\n                \"subjectName\": \"sadas\",\r\n                \"subjectDescription\": \"dasdsa\",\r\n                \"subjectHeader\": \"sdasa\",\r\n                \"created_by\": null,\r\n                \"created_date\": null,\r\n                \"updated_by\": null,\r\n                \"updatedDate\": null\r\n            }\r\n        ],\r\n        \"courseName\": \"sa\",\r\n        \"courseDescription\": \"dds\",\r\n        \"start_date\": null,\r\n        \"end_date\": null,\r\n        \"days\": null,\r\n        \"hours\": null,\r\n        \"created_by\": null,\r\n        \"created_date\": null,\r\n        \"updated_by\": null,\r\n        \"updatedDate\": null\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/course/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"course",
+						"add"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "localhost:8080/authenticate",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\":\"ketan@gmail.com\",\r\n\"password\":\"password\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/authenticate",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "219"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 Feb 2024 07:24:47 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"mk15\",\n    \"jwtToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzA4MjQxMDg1LCJleHAiOjE3MDgyNDQ2ODV9.N-qGteG5CS2Lpp-Hn0pLSIRhndCb31MkLlOGoi8C3crczGu6q07uZjVGbLCkvdfems_io6JOCpz71l-g58uwxA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.esyJzdWIiOiJtazE1IiwiaWF0IjoxNzAzOTQ5NTQyLCJleHAiOjE3MDM5NTMxNDJ9.bAiy0GWVp6czYxi-tTTMNCVEB1BXoKzUlztQ3ln1dZD73rD0R7c3MxXufazd84dL5Zc5xknjz3WxzPFymT0FRA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"role\":\"admin\",\r\n\"firstName\":\"Ketan\",\r\n\"lastName\":\"Mahajan\",\r\n\"userName\":\"mk15\",\r\n\"email\":\"mk@gmail.com\",\r\n\"userPassword\":\"password\",\r\n\"mobileNumber\":\"9921122121\",\r\n\"statusId\":\"ACTIVE\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "localhost:8080/user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"role\":\"admin\",\r\n\"firstName\":\"Ketan\",\r\n\"lastName\":\"Mahajan\",\r\n\"userName\":\"mk15\",\r\n\"email\":\"mk@gmail.com\",\r\n\"userPassword\":\"password\",\r\n\"mobileNumber\":\"9921122121\",\r\n\"statusId\":\"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "394"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 Feb 2024 07:25:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"userId\": 6,\n        \"role\": \"admin\",\n        \"firstName\": \"Ketan\",\n        \"lastName\": \"Mahajan\",\n        \"userName\": \"mk15\",\n        \"email\": \"ketan@gmail.com\",\n        \"mobileNumber\": \"9921122121\",\n        \"userPassword\": \"$2a$10$uDMtZLwK0aJW8c0kfQ3rv.RqeI/8P.nPZBEt06AeBvq2BBOrPs80O\",\n        \"statusId\": \"ACTIVE\",\n        \"createdBy\": null,\n        \"createdDate\": null,\n        \"updatedBy\": null,\n        \"updatedDate\": null\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/course/add",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzA4MjQxMDg1LCJleHAiOjE3MDgyNDQ2ODV9.N-qGteG5CS2Lpp-Hn0pLSIRhndCb31MkLlOGoi8C3crczGu6q07uZjVGbLCkvdfems_io6JOCpz71l-g58uwxA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"courseSubjects\": [\r\n            {\r\n                \"courseSubjectMedia\": [],\r\n                \"courseSubjectQuiz\": [],\r\n                \"subjectName\": \"sadas\",\r\n                \"subjectDescription\": \"dasdsa\",\r\n                \"subjectHeader\": \"sdasa\",\r\n                \"created_by\": null,\r\n                \"created_date\": null,\r\n                \"updated_by\": null,\r\n                \"updatedDate\": null\r\n            }\r\n        ],\r\n        \"courseName\": \"sa\",\r\n        \"courseDescription\": \"dds\",\r\n        \"start_date\": null,\r\n        \"end_date\": null,\r\n        \"days\": null,\r\n        \"hours\": null,\r\n        \"created_by\": null,\r\n        \"created_date\": null,\r\n        \"updated_by\": null,\r\n        \"updatedDate\": null\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/course",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"course"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "localhost:8080/course/add",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseSubjects\": [\r\n        {\r\n            \"courseSubjectMedia\": [],\r\n            \"courseSubjectQuiz\": [],\r\n            \"subjectName\": \"sadas 2\",\r\n            \"subjectDescription\": \"dasdsa 2\",\r\n            \"subjectHeader\": \"sdasa 2\",\r\n            \"created_by\": null,\r\n            \"created_date\": null,\r\n            \"updated_by\": null,\r\n            \"updatedDate\": null\r\n        }\r\n    ],\r\n    \"courseName\": \"sa\",\r\n    \"courseDescription\": \"dds\",\r\n    \"start_date\": null,\r\n    \"end_date\": null,\r\n    \"days\": null,\r\n    \"hours\": null,\r\n    \"created_by\": null,\r\n    \"created_date\": null,\r\n    \"updated_by\": null,\r\n    \"updatedDate\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/course",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"course"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "623"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 Feb 2024 08:55:03 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"courseId\": 7,\n    \"courseSubjects\": [\n        {\n            \"courseSubjectId\": 5,\n            \"courseSubjectMedia\": [],\n            \"courseSubjectQuiz\": [],\n            \"courseId\": null,\n            \"subjectName\": \"sadas 2\",\n            \"subjectDescription\": \"dasdsa 2\",\n            \"subjectHeader\": \"sdasa 2\",\n            \"created_by\": null,\n            \"created_date\": null,\n            \"updated_by\": null,\n            \"updatedDate\": null\n        }\n    ],\n    \"courseName\": \"sa\",\n    \"courseDescription\": \"dds\",\n    \"start_date\": null,\n    \"end_date\": null,\n    \"days\": null,\n    \"hours\": null,\n    \"created_by\": null,\n    \"created_date\": null,\n    \"updated_by\": null,\n    \"updatedDate\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/course",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzA0MDI5MzIzLCJleHAiOjE3MDQwMzI5MjN9.ewftLcmCl-Y_S4Xwlc7ExiGv2WySaCGk1WVpWyD5WWAAhyaDGk8jz_oCg9M7qFas1aqotKjdgl7_rSrb-NfCkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\":\"ketan@gmail.com\",\r\n\"password\":\"password\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/course",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"course"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "localhost:8080/course",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\":\"ketan@gmail.com\",\r\n\"password\":\"password\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/course",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"course"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "618"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 Feb 2024 08:53:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"courseId\": 6,\n        \"courseSubjects\": [\n            {\n                \"courseSubjectId\": 4,\n                \"courseSubjectMedia\": [],\n                \"courseSubjectQuiz\": [],\n                \"courseId\": 6,\n                \"subjectName\": \"sadas\",\n                \"subjectDescription\": \"dasdsa\",\n                \"subjectHeader\": \"sdasa\",\n                \"created_by\": null,\n                \"created_date\": null,\n                \"updated_by\": null,\n                \"updatedDate\": null\n            }\n        ],\n        \"courseName\": \"sa\",\n        \"courseDescription\": \"dds\",\n        \"start_date\": null,\n        \"end_date\": null,\n        \"days\": null,\n        \"hours\": null,\n        \"created_by\": null,\n        \"created_date\": null,\n        \"updated_by\": null,\n        \"updatedDate\": null\n    }\n]"
+				}
+			]
+		}
+	]
+}

@@ -1,13 +1,19 @@
 import { observer } from "mobx-react-lite"
-import React, { FC } from "react"
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Text } from "app/components"
+import React, { FC, useEffect, useRef, useState } from "react"
+import { Image, ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
+import {
+  Button, // @demo remove-current-line
+  Text,
+  TextField,
+} from "../components"
 import { isRTL } from "../i18n"
-import { useStores } from "../models"
-import { AppStackScreenProps } from "../navigators"
+import { useStores } from "../models" // @demo remove-current-line
+import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import { colors, spacing } from "../theme"
-import { useHeader } from "../utils/useHeader"
+import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import { set } from "date-fns"
+import { api } from "app/services/api"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
@@ -15,14 +21,44 @@ const welcomeFace = require("../../assets/images/welcome-face.png")
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
 export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen(_props) {
-  const { navigation } = _props
   const {
-    authenticationStore: { logout },
+    authenticationStore: {
+      logout,
+      jwtToken,
+      authEmail,
+      firstName,
+      lastName,
+      mobileNumber,
+      setFirstName,
+      setLastName,
+      setMobileNumber,
+    },
+    // profileStore: { getProfile, userPassword },
   } = useStores()
+  const [myFirstName, setMyFirstName] = useState(firstName)
+  const lastNameRef = useRef<TextInput>(null)
+  const [myLastName, setMyLastName] = useState(lastName)
+  const [myMobileNumber, setMyMobileNumber] = useState(mobileNumber)
+  const mobileNoRef = useRef<TextInput>(null)
+  const { navigation } = _props
 
   function goNext() {
+    setFirstName(myFirstName)
+    setLastName(myLastName)
+    setMobileNumber(myMobileNumber)
     navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
   }
+
+  async function userProfile() {
+    // await getProfile()
+    // console.log("🚀 ~ userProfile ~ response:", userPassword)
+  }
+
+  useEffect(() => {
+    if (jwtToken) {
+      userProfile()
+    }
+  }, [userProfile])
 
   useHeader(
     {
@@ -31,30 +67,84 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     },
     [logout],
   )
-
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
+  // const error = "Fill your details to continue"
+  const error = undefined
 
   return (
     <View style={$container}>
       <View style={$topContainer}>
-        <Image style={$welcomeLogo} source={welcomeLogo} resizeMode="contain" />
         <Text
           testID="welcome-heading"
           style={$welcomeHeading}
           tx="welcomeScreen.readyForLaunch"
           preset="heading"
         />
-        <Text tx="welcomeScreen.exciting" preset="subheading" />
-        <Image style={$welcomeFace} source={welcomeFace} resizeMode="contain" />
+
+        <TextField
+          status="disabled"
+          value={authEmail}
+          containerStyle={$textField}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
+          keyboardType="default"
+          labelTx="welcomeScreen.emailFieldLabel"
+          placeholderTx="welcomeScreen.emailFieldPlaceholder"
+          helper={error}
+          onSubmitEditing={() => lastNameRef.current?.focus()}
+        />
+
+        <TextField
+          value={myFirstName}
+          onChangeText={setMyFirstName}
+          containerStyle={$textField}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
+          keyboardType="default"
+          labelTx="welcomeScreen.firstName"
+          placeholderTx="welcomeScreen.firstNamePlaceholder"
+          helper={error}
+          status={error ? "error" : undefined}
+          onSubmitEditing={() => lastNameRef.current?.focus()}
+        />
+        <TextField
+          ref={lastNameRef}
+          value={myLastName}
+          onChangeText={setMyLastName}
+          containerStyle={$textField}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
+          keyboardType="default"
+          labelTx="welcomeScreen.secondName"
+          placeholderTx="welcomeScreen.secondNamePlaceholder"
+          helper={error}
+          status={error ? "error" : undefined}
+          onSubmitEditing={() => mobileNoRef.current?.focus()}
+        />
+        <TextField
+          ref={mobileNoRef}
+          value={myMobileNumber}
+          onChangeText={setMyMobileNumber}
+          containerStyle={$textField}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
+          keyboardType="number-pad"
+          labelTx="welcomeScreen.mobileNumber"
+          placeholderTx="welcomeScreen.mobileNumberPlaceholder"
+          helper={error}
+          status={error ? "error" : undefined}
+        />
       </View>
 
       <View style={[$bottomContainer, $bottomContainerInsets]}>
-        <Text tx="welcomeScreen.postscript" size="md" />
-
         <Button
           testID="next-screen-button"
           preset="reversed"
-          tx="welcomeScreen.letsGo"
+          tx="welcomeScreen.goNext"
           onPress={goNext}
         />
       </View>
@@ -70,15 +160,14 @@ const $container: ViewStyle = {
 const $topContainer: ViewStyle = {
   flexShrink: 1,
   flexGrow: 1,
-  flexBasis: "57%",
-  justifyContent: "center",
-  paddingHorizontal: spacing.lg,
+  flexBasis: "90%",
+  paddingHorizontal: spacing.sm,
 }
 
 const $bottomContainer: ViewStyle = {
   flexShrink: 1,
   flexGrow: 0,
-  flexBasis: "43%",
+  flexBasis: "10%",
   backgroundColor: colors.palette.neutral100,
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
@@ -102,4 +191,8 @@ const $welcomeFace: ImageStyle = {
 
 const $welcomeHeading: TextStyle = {
   marginBottom: spacing.md,
+}
+
+const $textField: ViewStyle = {
+  marginBottom: spacing.lg,
 }

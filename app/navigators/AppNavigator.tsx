@@ -36,9 +36,14 @@ import { colors } from "app/theme"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Login: undefined
-  Demo: NavigatorScreenParams<DemoTabParamList>
+  Login: undefined // @demo remove-current-line
+  Demo: NavigatorScreenParams<DemoTabParamList> // @demo remove-current-line
+  GeneralInstruction: undefined
+  QuestionScreen: undefined
   // 🔥 Your screens go here
+  TestOverview: undefined
+  Score: undefined
+  ExamList: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -71,6 +76,7 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
           <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
         </>
       ) : (
         <>
@@ -79,6 +85,11 @@ const AppStack = observer(function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
+      <Stack.Screen name="Score" component={Screens.ScoreScreen} />
+      <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+      <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
+
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

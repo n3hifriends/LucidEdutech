@@ -1,9 +1,14 @@
 export * from "./WelcomeScreen"
-
+// @demo remove-block-start
+export * from "./test_series/GeneralInstructionScreen"
 export * from "./LoginScreen"
 export * from "./DemoCommunityScreen"
 export * from "./DemoDebugScreen"
+export * from "./test_series/QuestionScreen"
+export * from "./test_series/TestOverviewScreen"
 export * from "./DemoShowroomScreen/DemoShowroomScreen"
-
+// @demo remove-block-end
 export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here
+export * from "./test_series/ScoreScreen"
+export * from "./ExamListScreen"

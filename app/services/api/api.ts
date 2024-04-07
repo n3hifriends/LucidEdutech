@@ -1,15 +1,25 @@
+import { QuizeStoreSnapshotIn } from "app/models"
 /**
  * This Api class lets you define an API endpoint and methods to request
  * data and process it.
  *
- * See the [Backend API Integration](https://docs.infinite.red/ignite-cli/boilerplate/app/services/Services.md)
+ * See the [Backend API Integration](https://github.com/infinitered/ignite/blob/master/docs/Backend-API-Integration.md)
  * documentation for more details.
  */
-import { ApiResponse, ApisauceInstance, create } from "apisauce"
+import {
+  ApiResponse, // @demo remove-current-line
+  ApisauceInstance,
+  create,
+} from "apisauce"
 import Config from "../../config"
-import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
-import type { ApiConfig, ApiFeedResponse } from "./api.types"
-import type { EpisodeSnapshotIn } from "../../models/Episode"
+import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem" // @demo remove-current-line
+import type {
+  ApiConfig,
+  ApiFeedResponse, // @demo remove-current-line
+} from "./api.types"
+import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
+import { AuthenticateSnapshotIn } from "app/models/AuthenticationStore"
+import { ProfileSnapshotIn } from "app/models"
 
 /**
  * Configuring the apisauce instance.
@@ -41,6 +51,72 @@ export class Api {
     })
   }
 
+  setJwtToken(jwtToken?: string) {
+    this.apisauce.setHeader("Authorization", `Bearer ${jwtToken}`)
+  }
+
+  async getQuize(): Promise<{ kind: "ok"; quize: QuizeStoreSnapshotIn } | GeneralApiProblem> {
+    const response = await this.apisauce.get("/quize")
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+    try {
+      const rawData = response.data
+      const quize: QuizeStoreSnapshotIn = rawData
+      return { kind: "ok", quize: quize }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async getProfile(): Promise<{ kind: "ok"; profile: ProfileSnapshotIn } | GeneralApiProblem> {
+    const response = await this.apisauce.get("/user")
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const rawData = response.data
+      const profile: ProfileSnapshotIn = rawData
+      return { kind: "ok", profile }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem> {
+    const response = await this.apisauce.post("/authenticate", {
+      username: email,
+      password: password,
+    })
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const rawData = response.data
+      const auth: AuthenticateSnapshotIn = rawData
+      return { kind: "ok", auth }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+  // @demo remove-block-start
   /**
    * Gets a list of recent React Native Radio episodes.
    */

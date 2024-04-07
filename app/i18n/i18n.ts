@@ -7,11 +7,12 @@ import en, { Translations } from "./en"
 import ar from "./ar"
 import ko from "./ko"
 import fr from "./fr"
+import mr from "./mr"
 
 i18n.fallbacks = true
 
 // to use regional locales use { "en-US": enUS } etc
-i18n.translations = { ar, en, "en-US": en, ko, fr }
+i18n.translations = { mr, ar, en, "en-US": en, ko, fr }
 
 const fallbackLocale = "en-US"
 const systemLocale = Localization.getLocales()[0]
@@ -29,6 +30,7 @@ if (Object.prototype.hasOwnProperty.call(i18n.translations, systemLocaleTag)) {
     i18n.locale = fallbackLocale
   }
 }
+i18n.locale = "mr" //preferredLanguage.languageTag
 
 // handle RTL languages
 export const isRTL = systemLocale?.textDirection === "rtl"

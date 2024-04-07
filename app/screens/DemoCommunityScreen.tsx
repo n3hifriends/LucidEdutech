@@ -6,17 +6,17 @@ import { spacing } from "../theme"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
 import { isRTL } from "../i18n"
 
-const chainReactLogo = require("../../assets/images/demo/cr-logo.png")
-const reactNativeLiveLogo = require("../../assets/images/demo/rnl-logo.png")
-const reactNativeRadioLogo = require("../../assets/images/demo/rnr-logo.png")
-const reactNativeNewsletterLogo = require("../../assets/images/demo/rnn-logo.png")
+const chainReactLogo = require("../../assets/images/cr-logo.png")
+const reactNativeLiveLogo = require("../../assets/images/rnl-logo.png")
+const reactNativeRadioLogo = require("../../assets/images/rnr-logo.png")
+const reactNativeNewsletterLogo = require("../../assets/images/rnn-logo.png")
 
 export const DemoCommunityScreen: FC<DemoTabScreenProps<"DemoCommunity">> =
   function DemoCommunityScreen(_props) {
     return (
       <Screen preset="scroll" contentContainerStyle={$container} safeAreaEdges={["top"]}>
         <Text preset="heading" tx="demoCommunityScreen.title" style={$title} />
-        <Text tx="demoCommunityScreen.tagLine" style={$tagline} />
+        {/* <Text tx="demoCommunityScreen.tagLine" style={$tagline} />
 
         <Text preset="subheading" tx="demoCommunityScreen.joinUsOnSlackTitle" />
         <Text tx="demoCommunityScreen.joinUsOnSlack" style={$description} />
@@ -95,7 +95,7 @@ export const DemoCommunityScreen: FC<DemoTabScreenProps<"DemoCommunity">> =
           leftIcon="clap"
           rightIcon={isRTL ? "caretLeft" : "caretRight"}
           onPress={() => openLinkInBrowser("https://infinite.red/contact")}
-        />
+        /> */}
       </Screen>
     )
   }
@@ -132,3 +132,5 @@ const $logo: ImageStyle = {
   height: 38,
   width: 38,
 }
+
+// @demo remove-file

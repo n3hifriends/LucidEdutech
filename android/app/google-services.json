@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1027729156446",
+    "project_id": "agasti-fe7f3",
+    "storage_bucket": "agasti-fe7f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027729156446:android:882717fd07ed4150ccc7cf",
+        "android_client_info": {
+          "package_name": "com.lucideducation.conquer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027729156446-29bu1nd2uisp2lvia1hp9sd7roa01mmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lucideducation.conquer",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1027729156446-r6om61drnrkqo75f6j9229ghfua4t198.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lucideducation.conquer",
+            "certificate_hash": "3543dcadf553ee57eb34868bf0e2515c8ae0ffc3"
+          }
+        },
+        {
+          "client_id": "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBldKqaw4Q0ly-ppPHsbCezCIcvYIUdqPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

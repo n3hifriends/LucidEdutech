@@ -3,21 +3,21 @@ const en = {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
-    logOut: "Log Out",
+    logOut: "Log Out", // @demo remove-current-line
   },
   welcomeScreen: {
     postscript:
-      "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
-    readyForLaunch: "Your app, almost ready for launch!",
+      "psst  — We are coming with nice content soon! Meanwhile, you can check out our free contents.",
+    readyForLaunch: "Here you go, almost ready to start!",
     exciting: "(ohh, this is exciting!)",
-    letsGo: "Let's go!",
+    letsGo: "Let's go!", // @demo remove-current-line
   },
   errorScreen: {
     title: "Something went wrong!",
     friendlySubtitle:
       "This is the screen that your users will see in production when an error is thrown. You'll want to customize this message (located in `app/i18n/en.ts`) and probably the layout as well (`app/screens/ErrorScreen`). If you want to remove this entirely, check `app/app.tsx` for the <ErrorBoundary> component.",
     reset: "RESET APP",
-    traceTitle: "Error from %{name} stack",
+    traceTitle: "Error from %{name} stack", // @demo remove-current-line
   },
   emptyStateComponent: {
     generic: {
@@ -26,29 +26,36 @@ const en = {
       button: "Let's try this again",
     },
   },
-
+  // @demo remove-block-start
   errors: {
     invalidEmail: "Invalid email address.",
   },
   loginScreen: {
     signIn: "Sign In",
-    enterDetails:
-      "Enter your details below to unlock top secret info. You'll never guess what we've got waiting. Or maybe you will; it's not rocket science here.",
+    enterDetails: "Please login with your Google Account",
     emailFieldLabel: "Email",
     passwordFieldLabel: "Password",
     emailFieldPlaceholder: "Enter your email address",
     passwordFieldPlaceholder: "Super secret password here",
-    tapToSignIn: "Tap to sign in!",
+    tapToSignIn: "Sign in!",
+    termConditionPretext: "By continuing, you agree to the",
+    termConditionText: "term and condition",
     hint: "Hint: you can use any email address and your favorite password :)",
+    oops: "Oops!!",
+    getting: "Getting singed-in!!",
+    noService:
+      "To continue using this app, you need to update Google Play Store/Services to the latest version.",
+    somethingWrong: "Something went wrong!",
   },
   demoNavigator: {
-    componentsTab: "Components",
-    debugTab: "Debug",
-    communityTab: "Community",
-    podcastListTab: "Podcast",
+    componentsTab: "Ongoing",
+    debugTab: "Profile",
+    communityTab: "Discussion",
+    podcastListTab: "Announcement",
+    educationTab: "Education",
   },
   demoCommunityScreen: {
-    title: "Connect with the community",
+    title: "Connect with your batchmates here",
     tagLine:
       "Plug in to Infinite Red's community of React Native engineers and level up your app development with us!",
     joinUsOnSlackTitle: "Join us on Slack",
@@ -71,7 +78,7 @@ const en = {
     hireUsLink: "Send us a message",
   },
   demoShowroomScreen: {
-    jumpStart: "Components to jump start your project!",
+    jumpStart: "You are on the Ongoing page",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "Yay",
@@ -80,7 +87,7 @@ const en = {
   },
   demoDebugScreen: {
     howTo: "HOW TO",
-    title: "Debug",
+    title: "Profile",
     tagLine:
       "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
     reactotron: "Send to Reactotron",
@@ -99,7 +106,7 @@ const en = {
       "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
   },
   demoPodcastListScreen: {
-    title: "React Native Radio episodes",
+    title: "Here all class announcement and notification comes",
     onlyFavorites: "Only Show Favorites",
     favoriteButton: "Favorite",
     unfavoriteButton: "Unfavorite",
@@ -119,6 +126,34 @@ const en = {
         "No favorites have been added yet. Tap the heart on an episode to add it to your favorites!",
     },
   },
+  generalInstruction: {
+    generalInstructionTitle: "General Instruction",
+    continue: "Continue",
+  },
+  testOverview: {
+    testName: "Test Name",
+    question: "Question(s)",
+    duration: "Hours",
+    marks: "Marks",
+    section: "Sections",
+    attempt: "Attempt Test",
+    accept: "Please accept terms.",
+  },
+  score: {
+    score: "Score",
+    testName: "Test Name",
+    question: "Question(s)",
+    duration: "Hours",
+    marks: "Marks",
+    myscore: "is your score",
+    reattempt: "Reattempt Test",
+    accept: "Please accept terms.",
+  },
+  examList: {
+    testSeriesList: "Test Series List",
+    continue: "सुरू ठेवा",
+  },
+  // @demo remove-block-end
 }
 
 export default en

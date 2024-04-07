@@ -1,6 +1,10 @@
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
+apply plugin: 'com.android.application'
+apply plugin: 'com.facebook.react'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+import com.android.build.OutputFile
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -100,6 +104,18 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+//        debug {
+//            storeFile file('../debug_key')
+//            storePassword 'Conquer'
+//            keyAlias 'Conquer'
+//            keyPassword 'Conquer'
+//        }
+        release {
+            storeFile file('../release_key')
+            storePassword 'Conquer'
+            keyAlias 'Conquer'
+            keyPassword 'Conquer'
+        }
     }
     buildTypes {
         debug {
@@ -108,7 +124,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -142,6 +158,10 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.5.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation("com.google.firebase:firebase-crashlytics")
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
