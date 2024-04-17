@@ -57,12 +57,12 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     setFirstName(myFirstName)
     setLastName(myLastName)
     setMobileNumber(myMobileNumber)
-    navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
+    navigation.navigate("Demo", { screen: "Home", params: {} })
   }
 
   async function userProfile() {
-    // await getProfile()
-    // console.log("🚀 ~ userProfile ~ response:", userPassword)
+    // const myProfile = await getProfile()
+    // console.log("🚀 ~ userProfile ~ myProfile:", myProfile)
   }
 
   useEffect(() => {

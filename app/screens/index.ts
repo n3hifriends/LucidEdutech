@@ -6,7 +6,7 @@ export * from "./DemoCommunityScreen"
 export * from "./DemoDebugScreen"
 export * from "./test_series/QuestionScreen"
 export * from "./test_series/TestOverviewScreen"
-export * from "./DemoShowroomScreen/DemoShowroomScreen"
+export * from "./DemoShowroomScreen/HomeScreen"
 // @demo remove-block-end
 export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here

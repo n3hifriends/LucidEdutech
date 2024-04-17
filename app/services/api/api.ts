@@ -63,18 +63,23 @@ export class Api {
     }
     try {
       const rawData = response.data
-      const quize: QuizeStoreSnapshotIn = rawData
+      const quize: QuizeStoreSnapshotIn = rawData as QuizeStoreSnapshotIn
       return { kind: "ok", quize: quize }
     } catch (e) {
       if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
       }
       return { kind: "bad-data" }
     }
   }
 
   async getProfile(): Promise<{ kind: "ok"; profile: ProfileSnapshotIn } | GeneralApiProblem> {
+    console.log("🚀 ~ Api ~ getProfile ~ response before:")
     const response = await this.apisauce.get("/user")
+    console.log("🚀 ~ Api ~ getProfile ~ response:", response)
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
       if (problem) return problem
@@ -82,11 +87,15 @@ export class Api {
 
     try {
       const rawData = response.data
-      const profile: ProfileSnapshotIn = rawData
+      const profile: ProfileSnapshotIn = rawData as ProfileSnapshotIn
       return { kind: "ok", profile }
     } catch (e) {
+      // Explicitly type 'e' as an error object
       if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        ) // Cast 'e' as Error to access 'message' and 'stack' properties
       }
       return { kind: "bad-data" }
     }
@@ -107,11 +116,14 @@ export class Api {
 
     try {
       const rawData = response.data
-      const auth: AuthenticateSnapshotIn = rawData
+      const auth: AuthenticateSnapshotIn = rawData as AuthenticateSnapshotIn
       return { kind: "ok", auth }
     } catch (e) {
       if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
       }
       return { kind: "bad-data" }
     }
