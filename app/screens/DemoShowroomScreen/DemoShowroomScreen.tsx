@@ -1,4 +1,4 @@
-import { Link, RouteProp, useRoute } from "@react-navigation/native"
+import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, SectionList, TextStyle, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
@@ -10,6 +10,7 @@ import { colors, spacing } from "../../theme"
 import { useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle"
 import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
+import { useStores } from "app/models"
 
 const logo = require("../../../assets/images/logo.png")
 
@@ -80,6 +81,13 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
     const menuRef = useRef<ListViewRef<DemoListItem["item"]>>(null)
     const route = useRoute<RouteProp<DemoTabParamList, "DemoShowroom">>()
     const params = route.params
+    const {
+      authenticationStore: { logout },
+    } = useStores()
+
+    function logoutApp() {
+      logout()
+    }
 
     // handle Web links
     React.useEffect(() => {
@@ -169,6 +177,15 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
                 <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
               )}
             />
+            <View style={[$titleWrapperCenter]}>
+              <Text
+                weight="medium"
+                onPress={logoutApp}
+                size="md"
+                tx="common.logOut"
+                style={[$title]}
+              />
+            </View>
           </View>
         )}
       >
@@ -253,4 +270,16 @@ const $demoItemDescription: TextStyle = {
 
 const $demoUseCasesSpacer: ViewStyle = {
   paddingBottom: spacing.xxl,
+}
+const $titleWrapperCenter: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  paddingHorizontal: spacing.xxl,
+}
+
+const $title: TextStyle = {
+  textAlign: "center",
+  color: colors.palette.red60,
+  padding: spacing.md,
 }

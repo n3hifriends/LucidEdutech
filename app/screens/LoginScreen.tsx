@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import React, { FC, useEffect, useMemo, useRef, useState } from "react"
-import { TextInput, TextStyle, View, ViewStyle, Linking, Dimensions } from "react-native"
+import { TextInput, TextStyle, View, ViewStyle, Linking, Dimensions, Alert } from "react-native"
 import {
   AutoImage,
   Button,
@@ -11,7 +11,7 @@ import {
   TextFieldAccessoryProps,
 } from "../components"
 import { useStores } from "../models"
-import { AppStackScreenProps } from "../navigators"
+import { AppStackScreenProps, navigate } from "../navigators"
 import { colors, spacing } from "../theme"
 import {
   GoogleSignin,
@@ -31,7 +31,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [signInError, setSignInError] = useState<string | undefined>(undefined)
   const [user, setUser] = useState("")
   const [isSigninInProgress, setIsSigninInProgress] = useState(false)
-
+  const { navigation } = _props
   // const { quizeStore } = useStores()
 
   function openLinkInBrowser(url: string) {
