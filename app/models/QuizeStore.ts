@@ -20,7 +20,7 @@ export const QuizeStoreModel = types
       if (response.kind === "ok") {
         store.setProp("quize", response.quize.quize)
       } else {
-        console.tron.error(`Error fetching episodes: ${JSON.stringify(response)}`, [])
+        console.tron.error(`Error fetching Quize: ${JSON.stringify(response)}`, [])
       }
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars

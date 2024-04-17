@@ -12,9 +12,10 @@ import mr from "./mr"
 i18n.fallbacks = true
 
 // to use regional locales use { "en-US": enUS } etc
-i18n.translations = { mr, ar, en, "en-US": en, ko, fr }
+// i18n.translations = { mr, ar, en, "en-US": en, ko, fr }
+i18n.translations = { mr, en }
 
-const fallbackLocale = "en-US"
+const fallbackLocale = "mr"
 const systemLocale = Localization.getLocales()[0]
 const systemLocaleTag = systemLocale?.languageTag ?? "en-US"
 

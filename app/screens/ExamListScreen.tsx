@@ -98,6 +98,7 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
       <View style={$itemsContainer}>
         {systemInstructions.map((item, index) => (
           <ListItem
+            key={index}
             text={item}
             children={"children"}
             bottomSeparator

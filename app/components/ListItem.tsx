@@ -135,7 +135,7 @@ export function ListItem(props: ListItemProps) {
   const $touchableStyles = [$touchableStyle, { minHeight: height }, style]
 
   return (
-    <View style={$containerStyles}>
+    <View key={text || tx} style={$containerStyles}>
       <TouchableOpacity {...TouchableOpacityProps} style={$touchableStyles}>
         <ListItemAction
           side="left"

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import React, { FC, useEffect, useRef, useState } from "react"
-import { Image, ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
+import { Alert, Image, ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
 import {
   Button, // @demo remove-current-line
   Text,
@@ -41,8 +41,19 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   const [myMobileNumber, setMyMobileNumber] = useState(mobileNumber)
   const mobileNoRef = useRef<TextInput>(null)
   const { navigation } = _props
+  const [signInError, setSignInError] = useState<string | undefined>(undefined)
 
   function goNext() {
+    if (
+      myFirstName.length === 0 ||
+      myLastName.length === 0 ||
+      myMobileNumber.length === 0 ||
+      authEmail.length === 0
+    ) {
+      setSignInError("welcomeScreen.fillAllFields")
+      return
+    }
+    setSignInError(undefined)
     setFirstName(myFirstName)
     setLastName(myLastName)
     setMobileNumber(myMobileNumber)
@@ -70,7 +81,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
   // const error = "Fill your details to continue"
   const error = undefined
-
+  const err: any = signInError
   return (
     <View style={$container}>
       <View style={$topContainer}>
@@ -141,6 +152,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       </View>
 
       <View style={[$bottomContainer, $bottomContainerInsets]}>
+        {signInError && <Text tx={err} size="sm" weight="light" style={$hint} />}
         <Button
           testID="next-screen-button"
           preset="reversed"
@@ -195,4 +207,9 @@ const $welcomeHeading: TextStyle = {
 
 const $textField: ViewStyle = {
   marginBottom: spacing.lg,
+}
+
+const $hint: TextStyle = {
+  color: colors.tint,
+  marginBottom: spacing.md,
 }

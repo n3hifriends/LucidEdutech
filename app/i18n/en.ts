@@ -6,11 +6,21 @@ const en = {
     logOut: "Log Out", // @demo remove-current-line
   },
   welcomeScreen: {
-    postscript:
-      "psst  — We are coming with nice content soon! Meanwhile, you can check out our free contents.",
-    readyForLaunch: "Here you go, almost ready to start!",
-    exciting: "(ohh, this is exciting!)",
     letsGo: "Let's go!", // @demo remove-current-line
+    postscript:
+      "प्स्ट  — आम्ही लवकरच छान कंटेंट आपल्यासाठी येत आहोत! तब्बल, आपण आमच्या मुक्त सामग्र्यांमध्ये देखील देखील देखू शकता.",
+    readyForLaunch: "तुमची माहिती भरा!",
+    exciting: "(हो, हे आवडतंय!)",
+    emailFieldLabel: "ईमेल",
+    emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
+    goNext: "पुढे जा",
+    firstName: "पहिलं नाव",
+    secondName: "आडनाव",
+    mobileNumber: "मोबाइल नंबर",
+    firstNamePlaceholder: "आपलं पहिलं नाव टाका",
+    secondNamePlaceholder: "आपलं आडनाव टाका",
+    mobileNumberPlaceholder: "आपला मोबाइल नंबर टाका",
+    fillAllFields: "कृपया सर्व फील्ड भरा",
   },
   errorScreen: {
     title: "Something went wrong!",

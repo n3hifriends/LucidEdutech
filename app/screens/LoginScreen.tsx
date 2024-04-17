@@ -28,8 +28,8 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [attemptsCount, setAttemptsCount] = useState(0)
-  const [signInError, setSignInError] = useState(undefined)
-  const [user, setUser] = useState()
+  const [signInError, setSignInError] = useState<string | undefined>(undefined)
+  const [user, setUser] = useState("")
   const [isSigninInProgress, setIsSigninInProgress] = useState(false)
 
   // const { quizeStore } = useStores()
@@ -53,7 +53,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   } = useStores()
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged(user: string) {
     setUser(user)
   }
 
@@ -177,7 +177,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       },
     [isAuthPasswordHidden],
   )
-
+  const err: any = signInError
   return (
     <Screen
       preset="auto"
@@ -195,7 +195,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         onPress={loginAndSignIn}
         disabled={isSigninInProgress}
       />
-      {signInError && <Text tx={signInError} size="sm" weight="light" style={$hint} />}
+      {signInError && <Text tx={err} size="sm" weight="light" style={$hint} />}
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Text tx="loginScreen.termConditionPretext" preset="formLabel" style={$termCondition} />
         <Text

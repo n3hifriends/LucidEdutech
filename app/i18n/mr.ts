@@ -19,6 +19,7 @@ const mr = {
     firstNamePlaceholder: "आपलं पहिलं नाव टाका",
     secondNamePlaceholder: "आपलं आडनाव टाका",
     mobileNumberPlaceholder: "आपला मोबाइल नंबर टाका",
+    fillAllFields: "कृपया सर्व फील्ड भरा",
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",
