@@ -18,7 +18,6 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin"
-import { api } from "./../../app/services/api"
 const { width, height } = Dimensions.get("window")
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -108,22 +107,22 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         const email = userInfo?.user?.email
         const firstName = userInfo?.user?.givenName
         const lastName = userInfo?.user?.familyName
+        if (firstName) {
+          setFirstName(firstName)
+        }
+        if (lastName) {
+          setLastName(lastName)
+        }
         // const mobileNumber = userInfo?.user?.phonenumbers
 
         // const idToken = userInfo?.idToken
         async function loginServer(email: string) {
           await login(email, "password")
-          api.setJwtToken(jwtToken)
           setAuthEmail(email)
-          if (firstName) {
-            setFirstName(firstName)
-          }
-          if (lastName) {
-            setLastName(lastName)
-          }
           // setMobileNumber(mobileNumber)
           setAuthPassword("password")
         }
+        console.log("🚀 ~ loginServer ~ login 3:", login)
         if (__DEV__) {
           loginServer("ketan@gmail.com")
         } else {

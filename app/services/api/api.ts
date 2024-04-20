@@ -77,7 +77,6 @@ export class Api {
   }
 
   async getProfile(): Promise<{ kind: "ok"; profile: ProfileSnapshotIn } | GeneralApiProblem> {
-    console.log("🚀 ~ Api ~ getProfile ~ response before:")
     const response = await this.apisauce.get("/user")
     console.log("🚀 ~ Api ~ getProfile ~ response:", response)
     if (!response.ok) {
@@ -86,7 +85,7 @@ export class Api {
     }
 
     try {
-      const rawData = response.data
+      const rawData = (response.data as any[])[0]
       const profile: ProfileSnapshotIn = rawData as ProfileSnapshotIn
       return { kind: "ok", profile }
     } catch (e) {
@@ -117,6 +116,7 @@ export class Api {
     try {
       const rawData = response.data
       const auth: AuthenticateSnapshotIn = rawData as AuthenticateSnapshotIn
+      this.setJwtToken(auth.jwtToken)
       return { kind: "ok", auth }
     } catch (e) {
       if (__DEV__) {

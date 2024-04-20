@@ -4,6 +4,8 @@ const en = {
     cancel: "Cancel",
     back: "Back",
     logOut: "Log Out", // @demo remove-current-line
+    tokenNotFound: "We are experiencing some technical issues. Please try again later",
+    loginAgain: "Relogin requierd",
   },
   welcomeScreen: {
     letsGo: "Let's go!", // @demo remove-current-line

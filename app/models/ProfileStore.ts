@@ -46,6 +46,7 @@ export const ProfileStoreModel = types
   .actions((store) => ({
     async getProfile() {
       const response = await api.getProfile()
+      console.log("🚀 ~ ProfileStore getProfile ~ response:", response)
       if (response.kind === "ok") {
         store.setProp("userId", response.profile.userId)
         store.setProp("role", response.profile.role)
@@ -63,6 +64,7 @@ export const ProfileStoreModel = types
       } else {
         console.tron.error(`Error fetching profile: ${JSON.stringify(response)}`, [])
       }
+      return response
     },
   }))
 

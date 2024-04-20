@@ -4,6 +4,8 @@ const mr = {
     cancel: "रद्द करा",
     back: "परत",
     logOut: "बाहेर पडा", // @demo remove-current-line
+    tokenNotFound: "आम्हाला काही तांत्रिक अडचणी येत आहेत. कृपया पुन्हा प्रयत्न करा.",
+    loginAgain: "पुन्हा लॉगिन करा.",
   },
   welcomeScreen: {
     postscript:
