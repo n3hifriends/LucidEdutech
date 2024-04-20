@@ -1,9 +1,9 @@
 import * as React from "react"
 import { TouchableOpacity, TextStyle, ViewStyle, View } from "react-native"
 import { mergeAll, flatten } from "ramda"
-import { colors, spacing } from "app/theme"
+import { colors, spacing } from "./../../app/theme"
 import { Text } from "./Text"
-import { TxKeyPath } from "app/i18n"
+import { TxKeyPath } from "./../../app/i18n"
 
 export interface CheckboxProps {
   /**

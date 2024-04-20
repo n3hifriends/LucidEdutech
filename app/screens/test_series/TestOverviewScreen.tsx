@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "app/components"
-import { colors, spacing } from "app/theme"
+import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
+import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
-import { AppStackScreenProps, navigate } from "app/navigators"
+import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 

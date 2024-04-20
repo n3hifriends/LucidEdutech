@@ -6,7 +6,7 @@ import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
 import { useStores } from "../../models"
-import { AppStackScreenProps, navigate } from "app/navigators"
+import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))

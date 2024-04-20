@@ -10,7 +10,7 @@ import { colors, spacing } from "../../theme"
 import { useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle"
 import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
-import { useStores } from "app/models"
+import { useStores } from "./../../../app/models"
 
 const logo = require("../../../assets/images/logo.png")
 
