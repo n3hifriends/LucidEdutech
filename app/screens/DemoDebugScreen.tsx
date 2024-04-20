@@ -19,9 +19,9 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
   _props,
 ) {
   const {
-    authenticationStore: { logout },
+    authenticationStore: { logout, authEmail, firstName, lastName, mobileNumber },
+    // profileStore: { getProfile, userPassword },
   } = useStores()
-
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
   // @ts-expect-error
   const usingFabric = global.nativeFabricUIManager != null
@@ -59,24 +59,32 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text preset="bold">App Id</Text>
-              <Text>{Application.applicationId}</Text>
+              <Text tx="welcomeScreen.firstName" preset="bold" />
+              <Text>{firstName}</Text>
             </View>
           }
         />
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text preset="bold">App Name</Text>
-              <Text>{Application.applicationName}</Text>
+              <Text tx="welcomeScreen.secondName" preset="bold" />
+              <Text>{lastName}</Text>
             </View>
           }
         />
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text preset="bold">App Version</Text>
-              <Text>{Application.nativeApplicationVersion}</Text>
+              <Text tx="welcomeScreen.emailFieldLabel" preset="bold" />
+              <Text>{authEmail}</Text>
+            </View>
+          }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={$item}>
+              <Text tx="welcomeScreen.mobileNumber" preset="bold" />
+              <Text>{mobileNumber}</Text>
             </View>
           }
         />
@@ -85,22 +93,6 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
             <View style={$item}>
               <Text preset="bold">App Build Version</Text>
               <Text>{Application.nativeBuildVersion}</Text>
-            </View>
-          }
-        />
-        <ListItem
-          LeftComponent={
-            <View style={$item}>
-              <Text preset="bold">Hermes Enabled</Text>
-              <Text>{String(usingHermes)}</Text>
-            </View>
-          }
-        />
-        <ListItem
-          LeftComponent={
-            <View style={$item}>
-              <Text preset="bold">Fabric Enabled</Text>
-              <Text>{String(usingFabric)}</Text>
             </View>
           }
         />

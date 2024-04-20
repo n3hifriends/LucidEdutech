@@ -195,12 +195,14 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
           ref={listRef}
           contentContainerStyle={$sectionListContentContainer}
           stickySectionHeadersEnabled={false}
-          sections={Object.values(Demos)}
-          renderItem={({ item }) => item}
+          // sections={Object.values(Demos)}
+          // renderItem={({ item }) => item}
+          sections={[]}
+          renderItem={({ item }) => <View />}
           renderSectionFooter={() => <View style={$demoUseCasesSpacer} />}
           ListHeaderComponent={
             <View style={$heading}>
-              <Text preset="heading" tx="demoShowroomScreen.jumpStart" />
+              <Text preset="heading" tx="homeScreen.jumpStart" />
             </View>
           }
           onScrollToIndexFailed={scrollToIndexFailed}

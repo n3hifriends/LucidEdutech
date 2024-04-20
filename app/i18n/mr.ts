@@ -10,7 +10,7 @@ const mr = {
       "प्स्ट  — आम्ही लवकरच छान कंटेंट आपल्यासाठी येत आहोत! तब्बल, आपण आमच्या मुक्त सामग्र्यांमध्ये देखील देखील देखू शकता.",
     readyForLaunch: "तुमची माहिती भरा!",
     exciting: "(हो, हे आवडतंय!)",
-    emailFieldLabel: "ईमेल",
+    emailFieldLabel: "ई-मेल",
     emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
     goNext: "पुढे जा",
     firstName: "पहिलं नाव",
@@ -21,6 +21,12 @@ const mr = {
     mobileNumberPlaceholder: "आपला मोबाइल नंबर टाका",
     fillAllFields: "कृपया सर्व फील्ड भरा",
   },
+  profileScreen: {
+    emailFieldLabel: "ई-मेल",
+    firstName: "पहिलं नाव",
+    secondName: "आडनाव",
+    mobileNumber: "मोबाइल नंबर",
+  },
   errorScreen: {
     title: "काहीतरी चुकलं!",
     friendlySubtitle:
@@ -30,10 +36,10 @@ const mr = {
   },
   emptyStateComponent: {
     generic: {
-      heading: "तुमचं तुरंत काही नसलं... तुमचं दुखी आहे",
+      heading: "आम्हाला डेटा सपडला नाही",
       content:
-        "अजून कोणताही डेटा सापडलं नाही. अनुरोध केलं त्याच्याशी पुनरावलोकन किंवा अ‍ॅप रिलोड करण्याचा प्रयत्न करा.",
-      button: "आपलं पुन्हा प्रयत्न करा",
+        "अद्याप कोणताही डेटा आढळला नाही. ॲप रिफ्रेश करण्यासाठी किंवा रीलोड करण्यासाठी बटणावर क्लिक करा.",
+      button: "पुन्हा प्रयत्न करा",
     },
   },
   // @demo remove-block-start
@@ -87,8 +93,8 @@ const mr = {
       "पूर्ण प्रकल्प चालवता किंवा आमच्या हस्तशिक्षा सहित दलांना तुमच्या आपल्या परियोजनेसाठी Infinite Red मदत करू शकतं.",
     hireUsLink: "आम्हाला संदेश पाठवा",
   },
-  demoShowroomScreen: {
-    jumpStart: "तुमच्याकडे सुरु आहे ओळख",
+  homeScreen: {
+    jumpStart: "येथे होम स्क्रीन येइल",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "खारे",
