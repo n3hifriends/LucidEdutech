@@ -123,6 +123,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
 
   async function userProfile() {
     const profileRes = await getProfile()
+    console.log("🚀 ~ userProfile ~ profileRes:", profileRes)
     const myRes: string = profileRes?.kind || "" // Provide a default value for undefined case
     if (myRes === "unauthorized") {
       Alert.alert(translate("common.loginAgain"), translate("common.tokenNotFound"), [
@@ -133,7 +134,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
 
   useEffect(() => {
     userProfile()
-  }, [userProfile])
+  }, [])
 
   const toggleDrawer = () => {
     if (!open) {
