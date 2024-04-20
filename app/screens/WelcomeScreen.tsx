@@ -60,17 +60,6 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     navigation.navigate("Demo", { screen: "Home", params: {} })
   }
 
-  async function userProfile() {
-    // const myProfile = await getProfile()
-    // console.log("🚀 ~ userProfile ~ myProfile:", myProfile)
-  }
-
-  useEffect(() => {
-    if (jwtToken) {
-      userProfile()
-    }
-  }, [userProfile])
-
   useHeader(
     {
       rightTx: "common.logOut",

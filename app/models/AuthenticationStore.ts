@@ -29,6 +29,7 @@ export const AuthenticationStoreModel = types
   .actions((store) => ({
     async login(username: string, password: string) {
       const response = await api.login(username, password)
+      console.log("🚀 ~ login ~ response:", response)
       if (response.kind === "ok") {
         store.setProp("jwtToken", response.auth.jwtToken)
         store.setProp("username", response.auth.username)

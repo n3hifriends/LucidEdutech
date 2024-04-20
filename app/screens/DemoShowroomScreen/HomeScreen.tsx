@@ -1,16 +1,26 @@
 import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
-import { Image, ImageStyle, Platform, SectionList, TextStyle, View, ViewStyle } from "react-native"
+import {
+  Alert,
+  Image,
+  ImageStyle,
+  Platform,
+  SectionList,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
 import { ListItem, ListView, ListViewRef, Screen, Text } from "../../components"
-import { isRTL } from "../../i18n"
+import { isRTL, translate } from "../../i18n"
 import { DemoTabParamList, DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
 import { useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle"
 import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
-import { useStores } from "./../../../app/models"
+import { ProfileSnapshotIn, useStores } from "./../../../app/models"
+import { GeneralApiProblem } from "app/services/api/apiProblem"
 
 const logo = require("../../../assets/images/logo.png")
 
@@ -81,7 +91,8 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
   const route = useRoute<RouteProp<DemoTabParamList, "Home">>()
   const params = route.params
   const {
-    authenticationStore: { logout },
+    authenticationStore: { logout, jwtToken },
+    profileStore: { getProfile },
   } = useStores()
 
   function logoutApp() {
@@ -109,6 +120,20 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
       handleScroll(findSectionIndex, findItemIndex)
     }
   }, [params])
+
+  async function userProfile() {
+    const profileRes = await getProfile()
+    const myRes: string = profileRes?.kind || "" // Provide a default value for undefined case
+    if (myRes === "unauthorized") {
+      Alert.alert(translate("common.loginAgain"), translate("common.tokenNotFound"), [
+        { text: translate("common.ok"), onPress: () => logout() },
+      ])
+    }
+  }
+
+  useEffect(() => {
+    userProfile()
+  }, [userProfile])
 
   const toggleDrawer = () => {
     if (!open) {
