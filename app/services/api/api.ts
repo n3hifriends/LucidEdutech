@@ -1,4 +1,4 @@
-import { QuizeStoreSnapshotIn } from "app/models"
+import { QuizeStoreSnapshotIn } from "./../../../app/models"
 /**
  * This Api class lets you define an API endpoint and methods to request
  * data and process it.
@@ -18,8 +18,8 @@ import type {
   ApiFeedResponse, // @demo remove-current-line
 } from "./api.types"
 import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
-import { AuthenticateSnapshotIn } from "app/models/AuthenticationStore"
-import { ProfileSnapshotIn } from "app/models"
+import { AuthenticateSnapshotIn } from "./../../../app/models/AuthenticationStore"
+import { ProfileSnapshotIn } from "./../../../app/models"
 
 /**
  * Configuring the apisauce instance.

@@ -18,7 +18,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin"
-import { api } from "app/services/api"
+import { api } from "./../../app/services/api"
 const { width, height } = Dimensions.get("window")
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
