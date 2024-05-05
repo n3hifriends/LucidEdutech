@@ -30,6 +30,9 @@ const en = {
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
   },
+  questionScreen:{
+    testSeries:"Test Series"
+  },
   errorScreen: {
     title: "Something went wrong!",
     friendlySubtitle:
