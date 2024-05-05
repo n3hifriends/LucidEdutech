@@ -1,5 +1,5 @@
 import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
+import React, { FC, ReactElement, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
   Image,
@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
-import { ListItem, ListView, ListViewRef, Screen, Text } from "../../components"
+import { Button, ListItem, ListView, ListViewRef, Screen, Text } from "../../components"
 import { isRTL, translate } from "../../i18n"
 import { DemoTabParamList, DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
@@ -21,6 +21,7 @@ import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
 import { ProfileSnapshotIn, useStores } from "./../../../app/models"
 import { GeneralApiProblem } from "app/services/api/apiProblem"
+import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe"
 
 const logo = require("../../../assets/images/logo.png")
 
@@ -85,6 +86,7 @@ const ShowroomListItem = Platform.select({ web: WebListItem, default: NativeList
 
 export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_props) {
   const [open, setOpen] = useState(false)
+  const [playing, setPlaying] = useState(false)
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const listRef = useRef<SectionList>(null)
   const menuRef = useRef<ListViewRef<DemoListItem["item"]>>(null)
@@ -176,6 +178,17 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
 
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
+  const onStateChange = useCallback((state: PLAYER_STATES) => {
+    if (state === "ended") {
+      setPlaying(false)
+      Alert.alert("video has finished playing!")
+    }
+  }, [])
+
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev)
+  }, [])
+
   return (
     <Drawer
       open={open}
@@ -216,6 +229,12 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
     >
       <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
         <DrawerIconButton onPress={toggleDrawer} />
+        <YoutubePlayer
+          height={300}
+          play={playing}
+          videoId={"2ouN6xeF6Hk"}
+          onChangeState={onStateChange}
+        />
 
         <SectionList
           ref={listRef}

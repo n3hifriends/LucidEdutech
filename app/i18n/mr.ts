@@ -1,3 +1,5 @@
+import { QuestionScreen } from "app/screens"
+
 const mr = {
   common: {
     ok: "ठीक आहे!",
@@ -28,6 +30,9 @@ const mr = {
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
+  },
+  questionScreen:{
+    testSeries:"टेस्ट सीरीज"
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",
@@ -96,7 +101,7 @@ const mr = {
     hireUsLink: "आम्हाला संदेश पाठवा",
   },
   homeScreen: {
-    jumpStart: "येथे होम स्क्रीन येइल",
+    jumpStart: "येथे आपण YouTube व्हिडिओ दाखवू",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "खारे",
