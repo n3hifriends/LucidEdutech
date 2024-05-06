@@ -32,7 +32,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [isSigninInProgress, setIsSigninInProgress] = useState(false)
   const { navigation } = _props
   // const { quizeStore } = useStores()
-
+  // github: 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
   function openLinkInBrowser(url: string) {
     Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
   }

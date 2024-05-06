@@ -31,7 +31,11 @@ const en = {
     mobileNumber: "मोबाइल नंबर",
   },
   questionScreen:{
-    testSeries:"Test Series"
+    testSeries:"Test Series",
+    countDown:"CountDown:60",
+    previous:"Previous",
+    next:"next",
+    submit:"Submit"
   },
   errorScreen: {
     title: "Something went wrong!",
