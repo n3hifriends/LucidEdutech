@@ -1,16 +1,24 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useEffect, useState, useReducer } from "react"
 import * as Application from "expo-application"
 import { Linking, Platform, TextStyle, View, ViewStyle, ScrollView } from "react-native"
-import { Button, AnswerItem, Screen, Text, TextRounded, AutoImage, Icon } from "../../components"
+import { Button, AnswerItem, Screen, Text, TextRounded, AutoImage, Icon, AnswerItemProps, AnswerTypes } from "../../components"
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
 import { useStores } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-
+import { Question, mockQuestions } from "./../../mocks/demoQuestions"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
+
+/**
+ * TODO:
+ * 1. Convert countdound, previous, next text english & marathi
+ * 2. Work on countdown logic
+ * 3. Make all this screen logic dynamically using hardcoded values
+ *    1.
+ */
 
 interface QuestionScreenProps extends AppStackScreenProps<"QuestionScreen"> {}
 
@@ -19,9 +27,30 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     authenticationStore: { logout },
   } = useStores()
   const [showImage, setShowImage] = useState(false)
-  const [myAnswer, setMyAnswer] = useState(undefined)
+  const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
-  const correctAnswer = "0"
+  const initialState = mockQuestions[0]
+  console.log("🚀 ~ QuestionScreen ~ initialState:", initialState)
+
+  const reducer = (state: any, action: any) => {
+    console.log("🚀 ~ reducer ~ state:", state)
+    switch (action.type) {
+      case "previous":
+        if (state.index > 0) {
+          return mockQuestions[state.index - 1]
+        }
+      case "next":
+        if (state.index < mockQuestions.length) {
+          return mockQuestions[state.index + 1]
+        }
+      default:
+        return state
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  const correctAnswer = state?.correctAns
 
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
@@ -83,7 +112,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     },
     [],
   )
-  const currentQuestion = 5
+  const currentQuestion = state?.index
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flex: 0.1 }}>
@@ -94,7 +123,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             // openLinkInBrowser("https://github.com/infinitered/ignite/issues")
           }}
         /> */}
-        <Text style={$title} preset="heading" text="Test Series" />
+        <Text tx="questionScreen.testSeries" style={$title} preset="heading" />
       </View>
       <View style={$allQuestionView}>
         <ScrollView
@@ -102,8 +131,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((index) => (
-            <TextRounded
+          {mockQuestions?.map((item:Question, index: number) => {
+            return <TextRounded
               key={index}
               style={$title}
               backgroundColor={
@@ -114,9 +143,9 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                   : undefined
               }
               preset="default"
-              text={String(index)}
+              text={String(index+1)}
             />
-          ))}
+})}
         </ScrollView>
       </View>
       <View style={$currentQuestion}>
@@ -126,11 +155,13 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
               backgroundColor={colors.palette.secondary300}
               style={$title}
               preset="default"
-              text="5"
+              text={"" + (currentQuestion+1)}
             />
           </View>
           <View style={$currentQuestionView}>
-            <Text preset="bold">countdown: 0:53</Text>
+            <Text preset="bold" tx="questionScreen.countDown">
+              countdown: 0:53
+            </Text>
           </View>
         </View>
         <View style={{ flex: 0.7 }}>
@@ -156,13 +187,13 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         </View>
       </View>
       <View style={{ flex: 0.35 }}>
-        {["Ada Lovelace", "Charles Babbage", "K. Giloi", "Raúl Rojas"].map((item, index) => (
+        {state?.ansArr?.map((item:string, index:number) => (
           <AnswerItem
             key={"" + index}
             id={"" + index}
             text={"" + item}
             leftText={index + 1 + "."}
-            isCorrect={isCorrectAnswer("" + index)}
+            isCorrect={isCorrectAnswer("" + index) as AnswerTypes}
             topSeparator={true}
             bottomSeparator={true}
             rightIcon={answerIcon("" + index)}
@@ -204,8 +235,21 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
            <Text style={$hint} tx={`demoDebugScreen.${Platform.OS}ReactotronHint` as const} /> 
         </View> */}
         <View style={$buttonContainer}>
-          <Button style={$button} text="Previous" onPress={logout} />
-          <Button style={$button} text="Next" onPress={showResult} />
+          <Button
+            style={$button}
+            tx="questionScreen.previous"
+            onPress={() => dispatch({ type: "previous" })}
+          />
+
+          {state?.index + 1 === mockQuestions?.length ? (
+            <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
+          ) : (
+            <Button
+              style={$button}
+              tx="questionScreen.next"
+              onPress={() => dispatch({ type: "next" })}
+            />
+          )}
         </View>
       </View>
     </Screen>

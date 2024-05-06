@@ -32,7 +32,11 @@ const mr = {
     mobileNumber: "मोबाइल नंबर",
   },
   questionScreen:{
-    testSeries:"टेस्ट सीरीज"
+    testSeries:"टेस्ट सीरीज",
+    countDown:"काउंटडाउन:60",
+    previous:"मागील",
+    next:"पुढे जा",
+    submit:"सबमिट"
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",
