@@ -26,45 +26,47 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const {
     authenticationStore: { logout },
   } = useStores()
-  const [showImage, setShowImage] = useState(false)
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
   const initialState = mockQuestions[0]
-  console.log("🚀 ~ QuestionScreen ~ initialState:", initialState)
-
+  
   const reducer = (state: any, action: any) => {
     console.log("🚀 ~ reducer ~ state:", state)
     switch (action.type) {
       case "previous":
-        if (state.index > 0) {
+        if (state?.index > 0) {
           return mockQuestions[state.index - 1]
         }
       case "next":
-        if (state.index < mockQuestions.length) {
+        if (state?.index < mockQuestions.length) {
           return mockQuestions[state.index + 1]
         }
-      default:
+        default:
         return state
     }
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
+  const isReferenceImageAvailable:boolean = state?.referenceImageUrl?.length > 0;
+  const [showImage, setShowImage] = useState(isReferenceImageAvailable)
 
   const correctAnswer = state?.correctAns
 
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowImage(true)
-    }, 7000)
-  })
 
   function showResult() {
     navigate({ name: "Score", params: undefined })
   }
 
-  function checkAnswer(answer: string) {
+  function checkAnswer(currentQue:Question, answer: string) {
+    // modify existing array
+    let newMockQuestionFilterArr:Question[] = mockQuestions.filter((item, index)=>item.index === state.index)
+
+     let newMockQuestion:Question = newMockQuestionFilterArr[0]
+     newMockQuestion.attempted = true;
+     newMockQuestion.isCorrect = answer === newMockQuestion.correctAns ;
+    // mockQuestion = [mockQuestion..., newMockQuestion]
     setMyAnswer(answer)
   }
 
@@ -112,7 +114,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     },
     [],
   )
-  const currentQuestion = state?.index
+  const currentQuestion:number = state?.index
+  const showScore:boolean = (state?.index +1) === mockQuestions?.length;
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flex: 0.1 }}>
@@ -167,10 +170,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         <View style={{ flex: 0.7 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: showImage ? 0.7 : 1 }}>
-              <Text preset="bold" size={showImage ? "xxs" : "sm"}>
-                Who is the first programmer of the World? If the question contains image then
-                question text size will be reduced to this level. Also the image being displayed to
-                right side is coming from Nitin's Google Drive.
+              <Text preset="bold" size={showImage ? "xxs" : "sm"}>{state?.title}
               </Text>
             </View>
             {showImage && (
@@ -178,7 +178,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                 <AutoImage
                   style={{ width: "99%", height: "99%" }}
                   source={{
-                    uri: "https://drive.google.com/uc?export=view&id=14zQPC4_-NeAUVAgvNsAu3OptpR4SBxXM",
+                    uri: state?.referenceImageUrl,
                   }}
                 />
               </View>
@@ -197,7 +197,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             topSeparator={true}
             bottomSeparator={true}
             rightIcon={answerIcon("" + index)}
-            onPress={() => checkAnswer("" + index)}
+            onPress={() => checkAnswer(state, item)}
           />
         ))}
       </View>
@@ -241,7 +241,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             onPress={() => dispatch({ type: "previous" })}
           />
 
-          {state?.index + 1 === mockQuestions?.length ? (
+          {showScore ? (
             <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
           ) : (
             <Button
