@@ -33,7 +33,7 @@ const mr = {
   },
   questionScreen:{
     testSeries:"टेस्ट सीरीज",
-    countDown:"काउंटडाउन:60",
+    countDown:"काउंटडाउन",
     previous:"मागील",
     next:"पुढे जा",
     submit:"सबमिट"

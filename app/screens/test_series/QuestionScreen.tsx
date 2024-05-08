@@ -1,7 +1,25 @@
 import React, { FC, useEffect, useState, useReducer } from "react"
 import * as Application from "expo-application"
-import { Linking, Platform, TextStyle, View, ViewStyle, ScrollView } from "react-native"
-import { Button, AnswerItem, Screen, Text, TextRounded, AutoImage, Icon, AnswerItemProps, AnswerTypes } from "../../components"
+import {
+  Linking,
+  Platform,
+  TextStyle,
+  View,
+  ViewStyle,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native"
+import {
+  Button,
+  AnswerItem,
+  Screen,
+  Text,
+  TextRounded,
+  AutoImage,
+  Icon,
+  AnswerItemProps,
+  AnswerTypes,
+} from "../../components"
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
@@ -19,6 +37,7 @@ function openLinkInBrowser(url: string) {
  * 3. Make all this screen logic dynamically using hardcoded values
  *    1.
  */
+var myInterval: any
 
 interface QuestionScreenProps extends AppStackScreenProps<"QuestionScreen"> {}
 
@@ -29,43 +48,84 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
   const initialState = mockQuestions[0]
-  
+
   const reducer = (state: any, action: any) => {
-    console.log("🚀 ~ reducer ~ state:", state)
     switch (action.type) {
       case "previous":
         if (state?.index > 0) {
           return mockQuestions[state.index - 1]
         }
       case "next":
-        if (state?.index < mockQuestions.length) {
+        if (state?.index < mockQuestions.length - 1) {
           return mockQuestions[state.index + 1]
         }
-        default:
+      case "index":
+        if (action.index < mockQuestions.length - 1) {
+          return mockQuestions[action.index]
+        }
+
+      default:
         return state
     }
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
-  const isReferenceImageAvailable:boolean = state?.referenceImageUrl?.length > 0;
+  const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
 
   const correctAnswer = state?.correctAns
 
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
+  const [timeLeft, setTimeLeft] = useState(0)
+  const currentQuestion: number = state?.index
+  const handleNextQuestion = () => {
+    if (state?.index == mockQuestions?.length - 1) {
+      clearInterval(myInterval)
+      showResult()
+      return
+    }
+    resetTimer() // Reset timer for the next question
+    dispatch({ type: "next" })
+  }
+
+  const resetTimer = () => {
+    setTimeLeft(0) // Set time to 0 to stop the interval
+  }
+
+  useEffect(() => {
+    setTimeLeft(state?.countdown)
+    if (myInterval) {
+      clearInterval(myInterval)
+    }
+    myInterval = setInterval(() => {
+      setTimeLeft((prevTime: any) => {
+        const remTime = Math.max(prevTime - 1, 0)
+        if (remTime === 0) {
+          handleNextQuestion()
+        }
+        return remTime
+      }) // Ensure time doesn't go below 0
+    }, 1000) // Update every second
+
+    return () => clearInterval(myInterval) // Cleanup function to clear interval
+  }, [state]) // Dependency array: trigger effect only on timeLeft change
+
+  const isLastQuestion = currentQuestion === mockQuestions.length - 1
 
   function showResult() {
     navigate({ name: "Score", params: undefined })
   }
 
-  function checkAnswer(currentQue:Question, answer: string) {
+  function checkAnswer(currentQue: Question, answer: string) {
     // modify existing array
-    let newMockQuestionFilterArr:Question[] = mockQuestions.filter((item, index)=>item.index === state.index)
+    let newMockQuestionFilterArr: Question[] = mockQuestions.filter(
+      (item, index) => item.index === state.index,
+    )
 
-     let newMockQuestion:Question = newMockQuestionFilterArr[0]
-     newMockQuestion.attempted = true;
-     newMockQuestion.isCorrect = answer === newMockQuestion.correctAns ;
+    let newMockQuestion: Question = newMockQuestionFilterArr[0]
+    newMockQuestion.attempted = true
+    newMockQuestion.isCorrect = answer === newMockQuestion.correctAns
     // mockQuestion = [mockQuestion..., newMockQuestion]
     setMyAnswer(answer)
   }
@@ -114,8 +174,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     },
     [],
   )
-  const currentQuestion:number = state?.index
-  const showScore:boolean = (state?.index +1) === mockQuestions?.length;
+  const showScore: boolean = state?.index + 1 === mockQuestions?.length
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flex: 0.1 }}>
@@ -134,21 +194,26 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          {mockQuestions?.map((item:Question, index: number) => {
-            return <TextRounded
-              key={index}
-              style={$title}
-              backgroundColor={
-                index < currentQuestion
-                  ? colors.palette.overlay50
-                  : index == currentQuestion
-                  ? colors.palette.secondary300
-                  : undefined
-              }
-              preset="default"
-              text={String(index+1)}
-            />
-})}
+          {mockQuestions?.map((item: Question, index: number) => {
+            return (
+              <TextRounded
+                key={index}
+                style={$title}
+                backgroundColor={
+                  index < currentQuestion
+                    ? colors.palette.overlay50
+                    : index == currentQuestion
+                    ? colors.palette.secondary300
+                    : undefined
+                }
+                preset="default"
+                text={String(index + 1)}
+                onPress={() => {
+                  dispatch({ type: "index", index })
+                }}
+              />
+            )
+          })}
         </ScrollView>
       </View>
       <View style={$currentQuestion}>
@@ -158,19 +223,19 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
               backgroundColor={colors.palette.secondary300}
               style={$title}
               preset="default"
-              text={"" + (currentQuestion+1)}
+              text={"" + (currentQuestion + 1)}
             />
           </View>
           <View style={$currentQuestionView}>
-            <Text preset="bold" tx="questionScreen.countDown">
-              countdown: 0:53
-            </Text>
+            <Text preset="bold" tx="questionScreen.countDown" />
+            <Text preset="bold" text={` ${timeLeft}`} />
           </View>
         </View>
         <View style={{ flex: 0.7 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: showImage ? 0.7 : 1 }}>
-              <Text preset="bold" size={showImage ? "xxs" : "sm"}>{state?.title}
+              <Text preset="bold" size={showImage ? "xxs" : "sm"}>
+                {state?.title}
               </Text>
             </View>
             {showImage && (
@@ -187,7 +252,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         </View>
       </View>
       <View style={{ flex: 0.35 }}>
-        {state?.ansArr?.map((item:string, index:number) => (
+        {state?.ansArr?.map((item: string, index: number) => (
           <AnswerItem
             key={"" + index}
             id={"" + index}
@@ -247,7 +312,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             <Button
               style={$button}
               tx="questionScreen.next"
-              onPress={() => dispatch({ type: "next" })}
+              onPress={isLastQuestion ? () => showResult() : () => handleNextQuestion()}
             />
           )}
         </View>

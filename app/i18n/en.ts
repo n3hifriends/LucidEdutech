@@ -32,7 +32,7 @@ const en = {
   },
   questionScreen:{
     testSeries:"Test Series",
-    countDown:"CountDown:60",
+    countDown:"CountDown",
     previous:"Previous",
     next:"next",
     submit:"Submit"
