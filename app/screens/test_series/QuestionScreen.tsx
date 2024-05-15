@@ -8,6 +8,7 @@ import {
   ViewStyle,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native"
 import {
   Button,
@@ -26,6 +27,8 @@ import { isRTL } from "../../i18n"
 import { useStores } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, mockQuestions } from "./../../mocks/demoQuestions"
+import CircularProgressBar from "app/components/CircularProgressBase"
+import { useNavigation } from "@react-navigation/core"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
@@ -63,7 +66,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         if (action.index < mockQuestions.length - 1) {
           return mockQuestions[action.index]
         }
-
+      case "reset":
+        return mockQuestions[0]
       default:
         return state
     }
@@ -81,8 +85,11 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const currentQuestion: number = state?.index
   const handleNextQuestion = () => {
     if (state?.index == mockQuestions?.length - 1) {
+      // dispatch({ type: "reset" })
       clearInterval(myInterval)
-      showResult()
+      setTimeout(() => {
+        showResult(false)
+      }, 1000)
       return
     }
     resetTimer() // Reset timer for the next question
@@ -113,8 +120,20 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
 
   const isLastQuestion = currentQuestion === mockQuestions.length - 1
 
-  function showResult() {
-    navigate({ name: "Score", params: undefined })
+  function showResult(confirmTest: boolean) {
+    if (confirmTest) {
+      Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
+        {
+          text: "yes",
+          onPress: () => {
+            navigate({ name: "Score", params: undefined })
+          },
+        },
+        { text: "no", onPress: () => {}, style: "cancel" },
+      ])
+    } else {
+      navigate({ name: "Score", params: undefined })
+    }
   }
 
   function checkAnswer(currentQue: Question, answer: string) {
@@ -174,7 +193,11 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     },
     [],
   )
-  const showScore: boolean = state?.index + 1 === mockQuestions?.length
+
+  //progress bar
+  const calculateProgress = () => {
+    return 1 - timeLeft / state?.countdown
+  }
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
@@ -229,6 +252,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           <View style={$currentQuestionView}>
             <Text preset="bold" tx="questionScreen.countDown" />
             <Text preset="bold" text={` ${timeLeft}`} />
+            <CircularProgressBar initialProgress={5} maxProgess={10} />
           </View>
         </View>
         <View style={{ flex: 0.7 }}>
@@ -306,14 +330,10 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             onPress={() => dispatch({ type: "previous" })}
           />
 
-          {showScore ? (
+          {isLastQuestion ? (
             <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
           ) : (
-            <Button
-              style={$button}
-              tx="questionScreen.next"
-              onPress={isLastQuestion ? () => showResult() : () => handleNextQuestion()}
-            />
+            <Button style={$button} tx="questionScreen.next" onPress={handleNextQuestion} />
           )}
         </View>
       </View>

@@ -36,7 +36,9 @@ const mr = {
     countDown:"काउंटडाउन",
     previous:"मागील",
     next:"पुढे जा",
-    submit:"सबमिट"
+    submit:"सबमिट",
+    yes:"होय",
+    no:"नाही"
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",

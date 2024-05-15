@@ -35,7 +35,9 @@ const en = {
     countDown:"CountDown",
     previous:"Previous",
     next:"next",
-    submit:"Submit"
+    submit:"Submit",
+    yes:"yes",
+    no:"no"
   },
   errorScreen: {
     title: "Something went wrong!",
