@@ -64,7 +64,7 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
     }
 
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
+      <Screen preset="scroll" safeAreaEdges={["top", "bottom"]} contentContainerStyle={$container}>
         <Text
           style={$title}
           preset="heading"

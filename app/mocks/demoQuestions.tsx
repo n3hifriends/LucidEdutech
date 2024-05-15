@@ -30,7 +30,7 @@ export var mockQuestions: Question[] = [
   },
   {
     index: 1,
-    countdown: 5,
+    countdown: 3,
     title:
       " 1 Who is the first programmer of the World? If the question contains image then question text size will be reduced to this level. Also the image being displayed to right side is coming from Nitin's Google Drive.",
     referenceUrl: undefined,
@@ -45,7 +45,7 @@ export var mockQuestions: Question[] = [
   },
   {
     index: 2,
-    countdown: 7,
+    countdown: 5,
     title:
       " 2 Who is the first programmer of the World? If the question contains image then question text size will be reduced to this level. Also the image being displayed to right side is coming from Nitin's Google Drive.",
     referenceUrl: undefined,

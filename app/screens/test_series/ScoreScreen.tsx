@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
@@ -7,58 +7,88 @@ import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, mockQuestions } from "./../../mocks/demoQuestions"
 
-// import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
 interface ScoreScreenProps extends AppStackScreenProps<"Score"> {}
 
 export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen() {
+  const navigation = useNavigation()
+
+  // Handle back button
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      // Check if back button was pressed
+      if (e.data.action.type === "GO_BACK") {
+        e.preventDefault() // Prevent default back navigation
+        // Handle custom action here (optional)
+      }
+    })
+    return () => {
+      unsubscribe()
+    }
+  }, [navigation])
+
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
   const startTestSeries = () => {
-    navigate({ name: "QuestionScreen", params: undefined })
+    navigate({ name: "GeneralInstruction", params: undefined })
   }
-  
-  const [showScore, setShowScore] = useState(false);
+
+  const [showScore, setShowScore] = useState(false)
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+
   const handleNextQuestion = () => {
     if (currentQuestion + 1 < mockQuestions.length) {
-      setCurrentQuestion(currentQuestion + 1);
+      setCurrentQuestion(currentQuestion + 1)
     } else {
-      setShowScore(true);
+      setShowScore(true)
     }
-  };
+  }
 
   const calculateResult = () => {
-    let correctAnswers:number = 0;
-    let wrongAnswers:number = 0;
-    let notAttempted:number = 0;
-    let totalScore:number = 0;
+    let correctAnswers: number = 0
+    let wrongAnswers: number = 0
+    let notAttempted: number = 0
+    let totalScore: number = 0
     mockQuestions.forEach((answer) => {
-      if(answer?.attempted === true){
-      if (answer?.isCorrect === true) {
-        correctAnswers++;
-        totalScore += answer?.maxScore;
+      if (answer?.attempted === true) {
+        if (answer?.isCorrect === true) {
+          correctAnswers++
+          totalScore += answer?.maxScore
+        } else {
+          wrongAnswers++
+        }
       } else {
-        wrongAnswers++;
+        notAttempted++
       }
-    }else{
-      notAttempted++;
-    }
-    });
-    return { correctAnswers, wrongAnswers, notAttempted, totalScore };
-  };
+    })
+    return { correctAnswers, wrongAnswers, notAttempted, totalScore }
+  }
 
-  const result = calculateResult();
+  const result = calculateResult()
   const sectionList = [
-    { title: "एकूण प्रश्न", question: ""+mockQuestions.length, symbol: "?", color: colors.palette.accent100 },
-    { title: "बरोबर उत्तरे", question: ""+result?.correctAnswers, symbol: "=", color: colors.palette.neutral100 },
-    { title: "चुकीची उत्तरे", question: ""+result?.wrongAnswers, symbol: "x", color: colors.palette.neutral100 },
+    {
+      title: "एकूण प्रश्न",
+      question: "" + mockQuestions.length,
+      symbol: "?",
+      color: colors.palette.accent100,
+    },
+    {
+      title: "बरोबर उत्तरे",
+      question: "" + result?.correctAnswers,
+      symbol: "=",
+      color: colors.palette.neutral100,
+    },
+    {
+      title: "चुकीची उत्तरे",
+      question: "" + result?.wrongAnswers,
+      symbol: "x",
+      color: colors.palette.neutral100,
+    },
     {
       title: "अंशतः बरोबर उत्तरे",
       question: "0",
@@ -67,7 +97,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
     },
     {
       title: "प्रयत्न न केलेले प्रश्न",
-      question: ""+result?.notAttempted,
+      question: "" + result?.notAttempted,
       symbol: "!",
       color: colors.palette.primary300,
     },
@@ -121,7 +151,9 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       <View style={$line} />
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
-        <Text style={$vals} preset="formLabel">{mockQuestions.length}</Text>
+        <Text style={$vals} preset="formLabel">
+          {mockQuestions.length}
+        </Text>
         <Text style={$duration} preset="formLabel" tx="score.question" />
         <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
         <Text style={$vals} preset="formLabel" text="1" />
@@ -131,7 +163,9 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
         <Text style={$duration} preset="formLabel" tx="score.marks" />
       </View>
       <View style={{ flexDirection: "row" }}>
-        <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading">{""+result?.totalScore}</Text>
+        <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading">
+          {"" + result?.totalScore}
+        </Text>
         <Text style={$section} preset="subheading" tx="score.myscore" />
       </View>
       <View style={$line} />

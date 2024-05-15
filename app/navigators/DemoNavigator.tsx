@@ -16,7 +16,6 @@ export type DemoTabParamList = {
   DemoDebug: undefined
   DemoPodcastList: undefined
   EducationTabScreen: undefined
-  GeneralInstruction: undefined
   ExamList: undefined
 }
 
