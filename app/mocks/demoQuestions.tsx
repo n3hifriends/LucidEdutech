@@ -11,11 +11,14 @@ export type Question = {
   isCorrect: boolean
   maxScore: number
 }
-
+export const QuestionObject = {
+  totalTime: 2, // min
+  isSurpriseTest: false,
+}
 export var mockQuestions: Question[] = [
   {
     index: 0,
-    countdown: 3,
+    countdown: 10,
     title:
       "Who is the first programmer of the World? If the question contains image then question text size will be reduced to this level. Also the image being displayed to right side is coming from Nitin's Google Drive.",
     referenceUrl: undefined,
@@ -30,7 +33,7 @@ export var mockQuestions: Question[] = [
   },
   {
     index: 1,
-    countdown: 3,
+    countdown: 10,
     title:
       " 1 Who is the first programmer of the World? If the question contains image then question text size will be reduced to this level. Also the image being displayed to right side is coming from Nitin's Google Drive.",
     referenceUrl: undefined,
@@ -45,7 +48,7 @@ export var mockQuestions: Question[] = [
   },
   {
     index: 2,
-    countdown: 5,
+    countdown: 10,
     title:
       " 2 Who is the first programmer of the World? If the question contains image then question text size will be reduced to this level. Also the image being displayed to right side is coming from Nitin's Google Drive.",
     referenceUrl: undefined,
@@ -56,6 +59,6 @@ export var mockQuestions: Question[] = [
     attemptTimestamp: undefined,
     attempted: false,
     isCorrect: false,
-    maxScore: 40,
+    maxScore: 30,
   },
 ]

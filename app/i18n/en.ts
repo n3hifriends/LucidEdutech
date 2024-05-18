@@ -160,7 +160,7 @@ const en = {
   testOverview: {
     testName: "Test Name",
     question: "Question(s)",
-    duration: "Hours",
+    duration: "Minutes",
     marks: "Marks",
     section: "Sections",
     attempt: "Attempt Test",

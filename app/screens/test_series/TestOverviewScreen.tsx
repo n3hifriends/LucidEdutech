@@ -5,6 +5,8 @@ import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../ap
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
+import { Question, mockQuestions } from "app/mocks/demoQuestions"
+import { QuestionObject } from "app/mocks/demoQuestions"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 
@@ -35,6 +37,17 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
       question: string
       marks: string
     }
+
+    const calculateResult = () => {
+      let totalScore: number = 0
+
+      mockQuestions.forEach((answer) => {
+        totalScore += answer?.maxScore
+      })
+      return { totalScore }
+    }
+
+    const result = calculateResult()
 
     function SectionItem(obj: SectionType) {
       return (
@@ -74,13 +87,13 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
         <View style={$line} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="180" />
+          <Text style={$vals} preset="formLabel" text={`${mockQuestions.length}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.question" />
           <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="1" />
+          <Text style={$vals} preset="formLabel" text={`${QuestionObject["totalTime"]}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.duration" />
           <Icon size={20} style={$icon} icon={"settings"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="60" />
+          <Text style={$vals} preset="formLabel" text={`${result?.totalScore}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.marks" />
         </View>
         <Text style={$section} preset="subheading" tx="testOverview.section" />

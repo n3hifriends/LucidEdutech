@@ -161,7 +161,7 @@ const mr = {
   testOverview: {
     testName: "चाचणी नाव",
     question: "प्रश्न",
-    duration: "तास",
+    duration: "मिनिटे",
     marks: "मार्क्स",
     section: "विभाग",
     attempt: "चाचणी सुरू करा",

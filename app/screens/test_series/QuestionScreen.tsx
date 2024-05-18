@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useReducer } from "react"
+import React, { FC, useEffect, useState, useReducer, useRef } from "react"
 import * as Application from "expo-application"
 import {
   Linking,
@@ -29,6 +29,7 @@ import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, mockQuestions } from "./../../mocks/demoQuestions"
 import CircularProgressBar from "app/components/CircularProgressBase"
 import { useNavigation } from "@react-navigation/core"
+import { QuestionObject } from "./../../mocks/demoQuestions"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
@@ -76,14 +77,14 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const [state, dispatch] = useReducer(reducer, initialState)
   const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
-
+  const clearIntervalRef = useRef<any>(null)
   const correctAnswer = state?.correctAns
 
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
   const [timeLeft, setTimeLeft] = useState(0)
   const currentQuestion: number = state?.index
-  const handleNextQuestion = () => {
+  function handleNextQuestion() {
     if (state?.index == mockQuestions?.length - 1) {
       // dispatch({ type: "reset" })
       clearInterval(myInterval)
@@ -96,7 +97,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     dispatch({ type: "next" })
   }
 
-  const resetTimer = () => {
+  function resetTimer() {
     setTimeLeft(0) // Set time to 0 to stop the interval
   }
 
@@ -121,6 +122,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const isLastQuestion = currentQuestion === mockQuestions.length - 1
 
   function showResult(confirmTest: boolean) {
+    clearIntervalRef?.current() // to clear interval from CircularProgressBase
     if (confirmTest) {
       Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
         {
@@ -194,14 +196,9 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     [],
   )
 
-  //progress bar
-  const calculateProgress = () => {
-    return 1 - timeLeft / state?.countdown
-  }
-
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-      <View style={{ flex: 0.1 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {/* <Text
           style={$reportBugsLink}
           tx="demoDebugScreen.reportBugs"
@@ -210,7 +207,18 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           }}
         /> */}
         <Text tx="questionScreen.testSeries" style={$title} preset="heading" />
+        <CircularProgressBar
+          initialProgress={QuestionObject["totalTime"]}
+          maxProgess={QuestionObject["totalTime"]}
+          callback={() => {
+            if (myInterval) {
+              showResult(false)
+            }
+          }}
+          clearIntervalRef={clearIntervalRef}
+        />
       </View>
+
       <View style={$allQuestionView}>
         <ScrollView
           contentContainerStyle={{ alignSelf: "center" }}
@@ -252,7 +260,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           <View style={$currentQuestionView}>
             <Text preset="bold" tx="questionScreen.countDown" />
             <Text preset="bold" text={` ${timeLeft}`} />
-            <CircularProgressBar initialProgress={5} maxProgess={10} />
+            {/* <CircularProgressBar initialProgress={5} maxProgess={10} /> */}
           </View>
         </View>
         <View style={{ flex: 0.7 }}>
@@ -331,7 +339,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           />
 
           {isLastQuestion ? (
-            <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
+            <Button style={$button} tx="questionScreen.submit" onPress={() => showResult} />
           ) : (
             <Button style={$button} tx="questionScreen.next" onPress={handleNextQuestion} />
           )}
