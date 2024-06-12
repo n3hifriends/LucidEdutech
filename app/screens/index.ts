@@ -12,3 +12,4 @@ export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here
 export * from "./test_series/ScoreScreen"
 export * from "./ExamListScreen"
+export * from "./FollowUsScreen"

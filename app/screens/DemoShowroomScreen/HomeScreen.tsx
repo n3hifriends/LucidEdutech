@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   ImageStyle,
+  Linking,
   Platform,
   SectionList,
   TextStyle,
@@ -22,6 +23,7 @@ import { DrawerIconButton } from "./DrawerIconButton"
 import { ProfileSnapshotIn, useStores } from "./../../../app/models"
 import { GeneralApiProblem } from "app/services/api/apiProblem"
 import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe"
+import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 
 const logo = require("../../../assets/images/logo.png")
 
@@ -235,7 +237,21 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
           videoId={"2ouN6xeF6Hk"}
           onChangeState={onStateChange}
         />
-
+        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <Button
+            text="Follow Us"
+            onPress={() => navigate({ name: "FollowUsScreen" })}
+            style={$follow}
+          />
+          <Button
+            text="YouTube"
+            onPress={() =>
+              Linking.openURL("https://www.youtube.com/channel/UClxduICYrEk23b45F79PDZA")
+            } // Replace with your YouTube channel URL
+            style={$youtube}
+            // icon={() => <FontAwesomeIcon icon={faYoutube} />} // YouTube icon
+          />
+        </View>
         <SectionList
           ref={listRef}
           contentContainerStyle={$sectionListContentContainer}
@@ -328,4 +344,12 @@ const $title: TextStyle = {
   textAlign: "center",
   color: colors.palette.red60,
   padding: spacing.md,
+}
+
+const $youtube: TextStyle = {
+  color: colors.palette.red60,
+  padding: spacing.xxl,
+}
+const $follow: TextStyle = {
+  color: colors.palette.blue,
 }

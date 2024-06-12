@@ -14,8 +14,34 @@ interface ScoreScreenProps extends AppStackScreenProps<"Score"> {}
 export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen() {
   const navigation = useNavigation()
 
+  // const sendResultToBackend = async (result: any) => {
+  //   const url = "" // Replace with your backend URL
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(result),
+  //     })
+
+  //     if (!response.ok) {
+  //       throw new Error(`Error sending result: ${response.statusText}`)
+  //     }
+
+  //     const data = await response.json()
+  //     console.log("Result submitted successfully:", data) // Handle success response (optional)
+  //   } catch (error) {
+  //     console.error("Error sending result:", error)
+  //     // Handle errors appropriately (e.g., display error message to user)
+  //   }
+  // }
+
   // Handle back button
   useEffect(() => {
+    // sendResultToBackend(result)
+
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
       // Check if back button was pressed
       if (e.data.action.type === "GO_BACK") {
@@ -70,6 +96,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
   }
 
   const result = calculateResult()
+  // sendResultToBackend(result)
   const sectionList = [
     {
       title: "एकूण प्रश्न",
