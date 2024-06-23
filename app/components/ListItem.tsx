@@ -12,6 +12,7 @@ import { Icon, IconTypes } from "./Icon"
 import { Text, TextProps } from "./Text"
 
 export interface ListItemProps extends TouchableOpacityProps {
+  myKey: any
   /**
    * How tall the list item should be.
    * Default: 56
@@ -104,6 +105,7 @@ interface ListItemActionProps {
  */
 export function ListItem(props: ListItemProps) {
   const {
+    myKey,
     bottomSeparator,
     children,
     height = 56,
@@ -135,7 +137,7 @@ export function ListItem(props: ListItemProps) {
   const $touchableStyles = [$touchableStyle, { minHeight: height }, style]
 
   return (
-    <View key={text || tx} style={$containerStyles}>
+    <View key={myKey} style={$containerStyles}>
       <TouchableOpacity {...TouchableOpacityProps} style={$touchableStyles}>
         <ListItemAction
           side="left"

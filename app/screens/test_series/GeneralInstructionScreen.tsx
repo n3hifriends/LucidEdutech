@@ -87,6 +87,8 @@ export const GeneralInstructionScreen: FC<GeneralInstructionScreenProps> =
         <View style={$itemsContainer}>
           {systemInstructions.map((item, index) => (
             <ListItem
+              key={item}
+              myKey={item}
               leftIcon="menu"
               LeftComponent={
                 <View style={$item}>
