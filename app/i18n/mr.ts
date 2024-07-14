@@ -120,7 +120,7 @@ const mr = {
     tagLine:
       "अभिनंदन, आपल्याकडे एक अत्यंत उन्नत React Native अ‍ॅप टेंपलेट आहे. हे बॉइलरप्लेट वापरा!",
     reactotron: "Reactotronला पाठवा",
-    reportBugs: "बग्स रिपोर्ट करा",
+    reportBugs: "रिपोर्ट",
     demoList: "डेमो यादी",
     demoPodcastList: "डेमो पॉडकास्ट यादी",
     androidReactotronHint:

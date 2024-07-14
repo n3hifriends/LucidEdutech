@@ -123,11 +123,11 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
           setAuthPassword("password")
         }
         console.log("🚀 ~ loginServer ~ login 3:", login)
-        if (__DEV__) {
-          loginServer("ketan@gmail.com")
-        } else {
-          loginServer(email)
-        }
+        // if (__DEV__) {
+        loginServer("ketan@gmail.com")
+        // } else {
+        //   loginServer(email)
+        // }
         setSignInError(undefined)
       } else {
         setSignInError("loginScreen.noService")

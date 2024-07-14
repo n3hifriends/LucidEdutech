@@ -26,7 +26,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   function handleNextQuestion() {
     setTimeout(() => {
       callback?.()
-      // navigate({ name: "Score", params: undefined })
+      navigate({ name: "Score", params: undefined })
     }, 1000)
   }
 
@@ -50,7 +50,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
           clearInterval(myInterval)
           handleNextQuestion()
         }
-        console.log("🚀 ~ setTimeLeft ~ remTime:", remTime)
+        // console.log("🚀 ~ setTimeLeft ~ remTime:", remTime)
         return remTime
       }) // Ensure time doesn't go below 0
     }, period) // Update every second

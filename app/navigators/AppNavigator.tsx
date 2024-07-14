@@ -45,7 +45,8 @@ export type AppStackParamList = {
   Score: undefined
   ExamList: undefined
   FollowUsScreen: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Practise: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -71,26 +72,27 @@ const AppStack = observer(function AppStack() {
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
       initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
-      {/* {isAuthenticated ? ( */}
-      <>
-        <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
-        <Stack.Screen name="Demo" component={DemoNavigator} />
-        <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
+          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
 
-        <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
-        <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
-        <Stack.Screen name="Score" component={Screens.ScoreScreen} />
-        <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
-        <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
-      </>
-      {/* ) : (
+          <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
+          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
+          <Stack.Screen name="Score" component={Screens.ScoreScreen} />
+          <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+          <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
+        </>
+      ) : (
         <>
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
         </>
-      )} */}
+      )}
       {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="Practise" component={Screens.PractiseScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })

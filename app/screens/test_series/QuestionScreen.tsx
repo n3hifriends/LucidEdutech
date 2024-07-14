@@ -7,7 +7,7 @@ import {
   View,
   ViewStyle,
   ScrollView,
-  TouchableOpacity,
+  AppState,
   Alert,
 } from "react-native"
 import {
@@ -50,6 +50,9 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     authenticationStore: { logout },
   } = useStores()
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
+  const [appState, setAppState] = useState(AppState.currentState)
+  const [backgroundCount, setBackgroundCount] = useState(0)
+  const [timerRunning, setTimerRunning] = useState(false)
 
   const initialState = mockQuestions[0]
 
@@ -79,7 +82,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
   const clearIntervalRef = useRef<any>(null)
   const correctAnswer = state?.correctAns
-
+  var stateChangeUnsubscribe: any = undefined
+  var myBackgroundCount: number = 0
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
   const [timeLeft, setTimeLeft] = useState(0)
@@ -100,6 +104,71 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   function resetTimer() {
     setTimeLeft(0) // Set time to 0 to stop the interval
   }
+
+  function submitTest() {
+    if (stateChangeUnsubscribe) {
+      stateChangeUnsubscribe.remove()
+    }
+    navigate({ name: "Score", params: undefined })
+  }
+
+  function handleAppStateChange(nextAppState: any) {
+    if (appState === "active" && nextAppState === "background") {
+      setBackgroundCount((prevCount) => prevCount + 1)
+      setTimerRunning(true)
+      const timeoutId = setTimeout(() => {
+        setTimerRunning(false)
+        if (backgroundCount === 3) {
+          showTestSubmissionPrompt()
+        }
+      }, 3000) // Adjust timeout as needed
+      return () => clearTimeout(timeoutId)
+    }
+    setAppState(nextAppState)
+
+    // if (appState === "active" && nextAppState === "background") {
+    //   // myBackgroundCount += 1
+    //   setBackgroundCount((prevCount) => prevCount + 1)
+    //   setTimerRunning(true)
+    //   const timeoutId = setTimeout(() => setTimerRunning(false)
+
+    //   , 5000) // Adjust timeout as needed
+    //   return () => clearTimeout(timeoutId)
+    // }
+    // setAppState(nextAppState);
+    // // if (timerRunning && backgroundCount > 2) {
+    // if (myBackgroundCount > 2) {
+    // Alert.alert(
+    //   "Test Submission",
+    //   "The app has been in the background " + backgroundCount + " times.",
+    //   [
+    //     { text: "Ok", onPress: () => submitTest() }, // Replace with your submit function
+    //   ],
+    // )
+    // }
+  }
+  const showTestSubmissionPrompt = () => {
+    Alert.alert(
+      "Test Submission",
+      "The app has been in the background " + backgroundCount + " times.",
+      [
+        { text: "Submit", onPress: () => submittingTest() }, // Replace with your submit function
+        // { text: "Cancel", onPress: () => console.log("Test submission cancelled") },
+      ],
+    )
+  }
+
+  const submittingTest = () => {
+    console.log("Submitting test...")
+  }
+  useEffect(() => {
+    stateChangeUnsubscribe = AppState.addEventListener("change", handleAppStateChange)
+    return () => {
+      if (stateChangeUnsubscribe) {
+        stateChangeUnsubscribe.remove()
+      }
+    }
+  }, [])
 
   useEffect(() => {
     setTimeLeft(state?.countdown)

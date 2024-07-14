@@ -131,7 +131,15 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
     const myRes: string = profileRes?.kind || "" // Provide a default value for undefined case
     if (myRes === "unauthorized") {
       Alert.alert(translate("common.loginAgain"), translate("common.tokenNotFound"), [
-        { text: translate("common.ok"), onPress: () => logout() },
+        {
+          text: translate("common.ok"),
+          onPress: () => {
+            if (__DEV__) {
+            } else {
+              // logout()
+            }
+          },
+        },
       ])
     }
   }

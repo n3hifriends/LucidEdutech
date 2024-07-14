@@ -44,6 +44,17 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     },
     [],
   )
+  const handleBugpress = () => {
+    const recipientEmail = "shivanjalikalokhe10@gmail.com" // Replace with the desired recipient email
+    const subject = "Subject of the email" // Optional subject line (can be left blank)
+    const body = "Body of the email" // Optional email body (can be left blank)
+
+    const url = `mailto:${recipientEmail}${subject ? `?subject=${subject}` : ""}${
+      body ? `&body=${body}` : ""
+    }`
+
+    Linking.openURL(url).catch((err) => console.error("Error opening email:", err))
+  }
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
@@ -52,6 +63,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
         tx="demoDebugScreen.reportBugs"
         onPress={() => {
           // openLinkInBrowser("https://github.com/infinitered/ignite/issues")
+          handleBugpress()
         }}
       />
       <Text style={$title} preset="heading" tx="demoDebugScreen.title" />
