@@ -7,8 +7,9 @@ import {
   View,
   ViewStyle,
   ScrollView,
-  AppState,
+  TouchableOpacity,
   Alert,
+  AppState,
 } from "react-native"
 import {
   Button,
@@ -26,10 +27,9 @@ import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
 import { useStores } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-import { Question, mockQuestions } from "./../../mocks/demoQuestions"
+import { Question, QuestionObject, mockQuestions } from "./../../mocks/demoQuestions"
 import CircularProgressBar from "app/components/CircularProgressBase"
 import { useNavigation } from "@react-navigation/core"
-import { QuestionObject } from "./../../mocks/demoQuestions"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
@@ -50,9 +50,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     authenticationStore: { logout },
   } = useStores()
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
-  const [appState, setAppState] = useState(AppState.currentState)
-  const [backgroundCount, setBackgroundCount] = useState(0)
-  const [timerRunning, setTimerRunning] = useState(false)
 
   const initialState = mockQuestions[0]
 
@@ -81,14 +78,18 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
   const clearIntervalRef = useRef<any>(null)
+  const [appState, setAppState] = useState(AppState.currentState)
+  const [backgroundCount, setBackgroundCount] = useState(0)
+  const [timerRunning, setTimerRunning] = useState(false)
+
   const correctAnswer = state?.correctAns
   var stateChangeUnsubscribe: any = undefined
-  var myBackgroundCount: number = 0
+
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
   const [timeLeft, setTimeLeft] = useState(0)
   const currentQuestion: number = state?.index
-  function handleNextQuestion() {
+  const handleNextQuestion = () => {
     if (state?.index == mockQuestions?.length - 1) {
       // dispatch({ type: "reset" })
       clearInterval(myInterval)
@@ -105,15 +106,14 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     setTimeLeft(0) // Set time to 0 to stop the interval
   }
 
-  function submitTest() {
-    if (stateChangeUnsubscribe) {
-      stateChangeUnsubscribe.remove()
-    }
-    navigate({ name: "Score", params: undefined })
-  }
-
-  function handleAppStateChange(nextAppState: any) {
-    if (appState === "active" && nextAppState === "background") {
+  // function submitTest() {
+  //   if (stateChangeUnsubscribe) {
+  //     stateChangeUnsubscribe.remove()
+  //   }
+  //   navigate({ name: "Score", params: undefined })
+  // }
+  const handleAppStateChange = (nextAppState: any) => {
+    if (appState === "active" && nextAppState === "inactive") {
       setBackgroundCount((prevCount) => prevCount + 1)
       setTimerRunning(true)
       const timeoutId = setTimeout(() => {
@@ -121,53 +121,32 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         if (backgroundCount === 3) {
           showTestSubmissionPrompt()
         }
-      }, 3000) // Adjust timeout as needed
+      }, 5000) // Adjust timeout as needed
       return () => clearTimeout(timeoutId)
     }
     setAppState(nextAppState)
-
-    // if (appState === "active" && nextAppState === "background") {
-    //   // myBackgroundCount += 1
-    //   setBackgroundCount((prevCount) => prevCount + 1)
-    //   setTimerRunning(true)
-    //   const timeoutId = setTimeout(() => setTimerRunning(false)
-
-    //   , 5000) // Adjust timeout as needed
-    //   return () => clearTimeout(timeoutId)
-    // }
-    // setAppState(nextAppState);
-    // // if (timerRunning && backgroundCount > 2) {
-    // if (myBackgroundCount > 2) {
-    // Alert.alert(
-    //   "Test Submission",
-    //   "The app has been in the background " + backgroundCount + " times.",
-    //   [
-    //     { text: "Ok", onPress: () => submitTest() }, // Replace with your submit function
-    //   ],
-    // )
-    // }
   }
+
   const showTestSubmissionPrompt = () => {
     Alert.alert(
       "Test Submission",
-      "The app has been in the background " + backgroundCount + " times.",
+      "The app has been in the background 3 times. Are you sure you want to submit the test?",
       [
-        { text: "Submit", onPress: () => submittingTest() }, // Replace with your submit function
-        // { text: "Cancel", onPress: () => console.log("Test submission cancelled") },
+        { text: "Submit", onPress: () => submitTest() }, // Replace with your submit function
+        { text: "Cancel", onPress: () => console.log("Test submission cancelled") },
       ],
     )
   }
 
-  const submittingTest = () => {
+  // Replace with your actual test submission logic
+  const submitTest = () => {
+    showResult(true)
     console.log("Submitting test...")
   }
+
   useEffect(() => {
-    stateChangeUnsubscribe = AppState.addEventListener("change", handleAppStateChange)
-    return () => {
-      if (stateChangeUnsubscribe) {
-        stateChangeUnsubscribe.remove()
-      }
-    }
+    const unsubscribe = AppState.addEventListener("change", handleAppStateChange)
+    return () => unsubscribe.remove()
   }, [])
 
   useEffect(() => {
@@ -191,7 +170,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const isLastQuestion = currentQuestion === mockQuestions.length - 1
 
   function showResult(confirmTest: boolean) {
-    clearIntervalRef?.current() // to clear interval from CircularProgressBase
     if (confirmTest) {
       Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
         {
@@ -265,6 +243,11 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     [],
   )
 
+  //progress bar
+  const calculateProgress = () => {
+    return 1 - timeLeft / state?.countdown
+  }
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -279,12 +262,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         <CircularProgressBar
           initialProgress={QuestionObject["totalTime"]}
           maxProgess={QuestionObject["totalTime"]}
-          callback={() => {
-            if (myInterval) {
-              showResult(false)
-            }
-          }}
-          clearIntervalRef={clearIntervalRef}
         />
       </View>
 
@@ -316,6 +293,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           })}
         </ScrollView>
       </View>
+
       <View style={$currentQuestion}>
         <View style={$currentQuestionRoundView}>
           <View style={$currentQuestionView}>
@@ -352,6 +330,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           </View>
         </View>
       </View>
+
       <View style={{ flex: 0.35 }}>
         {state?.ansArr?.map((item: string, index: number) => (
           <AnswerItem
@@ -395,6 +374,27 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           </ScrollView>
         </View>
       )}
+
+      {/* <View style={{ flex: 0.15, justifyContent: "flex-start", paddingTop: spacing.xxxs }}>
+        <View style={$buttonContainer}>
+           <Button style={$button} tx="demoDebugScreen.reactotron" onPress={demoReactotron} />
+           <Text style={$hint} tx={`demoDebugScreen.${Platform.OS}ReactotronHint` as const} />
+        </View>
+        <View style={$buttonContainer}>
+          <Button
+            style={$button}
+            tx="questionScreen.previous"
+            onPress={() => dispatch({ type: "previous" })}
+          />
+
+          {isLastQuestion ? (
+            <Button style={$button} tx="questionScreen.submit" onPress={() => showResult} />
+          ) : (
+            <Button style={$button} tx="questionScreen.next" onPress={handleNextQuestion} />
+          )}
+        </View>
+      </View> */}
+
       <View style={{ flex: 0.15, justifyContent: "flex-start", paddingTop: spacing.xxxs }}>
         {/* <View style={$buttonContainer}>
            <Button style={$button} tx="demoDebugScreen.reactotron" onPress={demoReactotron} /> 
@@ -408,7 +408,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           />
 
           {isLastQuestion ? (
-            <Button style={$button} tx="questionScreen.submit" onPress={() => showResult} />
+            <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
           ) : (
             <Button style={$button} tx="questionScreen.next" onPress={handleNextQuestion} />
           )}
