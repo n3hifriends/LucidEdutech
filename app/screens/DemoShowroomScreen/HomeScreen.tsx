@@ -1,5 +1,5 @@
 import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import React, { FC, ReactElement, useCallback, useEffect, useRef, useState } from "react"
+import React, { Component, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
   Image,
@@ -23,7 +23,7 @@ import { DrawerIconButton } from "./DrawerIconButton"
 import { ProfileSnapshotIn, useStores } from "./../../../app/models"
 import { GeneralApiProblem } from "app/services/api/apiProblem"
 import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe"
-import { AppStackScreenProps, navigate } from "./../../../app/navigators"
+import { AppStackScreenProps, goBack, navigate } from "./../../../app/navigators"
 
 const logo = require("../../../assets/images/logo.png")
 
@@ -212,7 +212,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <Image source={logo} style={$logoImage} />
           </View>
 
-          <ListView<DemoListItem["item"]>
+          {/* <ListView<DemoListItem["item"]>
             ref={menuRef}
             contentContainerStyle={$listContentContainer}
             estimatedItemSize={250}
@@ -224,15 +224,68 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             renderItem={({ item, index: sectionIndex }) => (
               <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
             )}
-          />
-          <View style={[$titleWrapperCenter]}>
-            <Text
-              weight="medium"
-              onPress={logoutApp}
-              size="md"
-              tx="common.logOut"
-              style={[$title]}
-            />
+          /> */}
+          <View style={{ flex: 0.9 }}>
+            <View style={$listContentContainer}>
+              <Text
+                weight="medium"
+                onPress={() => navigate({ name: "Home" })}
+                size="md"
+                tx="demoNavigator.componentsTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => navigate({ name: "DemoDebug" })}
+                size="md"
+                tx="demoNavigator.debugTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => navigate({ name: "ExamList" })}
+                size="md"
+                tx="demoNavigator.educationTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() =>
+                  Linking.openURL("https://www.youtube.com/channel/UClxduICYrEk23b45F79PDZA")
+                }
+                size="md"
+                style={[$title]}
+              >
+                YouTube
+              </Text>
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => navigate({ name: "FollowUsScreen" })}
+                size="md"
+                style={[$title]}
+              >
+                FollowUs
+              </Text>
+            </View>
+          </View>
+          <View style={{ flex: 0.1 }}>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={logoutApp}
+                size="md"
+                tx="common.logOut"
+                style={[$title, { color: colors.palette.red60 }]}
+              />
+            </View>
           </View>
         </View>
       )}
@@ -245,7 +298,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
           videoId={"2ouN6xeF6Hk"}
           onChangeState={onStateChange}
         />
-        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
           <Button
             text="Follow Us"
             onPress={() => navigate({ name: "FollowUsScreen" })}
@@ -259,7 +312,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             style={$youtube}
             // icon={() => <FontAwesomeIcon icon={faYoutube} />} // YouTube icon
           />
-        </View>
+        </View> */}
         <SectionList
           ref={listRef}
           contentContainerStyle={$sectionListContentContainer}
@@ -349,14 +402,16 @@ const $titleWrapperCenter: ViewStyle = {
 }
 
 const $title: TextStyle = {
-  textAlign: "center",
-  color: colors.palette.red60,
   padding: spacing.md,
 }
 
 const $youtube: TextStyle = {
+  textAlign: "center",
   color: colors.palette.red60,
-  padding: spacing.xxl,
+  padding: spacing.md,
+  borderBlockColor: colors.transparent,
+  borderWidth: 0,
+  backgroundColor: colors.transparent,
 }
 const $follow: TextStyle = {
   color: colors.palette.blue,
