@@ -6,6 +6,8 @@ const en = {
     logOut: "Log Out", // @demo remove-current-line
     tokenNotFound: "We are experiencing some technical issues. Please try again later",
     loginAgain: "Relogin requierd",
+    youtbe:"YouTube",
+    followus:"Follow Us"
   },
   welcomeScreen: {
     letsGo: "Let's go!", // @demo remove-current-line

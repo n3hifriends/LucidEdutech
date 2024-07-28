@@ -100,6 +100,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
   } = useStores()
 
   function logoutApp() {
+    toggleDrawer()
     logout()
   }
 
@@ -229,7 +230,10 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <View style={$listContentContainer}>
               <Text
                 weight="medium"
-                onPress={() => navigate({ name: "Home" })}
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "Home" })
+                }}
                 size="md"
                 tx="demoNavigator.componentsTab"
                 style={[$title]}
@@ -238,7 +242,10 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
-                onPress={() => navigate({ name: "DemoDebug" })}
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
                 size="md"
                 tx="demoNavigator.debugTab"
                 style={[$title]}
@@ -247,7 +254,10 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
-                onPress={() => navigate({ name: "ExamList" })}
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "ExamList" })
+                }}
                 size="md"
                 tx="demoNavigator.educationTab"
                 style={[$title]}
@@ -256,24 +266,26 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
-                onPress={() =>
+                onPress={() => {
+                  toggleDrawer()
                   Linking.openURL("https://www.youtube.com/channel/UClxduICYrEk23b45F79PDZA")
-                }
+                }}
                 size="md"
                 style={[$title]}
-              >
-                YouTube
-              </Text>
+                tx="common.youtbe"
+              />
             </View>
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
-                onPress={() => navigate({ name: "FollowUsScreen" })}
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "FollowUsScreen" })
+                }}
                 size="md"
                 style={[$title]}
-              >
-                FollowUs
-              </Text>
+                tx="common.followus"
+              />
             </View>
           </View>
           <View style={{ flex: 0.1 }}>

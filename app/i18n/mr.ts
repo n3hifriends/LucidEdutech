@@ -8,6 +8,8 @@ const mr = {
     logOut: "बाहेर पडा", // @demo remove-current-line
     tokenNotFound: "आम्हाला काही तांत्रिक अडचणी येत आहेत. कृपया पुन्हा प्रयत्न करा.",
     loginAgain: "पुन्हा लॉगिन करा.",
+    youtbe:"यूट्यूब",
+    followus:"फॉलो करा"
   },
   welcomeScreen: {
     postscript:
