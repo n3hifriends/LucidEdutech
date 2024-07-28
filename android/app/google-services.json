@@ -1,49 +1,45 @@
 {
   "project_info": {
-    "project_number": "1027729156446",
-    "project_id": "agasti-fe7f3",
-    "storage_bucket": "agasti-fe7f3.appspot.com"
+    "project_number": "6544635437",
+    "project_id": "edutech-8feda",
+    "storage_bucket": "edutech-8feda.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1027729156446:android:882717fd07ed4150ccc7cf",
+        "mobilesdk_app_id": "1:6544635437:android:42fee7c16cbd0533996aa4",
         "android_client_info": {
           "package_name": "com.lucideducation.conquer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1027729156446-29bu1nd2uisp2lvia1hp9sd7roa01mmq.apps.googleusercontent.com",
+          "client_id": "6544635437-7g73e41gnor8t2kr5kd0ddu2594fcr04.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.lucideducation.conquer",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "b661cdac5d26eb57d1a06af3fef2edcf21558f4b"
           }
         },
         {
-          "client_id": "1027729156446-r6om61drnrkqo75f6j9229ghfua4t198.apps.googleusercontent.com",
+          "client_id": "6544635437-tbum83h2q794b5okrlso61487vc404mk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.lucideducation.conquer",
-            "certificate_hash": "3543dcadf553ee57eb34868bf0e2515c8ae0ffc3"
+            "certificate_hash": "6e787dc969af7b57ea15582999b6e43e53603be0"
           }
-        },
-        {
-          "client_id": "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBldKqaw4Q0ly-ppPHsbCezCIcvYIUdqPE"
+          "current_key": "AIzaSyCwBgzOb0sAtsFx7koSHAoorcFiMIP6BCU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
+              "client_id": "6544635437-pge1mbvu2l2p6vtrbkcmanhvi639un6t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
