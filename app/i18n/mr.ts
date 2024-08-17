@@ -1,5 +1,3 @@
-import { QuestionScreen } from "app/screens"
-
 const mr = {
   common: {
     ok: "ठीक आहे!",

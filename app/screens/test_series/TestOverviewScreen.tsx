@@ -5,8 +5,8 @@ import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../ap
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-import { Question, mockQuestions } from "app/mocks/demoQuestions"
-import { QuestionObject } from "app/mocks/demoQuestions"
+import { Question, mockQuestions } from "../../../app/mocks/demoQuestions"
+import { QuestionObject } from "../../../app/mocks/demoQuestions"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 

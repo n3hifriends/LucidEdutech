@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { View, Animated, Text, StyleSheet } from "react-native"
 import CircularProgress from "react-native-circular-progress-indicator"
-import { Question } from "app/mocks/demoQuestions"
 import { spacing } from "app/theme/spacing"
 import { navigate } from "app/navigators/navigationUtilities"
 interface CircularProgressBarProps {

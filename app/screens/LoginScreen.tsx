@@ -59,7 +59,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   useEffect(() => {
     // This need to configure in GCP as per Debug / Release configuration
     GoogleSignin.configure({
-      webClientId: "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
+      webClientId: "6544635437-pge1mbvu2l2p6vtrbkcmanhvi639un6t.apps.googleusercontent.com",
       offlineAccess: true,
       // iosClientId: "840573394871-ejhu0tfi50jp8qj9n826oir3v6867pto.apps.googleusercontent.com",
       scopes: [
@@ -134,7 +134,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       }
     } catch (error: any) {
       setIsSigninInProgress(false)
-      console.log("🚀 ~ login ~ error:", error)
+      console.log("🚀 ~ login ~ error:", JSON.stringify(error))
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         setSignInError("loginScreen.oops")
       } else if (error.code === statusCodes.IN_PROGRESS) {
