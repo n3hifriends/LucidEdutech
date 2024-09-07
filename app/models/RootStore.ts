@@ -9,7 +9,7 @@ import { OnGoingQuizeModel } from "./OnGoingQuizeStore"
  * A RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  quizeStore: types.optional(QuizeStoreModel, {} as any),
+  quizeStore: types.optional(QuizeStoreModel, {}),
   authenticationStore: types.optional(AuthenticationStoreModel, {}),
   episodeStore: types.optional(EpisodeStoreModel, {}),
   profileStore: types.optional(ProfileStoreModel, {}),

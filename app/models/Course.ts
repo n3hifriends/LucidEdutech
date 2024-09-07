@@ -1,27 +1,13 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { CourseSubjectMediaModel } from "./CourseSubjectMedia"
+import { CourseSubjectsModel } from "./CourseSubjects"
 
 /**
  * Model description here for TypeScript hints.
  */
 export const CourseModelProps = {
   courseId: types.maybeNull(types.number),
-  courseSubjects: types.array(
-    types.model({
-      courseSubjectId: types.number,
-      courseSubjectMedia: types.array(CourseSubjectMediaModel),
-      courseSubjectQuize: types.array(types.frozen()),
-      courseId: types.number,
-      subjectName: types.string,
-      subjectDescription: types.string,
-      subjectHeader: types.string,
-      created_by: types.maybeNull(types.string),
-      created_date: types.maybeNull(types.string),
-      updated_by: types.maybeNull(types.string),
-      updatedDate: types.maybeNull(types.string),
-    }),
-  ),
+  courseSubjects: types.array(CourseSubjectsModel),
   courseName: types.maybeNull(types.string),
   courseDescription: types.maybeNull(types.string),
   start_date: types.maybeNull(types.string),
