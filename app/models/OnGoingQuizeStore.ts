@@ -1,13 +1,13 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { QuizeModelProps } from "./Quize"
+import { CourseModelProps } from "./Course"
 
 /**
  * Model description here for TypeScript hints.
  */
 export const OnGoingQuizeModel = types
   .model("OnGoingQuizeStore")
-  .props(QuizeModelProps) // fix: use types.model instead of types.array
+  .props(CourseModelProps) // fix: use types.model instead of types.array
   .actions(withSetPropAction)
   .views((currentQuize) => ({
     get getCurrentQuize() {

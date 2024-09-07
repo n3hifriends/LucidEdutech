@@ -1,4 +1,4 @@
-import { QuizeModel } from "./Quize"
+import { QuizeModel } from "./Course"
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { api } from "../services/api"
