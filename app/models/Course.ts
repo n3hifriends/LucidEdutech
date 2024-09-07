@@ -1,5 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { CourseSubjectMediaModel } from "./CourseSubjectMedia"
 
 /**
  * Model description here for TypeScript hints.
@@ -9,7 +10,7 @@ export const CourseModelProps = {
   courseSubjects: types.array(
     types.model({
       courseSubjectId: types.number,
-      courseSubjectMedia: types.array(types.frozen()),
+      courseSubjectMedia: types.array(CourseSubjectMediaModel),
       courseSubjectQuize: types.array(types.frozen()),
       courseId: types.number,
       subjectName: types.string,
