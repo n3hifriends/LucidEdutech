@@ -4,8 +4,8 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 /**
  * Model description here for TypeScript hints.
  */
-const QuizeModelProps = {
-  courseId: types.number,
+export const QuizeModelProps = {
+  courseId: types.maybeNull(types.number),
   courseSubjects: types.array(
     types.model({
       courseSubjectId: types.number,
@@ -21,8 +21,8 @@ const QuizeModelProps = {
       updatedDate: types.maybeNull(types.string),
     }),
   ),
-  courseName: types.string,
-  courseDescription: types.string,
+  courseName: types.maybeNull(types.string),
+  courseDescription: types.maybeNull(types.string),
   start_date: types.maybeNull(types.string),
   end_date: types.maybeNull(types.string),
   days: types.maybeNull(types.string),
@@ -46,4 +46,3 @@ export const QuizeModel = types
 export interface Quize extends Instance<typeof QuizeModel> {}
 export interface QuizeSnapshotOut extends SnapshotOut<typeof QuizeModel> {}
 export interface QuizeSnapshotIn extends SnapshotIn<typeof QuizeModel> {}
-export const createQuizeDefaultModel = () => types.optional(QuizeModel, {})

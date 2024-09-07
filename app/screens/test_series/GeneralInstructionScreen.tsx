@@ -7,8 +7,6 @@ import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
 import { useStores } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-// q: On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace each occurrence of 0 with 01, and each occurrence of 1 with 10. Given row number A and index B, return the Bth indexed symbol in row A. (The values of B are 0-indexed.).
-// a:
 
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))

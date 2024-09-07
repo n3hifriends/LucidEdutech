@@ -10,11 +10,16 @@ import { openLinkInBrowser } from "./../../app/utils/openLinkInBrowser"
 const mpsc = require("../../assets/images/mpsc.png")
 const mpsc_police = require("../../assets/images/mpsc_police.png")
 // import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "app/models"
+import { useStores } from "app/models"
+import { Quize } from "app/models/Quize"
 
 interface ExamListScreenProps extends AppStackScreenProps<"ExamList"> {}
 
 export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamListScreen() {
+  const {
+    ongoingQuizeStore: { setCurrentQuize },
+  } = useStores()
+
   const systemInstructionsEng = [
     "Maharashtra Gazetted Civil Services Examination - Scheme (December-2023)",
     "Maharashtra Gazetted Civil Services Examination - Scheme (Feb-2023)",
@@ -89,6 +94,42 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
   )
 
   const startTestSeries = () => {
+    const quizeModelProps: any = {
+      courseId: 123, // Replace with an actual course ID
+      courseSubjects: [
+        {
+          courseSubjectId: 456,
+          courseSubjectMedia: [
+            "https://example.com/image1.jpg",
+            "https://example.com/video2.mp4",
+          ] as any,
+          courseSubjectQuize: [
+            { question: "What is the capital of France?", answer: "Paris" },
+            { question: "Who painted the Mona Lisa?", answer: "Leonardo da Vinci" },
+          ] as any,
+          courseId: 123,
+          subjectName: "Introduction to Programming",
+          subjectDescription: "A beginner's guide to programming concepts",
+          subjectHeader: "Programming 101",
+          created_by: "John Doe",
+          created_date: "2023-12-31",
+          updated_by: "Jane Smith",
+          updatedDate: "2024-01-15",
+        },
+        // Add more course subjects as needed
+      ] as any,
+      courseName: "Web Development Fundamentals",
+      courseDescription: "Learn the basics of HTML, CSS, and JavaScript",
+      start_date: "2024-02-01",
+      end_date: "2024-03-31",
+      days: "7",
+      hours: "10",
+      created_by: "John Doe",
+      created_date: "2023-12-31",
+      updated_by: "Jane Smith",
+      updatedDate: "2024-01-15",
+    }
+    // setCurrentQuize(quizeModelProps)
     navigate({ name: "GeneralInstruction", params: undefined })
   }
 

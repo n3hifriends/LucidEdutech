@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, mockQuestions } from "../../../app/mocks/demoQuestions"
 import { QuestionObject } from "../../../app/mocks/demoQuestions"
+import { useStores } from "app/models"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 
@@ -14,7 +15,10 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
   function TestOverviewScreen() {
     const [checked, setChecked] = useState(false)
     // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
+    const {
+      ongoingQuizeStore: { getCurrentQuize },
+    } = useStores()
+
     // Pull in navigation via hook
     // const navigation = useNavigation()
     const startTestSeries = () => {
