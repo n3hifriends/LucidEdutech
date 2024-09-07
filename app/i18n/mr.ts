@@ -6,8 +6,8 @@ const mr = {
     logOut: "बाहेर पडा", // @demo remove-current-line
     tokenNotFound: "आम्हाला काही तांत्रिक अडचणी येत आहेत. कृपया पुन्हा प्रयत्न करा.",
     loginAgain: "पुन्हा लॉगिन करा.",
-    youtbe:"यूट्यूब",
-    followus:"फॉलो करा"
+    youtbe: "यूट्यूब",
+    followus: "फॉलो करा",
   },
   welcomeScreen: {
     postscript:
@@ -31,14 +31,14 @@ const mr = {
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
   },
-  questionScreen:{
-    testSeries:"टेस्ट सीरीज",
-    countDown:"काउंटडाउन",
-    previous:"मागील",
-    next:"पुढे जा",
-    submit:"सबमिट",
-    yes:"होय",
-    no:"नाही"
+  questionScreen: {
+    testSeries: "टेस्ट सीरीज",
+    countDown: "काउंटडाउन",
+    previous: "मागील",
+    next: "पुढे जा",
+    submit: "सबमिट",
+    yes: "होय",
+    no: "नाही",
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",

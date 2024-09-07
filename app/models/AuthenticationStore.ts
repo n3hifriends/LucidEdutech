@@ -28,20 +28,20 @@ export const AuthenticationStoreModel = types
   .actions(withSetPropAction)
   .actions((store) => ({
     async login(username: string, password: string) {
-      if(__DEV__){
+      if (__DEV__) {
         store.setProp("jwtToken", "response.auth.jwtToken")
         store.setProp("username", "response.auth.username")
-      }else{
+      } else {
         const response = await api.login(username, password)
         console.log("🚀 ~ login ~ response:", response)
         if (response.kind === "ok") {
-        store.setProp("jwtToken", response.auth.jwtToken)
-        store.setProp("username", response.auth.username)
-        // store.authEmail = username
-      } else {
-        console.tron.error(`Error fetching authenticate: ${JSON.stringify(response)}`, [])
+          store.setProp("jwtToken", response.auth.jwtToken)
+          store.setProp("username", response.auth.username)
+          // store.authEmail = username
+        } else {
+          console.tron.error(`Error fetching authenticate: ${JSON.stringify(response)}`, [])
+        }
       }
-    }
     },
     setJwtToken(value?: string) {
       store.jwtToken = value

@@ -6,8 +6,8 @@ const en = {
     logOut: "Log Out", // @demo remove-current-line
     tokenNotFound: "We are experiencing some technical issues. Please try again later",
     loginAgain: "Relogin requierd",
-    youtbe:"YouTube",
-    followus:"Follow Us"
+    youtbe: "YouTube",
+    followus: "Follow Us",
   },
   welcomeScreen: {
     letsGo: "Let's go!", // @demo remove-current-line
@@ -32,14 +32,14 @@ const en = {
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
   },
-  questionScreen:{
-    testSeries:"Test Series",
-    countDown:"CountDown",
-    previous:"Previous",
-    next:"next",
-    submit:"Submit",
-    yes:"yes",
-    no:"no"
+  questionScreen: {
+    testSeries: "Test Series",
+    countDown: "CountDown",
+    previous: "Previous",
+    next: "next",
+    submit: "Submit",
+    yes: "yes",
+    no: "no",
   },
   errorScreen: {
     title: "Something went wrong!",
