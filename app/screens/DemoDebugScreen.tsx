@@ -71,16 +71,8 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text tx="welcomeScreen.firstName" preset="bold" />
-              <Text>{firstName}</Text>
-            </View>
-          }
-        />
-        <ListItem
-          LeftComponent={
-            <View style={$item}>
-              <Text tx="welcomeScreen.secondName" preset="bold" />
-              <Text>{lastName}</Text>
+              <Text tx="welcomeScreen.yourName" preset="bold" />
+              <Text>{firstName + " " + lastName}</Text>
             </View>
           }
         />

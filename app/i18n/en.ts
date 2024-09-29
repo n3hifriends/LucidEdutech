@@ -18,6 +18,7 @@ const en = {
     emailFieldLabel: "ईमेल",
     emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
     goNext: "पुढे जा",
+    yourName: "Name",
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
@@ -181,8 +182,12 @@ const en = {
   },
   examList: {
     testSeriesList: "Test Series List",
-    referenceMaterialTxt: "Scheme of Examination",
     continue: "सुरू ठेवा",
+  },
+  referenceMaterial: {
+    references: "References",
+    upcomingExams: "Upcoming Exams",
+    referenceMaterialTxt: "Scheme of Examination",
   },
   // @demo remove-block-end
 }

@@ -17,6 +17,7 @@ const mr = {
     emailFieldLabel: "ई-मेल",
     emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
     goNext: "पुढे जा",
+    yourName: "नाव",
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
@@ -180,8 +181,12 @@ const mr = {
   },
   examList: {
     testSeriesList: "सराव पेपर्सची यादी",
-    referenceMaterialTxt: "परीक्षेच्या योजना",
     continue: "सुरू ठेवा",
+  },
+  referenceMaterial: {
+    references: "संदर्भ",
+    upcomingExams: "आगामी परीक्षा",
+    referenceMaterialTxt: "परीक्षेच्या योजना",
   },
 }
 
