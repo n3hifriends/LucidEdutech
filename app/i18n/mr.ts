@@ -82,6 +82,7 @@ const mr = {
     communityTab: "समुदाय",
     podcastListTab: "सूचना",
     educationTab: "शिक्षण",
+    referenceMaterialTab: "संदर्भ",
   },
   demoCommunityScreen: {
     title: "येथे आपल्या बॅचमेटसाठी कनेक्ट करा",
@@ -179,6 +180,7 @@ const mr = {
   },
   examList: {
     testSeriesList: "सराव पेपर्सची यादी",
+    referenceMaterialTxt: "परीक्षेच्या योजना",
     continue: "सुरू ठेवा",
   },
 }

@@ -10,8 +10,9 @@ import { openLinkInBrowser } from "./../../app/utils/openLinkInBrowser"
 const mpsc = require("../../assets/images/mpsc.png")
 const mpsc_police = require("../../assets/images/mpsc_police.png")
 // import { useNavigation } from "@react-navigation/native"
-import { useStores } from "app/models"
+import { CourseSubjectsSnapshotIn, useStores } from "app/models"
 import { Quize } from "app/models/Quize"
+import { QuizeSnapshotOut } from "app/models/Course"
 
 interface ExamListScreenProps extends AppStackScreenProps<"ExamList"> {}
 
@@ -92,9 +93,9 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
     },
     [],
   )
-
+  // set object values for objects as mapping is done
   const startTestSeries = () => {
-    const quizeModelProps: any = {
+    const quizeModelProps: QuizeSnapshotOut = {
       courseId: 123, // Replace with an actual course ID
       courseSubjects: [
         {
@@ -129,7 +130,7 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
       updated_by: "Jane Smith",
       updatedDate: "2024-01-15",
     }
-    // setCurrentQuize(quizeModelProps)
+    setCurrentQuize(quizeModelProps)
     navigate({ name: "GeneralInstruction", params: undefined })
   }
 
@@ -139,6 +140,7 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
       <View style={$itemsContainer}>
         {systemInstructions.map((item, index) => (
           <ListItem
+            myKey={index}
             key={index}
             text={item}
             children={"children"}

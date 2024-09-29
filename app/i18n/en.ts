@@ -82,6 +82,7 @@ const en = {
     communityTab: "Discussion",
     podcastListTab: "Announcement",
     educationTab: "Education",
+    referenceMaterialTab: "Material",
   },
   demoCommunityScreen: {
     title: "Connect with your batchmates here",
@@ -180,6 +181,7 @@ const en = {
   },
   examList: {
     testSeriesList: "Test Series List",
+    referenceMaterialTxt: "Scheme of Examination",
     continue: "सुरू ठेवा",
   },
   // @demo remove-block-end
