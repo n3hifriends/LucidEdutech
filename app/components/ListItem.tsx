@@ -12,7 +12,7 @@ import { Icon, IconTypes } from "./Icon"
 import { Text, TextProps } from "./Text"
 
 export interface ListItemProps extends TouchableOpacityProps {
-  myKey: any
+  myKey?: any
   /**
    * How tall the list item should be.
    * Default: 56
