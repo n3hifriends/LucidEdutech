@@ -1,56 +1,41 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Linking, TextStyle, View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { ListItem, Screen, Text } from "app/components"
 import { spacing } from "app/theme"
 import { openLinkInBrowser } from "app/utils/openLinkInBrowser"
 // import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "app/models"
+import { GovernmentExams, useStores } from "app/models"
+import { formatDate } from "app/utils/formatDate"
 
 interface UpcomingExamsScreenProps extends AppStackScreenProps<"UpcomingExams"> {}
 
 export const UpcomingExamsScreen: FC<UpcomingExamsScreenProps> = observer(
   function UpcomingExamsScreen() {
-    // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
+    const {
+      govermentExamsStore: { upcomingExams },
+    } = useStores()
 
-    // Pull in navigation via hook
-    // const navigation = useNavigation()
-    const systemInstructionsEng = [
-      {
-        name: "NDA",
-        url: "https://upsc.gov.in/examinations/active-exams",
-        date: "01-Sep-2024",
-      },
-      {
-        name: "SBI PO",
-        url: "https://upsc.gov.in/examinations/active-exams",
-        date: "23-Nov-2024",
-      },
-      {
-        name: "IBPS SO",
-        url: "https://upsc.gov.in/examinations/active-exams",
-        date: "10-Dec-2024",
-      },
-    ]
+    const [exams, setExams] = useState<GovernmentExams[]>(upcomingExams)
     // Pull in navigation via hook
     // const navigation = useNavigation()
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="referenceMaterial.referenceMaterialTxt" />
+        <Text style={$title} preset="heading" tx="referenceMaterial.upcomingExams" />
         <View style={$itemsContainer}>
-          {systemInstructionsEng.map((item, index) => (
+          {exams?.map((item, index) => (
             <ListItem
               myKey={index}
               key={index}
-              text={item?.name}
-              children={"children"}
+              text={"" + item?.eventName}
               bottomSeparator
-              RightComponent={<Text style={$date} preset="formHelper" text={item?.date} />}
+              RightComponent={
+                <Text style={$date} preset="formHelper" text={formatDate("" + item?.startDate)} />
+              }
               rightIcon={"caretRight"}
               height={60}
-              onPress={() => openLinkInBrowser(item?.url)}
+              onPress={() => openLinkInBrowser("" + item?.eventLink)}
             />
           ))}
         </View>
@@ -70,8 +55,8 @@ const $title: TextStyle = {
 
 const $date: TextStyle = {
   fontSize: 12,
-  marginTop: spacing.xs,
-  alignSelf: "baseline",
+  // marginTop: spacing.xs,
+  // alignSelf: "baseline",
 }
 
 const $itemsContainer: ViewStyle = {

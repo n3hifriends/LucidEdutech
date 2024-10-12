@@ -1,9 +1,10 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Linking, TextStyle, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { ListItem, Screen, Text } from "app/components"
 import { spacing } from "app/theme"
+import { GovernmentExams, useStores } from "app/models"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -12,10 +13,12 @@ interface ReferencePdfScreenProps extends AppStackScreenProps<"ReferencePdf"> {}
 export const ReferencePdfScreen: FC<ReferencePdfScreenProps> = observer(
   function ReferencePdfScreen() {
     // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
-
+    const {
+      govermentExamsStore: { allExams },
+    } = useStores()
     // Pull in navigation via hook
     // const navigation = useNavigation()
+    const [exams, setExams] = useState<GovernmentExams[]>(allExams)
     const systemInstructionsEng = [
       { name: "CGL", url: "https://drive.google.com/file/d/1a_7nvBcmkET7MHKW3PkQ1bFqM8q6tic8" },
       { name: "CHSL", uri: "https://drive.google.com/file/d/11EKkz_W29ljpMBhqcdBS6M6m3OIZe0-Y" },
@@ -32,20 +35,20 @@ export const ReferencePdfScreen: FC<ReferencePdfScreenProps> = observer(
     // const navigation = useNavigation()
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="referenceMaterial.referenceMaterialTxt" />
+        <Text style={$title} preset="heading" tx="referenceMaterial.references" />
         <View style={$itemsContainer}>
-          {systemInstructionsEng.map((item, index) => (
+          {exams.map((item, index) => (
             <ListItem
               myKey={index}
               key={index}
-              text={item?.name}
+              text={"" + item?.eventName}
               children={"children"}
               bottomSeparator
               rightIcon={"caretRight"}
               height={60}
               onPress={() => {
                 try {
-                  const myUrl = "" + item?.url
+                  const myUrl = "" + item?.eventLink
                   Linking.canOpenURL(myUrl)
                     .then(() => {
                       Linking.openURL(myUrl).catch((err) => {

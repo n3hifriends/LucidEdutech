@@ -4,6 +4,7 @@ import { AuthenticationStoreModel } from "./AuthenticationStore" // @demo remove
 import { EpisodeStoreModel } from "./EpisodeStore" // @demo remove-current-line
 import { ProfileStoreModel } from "./ProfileStore"
 import { OnGoingQuizeModel } from "./OnGoingQuizeStore"
+import { AllGovermentExamsModel } from "./AllGovermentExams"
 
 /**
  * A RootStore model.
@@ -14,6 +15,7 @@ export const RootStoreModel = types.model("RootStore").props({
   episodeStore: types.optional(EpisodeStoreModel, {}),
   profileStore: types.optional(ProfileStoreModel, {}),
   ongoingQuizeStore: types.optional(OnGoingQuizeModel, {}),
+  govermentExamsStore: types.optional(AllGovermentExamsModel, {}),
 })
 
 /**

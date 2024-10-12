@@ -12,13 +12,17 @@ export const QuizeStoreModel = types
     quize: types.array(QuizeModel),
   }) // fix: use types.model instead of types.array
   .actions(withSetPropAction)
-  .views((store) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((store) => ({
+    get getAllQuizes() {
+      return store?.quize[0]
+    },
+  })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((store) => ({
     async fetchQuize() {
       const response = await api.getQuize()
       console.log("🚀 ~ fetchQuize ~ response:", response)
       if (response.kind === "ok") {
-        store.setProp("quize", response.quize.quize)
+        store.setProp("quize", response.quize)
       } else {
         console.tron.error(`Error fetching Quize: ${JSON.stringify(response)}`, [])
       }

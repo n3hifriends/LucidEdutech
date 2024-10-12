@@ -1,4 +1,4 @@
-import { QuizeStoreSnapshotIn } from "./../../../app/models"
+import { GovernmentExams, QuizeStore } from "./../../../app/models"
 /**
  * This Api class lets you define an API endpoint and methods to request
  * data and process it.
@@ -55,15 +55,18 @@ export class Api {
     this.apisauce.setHeader("Authorization", `Bearer ${jwtToken}`)
   }
 
-  async getQuize(): Promise<{ kind: "ok"; quize: QuizeStoreSnapshotIn } | GeneralApiProblem> {
-    const response = await this.apisauce.get("/quize")
+  async getQuize(): Promise<{ kind: "ok"; quize: QuizeStore[] } | GeneralApiProblem> {
+    const response = await this.apisauce.get("/course", {
+      username: "ketan@gmail.com",
+      password: "password",
+    })
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
       if (problem) return problem
     }
     try {
       const rawData = response.data
-      const quize: QuizeStoreSnapshotIn = rawData as QuizeStoreSnapshotIn
+      const quize: QuizeStore[] = rawData as QuizeStore[]
       return { kind: "ok", quize: quize }
     } catch (e) {
       if (__DEV__) {
@@ -77,7 +80,7 @@ export class Api {
   }
 
   async getProfile(): Promise<{ kind: "ok"; profile: ProfileSnapshotIn } | GeneralApiProblem> {
-    const response = await this.apisauce.get("/user")
+    const response = await this.apisauce.get("/userDetails")
     console.log("🚀 ~ Api ~ getProfile ~ response:", response)
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
@@ -158,6 +161,29 @@ export class Api {
     } catch (e) {
       if (__DEV__ && e instanceof Error) {
         console.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async fetchGovermentExamList(): Promise<
+    { kind: "ok"; exams: GovernmentExams[] } | GeneralApiProblem
+  > {
+    const response = await this.apisauce.get("/event")
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+    try {
+      const rawData = response.data
+      const govermentExams: GovernmentExams[] = rawData as GovernmentExams[]
+      return { kind: "ok", exams: govermentExams }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
       }
       return { kind: "bad-data" }
     }

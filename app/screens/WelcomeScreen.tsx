@@ -13,6 +13,7 @@ import { colors, spacing } from "../theme"
 import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { useNavigation } from "@react-navigation/native"
+import { $nonEmptyObject } from "mobx-state-tree/dist/internal"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -29,6 +30,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       setLastName,
       setMobileNumber,
     },
+    // quizeStore: { fetchQuize, getAllQuizes },
     // profileStore: { getProfile, userPassword },
   } = useStores()
   const [myFirstName, setMyFirstName] = useState(firstName)

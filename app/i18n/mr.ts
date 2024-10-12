@@ -185,7 +185,7 @@ const mr = {
   },
   referenceMaterial: {
     references: "संदर्भ",
-    upcomingExams: "आगामी परीक्षा",
+    upcomingExams: "येणाऱ्या परीक्षा",
     referenceMaterialTxt: "परीक्षेच्या योजना",
   },
 }
