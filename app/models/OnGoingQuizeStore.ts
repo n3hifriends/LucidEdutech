@@ -1,23 +1,24 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { CourseModelProps } from "./Course"
 
 /**
  * Model description here for TypeScript hints.
  */
 export const OnGoingQuizeModel = types
   .model("OnGoingQuizeStore")
-  .props(CourseModelProps) // fix: use types.model instead of types.array
+  .props({
+    courseId: types.maybeNull(types.number),
+  }) // fix: use types.model instead of types.array
   .actions(withSetPropAction)
-  .views((currentQuize) => ({
-    get getCurrentQuize() {
-      return currentQuize
+  .views((store) => ({
+    get getCurrentCourseId() {
+      return store?.courseId
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((store) => ({
-    setCurrentQuize(currentQuize: any) {
-      if (currentQuize) {
-        // store.setProp("quize", currentQuize)
+    setCurrentCouserId(currentCourseId: any) {
+      if (currentCourseId) {
+        store.setProp("courseId", currentCourseId)
       } else {
         console.tron.error(`Quize can not be empty`, [])
       }

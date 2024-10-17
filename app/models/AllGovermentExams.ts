@@ -17,9 +17,7 @@ export const AllGovermentExamsModel = types
       return store?.exams
     },
     get upcomingExams() {
-      console.log("*** exam :: ", store?.exams)
       return store?.exams?.filter((exam) => {
-        console.log("*** exam: ", exam)
         return exam?.startDate != undefined
       })
     },

@@ -23,11 +23,7 @@ export const QuizeModel = types
   .model("Course")
   .props(CourseModelProps)
   .actions(withSetPropAction)
-  .views((courseObj) => ({
-    get courseSubjects() {
-      return courseObj.courseSubjects
-    },
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((courseObj) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((courseObj) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export interface Quize extends Instance<typeof QuizeModel> {}

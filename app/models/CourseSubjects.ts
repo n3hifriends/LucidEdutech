@@ -9,7 +9,7 @@ import { CourseSubjectQuizeModel } from "./CourseSubjectQuize"
 export const CourseSubjectsProps = {
   courseSubjectId: types.number,
   courseSubjectMedia: types.array(CourseSubjectMediaModel),
-  courseSubjectQuize: types.array(CourseSubjectQuizeModel),
+  courseSubjectQuiz: types.array(CourseSubjectQuizeModel),
   courseId: types.number,
   subjectName: types.string,
   subjectDescription: types.string,

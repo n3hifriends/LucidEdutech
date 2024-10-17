@@ -1,4 +1,4 @@
-import { QuizeModel } from "./Course"
+import { Quize, QuizeModel } from "./Course"
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { api } from "../services/api"
@@ -14,7 +14,10 @@ export const QuizeStoreModel = types
   .actions(withSetPropAction)
   .views((store) => ({
     get getAllQuizes() {
-      return store?.quize[0]
+      return store?.quize
+    },
+    get getTotalNumberQuizes() {
+      return store?.quize?.length
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((store) => ({
@@ -26,6 +29,7 @@ export const QuizeStoreModel = types
       } else {
         console.tron.error(`Error fetching Quize: ${JSON.stringify(response)}`, [])
       }
+      return response
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

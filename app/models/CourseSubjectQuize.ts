@@ -15,13 +15,13 @@ export const CourseSubjectQuizeModelProps = {
   totalQuestion: types.maybeNull(types.number), // Integer
   totalMarks: types.maybeNull(types.number), // Integer
   timeInMinute: types.maybeNull(types.number), // Integer
-  startTimestamp: types.maybeNull(types.Date), // Timestamp
-  endTimestamp: types.maybeNull(types.Date), // Timestamp
+  startTimestamp: types.maybeNull(types.string), // Timestamp
+  endTimestamp: types.maybeNull(types.string), // Timestamp
   isActive: types.maybeNull(types.boolean),
   createdBy: types.maybeNull(types.string),
-  createdDate: types.maybeNull(types.Date), // Timestamp
+  createdDate: types.maybeNull(types.string), // Timestamp
   updatedBy: types.maybeNull(types.string),
-  updatedDate: types.maybeNull(types.Date), // Timestamp
+  updatedDate: types.maybeNull(types.string), // Timestamp
   // Omitted for simplicity: CourseSubjectQuizFeedback and CourseSubjectQuizResult
   courseSubjectQuizQuestions: types.array(CourseSubjectQuizQuestionModel),
 }

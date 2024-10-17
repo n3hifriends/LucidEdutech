@@ -48,6 +48,7 @@ interface QuestionScreenProps extends AppStackScreenProps<"QuestionScreen"> {}
 export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_props) {
   const {
     authenticationStore: { logout },
+    ongoingQuizeStore: { getCurrentQuize },
   } = useStores()
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 

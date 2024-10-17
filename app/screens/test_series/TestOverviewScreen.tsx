@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
@@ -8,6 +8,7 @@ import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, mockQuestions } from "../../../app/mocks/demoQuestions"
 import { QuestionObject } from "../../../app/mocks/demoQuestions"
 import { useStores } from "app/models"
+import { Quize } from "app/models/Course"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 
@@ -16,8 +17,12 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
     const [checked, setChecked] = useState(false)
     // Pull in one of our MST stores
     const {
-      ongoingQuizeStore: { getCurrentQuize },
+      ongoingQuizeStore: { getCurrentCourseId },
+      quizeStore: { getAllQuizes },
     } = useStores()
+    const [totalQuestion, setTotalQuestion] = useState(0)
+    const [timeInMinute, setTimeInMinute] = useState(0)
+    const [totalMarks, setTotalMarks] = useState(0)
 
     // Pull in navigation via hook
     // const navigation = useNavigation()
@@ -80,6 +85,22 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
       )
     }
 
+    useEffect(() => {
+      const courseSubjects: Quize[] = getAllQuizes?.filter(
+        (quize) => quize?.courseId == getCurrentCourseId,
+      )
+      const myTotalQuestion: number = courseSubjects?.[0].courseSubjects?.[0]
+        ?.courseSubjectQuiz?.[0]?.totalQuestion as number
+      const myTimeInMinute: number = courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz?.[0]
+        ?.timeInMinute as number
+      const myTotalMarks: number = courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz?.[0]
+        ?.totalMarks as number
+
+      setTotalQuestion(myTotalQuestion)
+      setTimeInMinute(myTimeInMinute)
+      setTotalMarks(myTotalMarks)
+    })
+
     return (
       <Screen preset="scroll" safeAreaEdges={["top", "bottom"]} contentContainerStyle={$container}>
         <Text
@@ -91,13 +112,13 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
         <View style={$line} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text={`${mockQuestions.length}`} />
+          <Text style={$vals} preset="formLabel" text={`${totalQuestion}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.question" />
           <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text={`${QuestionObject["totalTime"]}`} />
+          <Text style={$vals} preset="formLabel" text={`${timeInMinute}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.duration" />
           <Icon size={20} style={$icon} icon={"settings"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text={`${result?.totalScore}`} />
+          <Text style={$vals} preset="formLabel" text={`${totalMarks}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.marks" />
         </View>
         <Text style={$section} preset="subheading" tx="testOverview.section" />
