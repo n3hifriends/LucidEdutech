@@ -13,11 +13,11 @@ export const CourseSubjectQuizQuestionProps = {
   correctAnswer: types.maybeNull(types.string),
   answerExplanation: types.maybeNull(types.string),
   createdBy: types.maybeNull(types.string),
-  createdDate: types.maybeNull(types.Date), // Timestamp
+  createdDate: types.maybeNull(types.string), // Timestamp
   updatedBy: types.maybeNull(types.string),
-  updatedDate: types.maybeNull(types.Date), // Timestamp
+  updatedDate: types.maybeNull(types.string), // Timestamp
 
-  courseSubjectQuizMultiAnswers: types.array(CourseSubjectQuizMultiAnswerModel),
+  courseSubjectQuizMultiAnswer: types.array(CourseSubjectQuizMultiAnswerModel),
 }
 export const CourseSubjectQuizQuestionModel = types
   .model("CourseSubjectQuizQuestion")

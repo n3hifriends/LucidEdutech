@@ -10,7 +10,7 @@ export const CourseSubjectQuizMultiAnswerProps = {
   userId: types.maybeNull(types.number), // Integer (might need adjustment based on your user data)
   type: types.maybeNull(types.string),
   value: types.maybeNull(types.string),
-  isCorrectAnswer: types.maybeNull(types.string), // This might need conversion based on your data storage (types.maybeNull(types.boolean) or types.maybeNull(types.string))
+  isCorrectAnswer: types.maybeNull(types.boolean), // This might need conversion based on your data storage (types.maybeNull(types.boolean) or types.maybeNull(types.string))
   description: types.maybeNull(types.string),
   isActive: types.maybeNull(types.boolean),
   createdBy: types.maybeNull(types.string),

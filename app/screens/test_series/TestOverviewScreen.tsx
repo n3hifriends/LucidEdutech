@@ -91,7 +91,7 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
         (quize) => quize?.courseId == getCurrentCourseId,
       )
       const allQuizOfCourseId: CourseSubjectQuize[] =
-        courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz
+        courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz // always first index would be the currentCourseId
 
       var myTotalQuestion: number = 0
       var myTimeInMinute: number = 0

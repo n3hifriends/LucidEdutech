@@ -23,7 +23,7 @@ export const CourseSubjectQuizeModelProps = {
   updatedBy: types.maybeNull(types.string),
   updatedDate: types.maybeNull(types.string), // Timestamp
   // Omitted for simplicity: CourseSubjectQuizFeedback and CourseSubjectQuizResult
-  courseSubjectQuizQuestions: types.array(CourseSubjectQuizQuestionModel),
+  courseSubjectQuizQuestion: types.array(CourseSubjectQuizQuestionModel),
 }
 
 export const CourseSubjectQuizeModel = types

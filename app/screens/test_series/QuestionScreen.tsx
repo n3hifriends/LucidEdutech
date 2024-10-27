@@ -25,11 +25,18 @@ import {
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
 import { isRTL } from "../../i18n"
-import { useStores } from "../../models"
+import {
+  CourseSubjectQuize,
+  CourseSubjectQuizMultiAnswer,
+  CourseSubjectQuizQuestion,
+  useStores,
+} from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { Question, QuestionObject, mockQuestions } from "./../../mocks/demoQuestions"
 import CircularProgressBar from "app/components/CircularProgressBase"
 import { useNavigation } from "@react-navigation/core"
+import { Quize } from "app/models/Course"
+import { number } from "mobx-state-tree/dist/internal"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
@@ -47,29 +54,45 @@ interface QuestionScreenProps extends AppStackScreenProps<"QuestionScreen"> {}
 
 export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_props) {
   const {
-    authenticationStore: { logout },
-    ongoingQuizeStore: { getCurrentQuize },
+    ongoingQuizeStore: { getCurrentCourseId },
+    quizeStore: { getAllQuizes },
   } = useStores()
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
-  const initialState = mockQuestions[0]
+  const [allQuestions, setAllQuestions] = useState<Question[]>([])
+  const [totalTimeLimit, setTotalTimeLimit] = useState<number>(25)
+
+  let initialState: Question = {
+    index: 0,
+    countdown: 100,
+    title: "Loading...",
+    referenceUrl: undefined,
+    referenceImageUrl: undefined,
+    ansArr: [],
+    correctAns: "",
+    attemptTimestamp: undefined,
+    attempted: false,
+    isCorrect: false,
+    maxScore: 0,
+    answerExplanation: "",
+  }
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {
       case "previous":
         if (state?.index > 0) {
-          return mockQuestions[state.index - 1]
+          return allQuestions[state.index - 1]
         }
       case "next":
-        if (state?.index < mockQuestions.length - 1) {
-          return mockQuestions[state.index + 1]
+        if (state?.index < allQuestions.length - 1) {
+          return allQuestions[state.index + 1]
         }
       case "index":
-        if (action.index < mockQuestions.length - 1) {
-          return mockQuestions[action.index]
+        if (action.index < allQuestions.length - 1) {
+          return allQuestions[action.index]
         }
       case "reset":
-        return mockQuestions[0]
+        return allQuestions[0]
       default:
         return state
     }
@@ -91,7 +114,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const [timeLeft, setTimeLeft] = useState(0)
   const currentQuestion: number = state?.index
   const handleNextQuestion = () => {
-    if (state?.index == mockQuestions?.length - 1) {
+    if (state?.index == allQuestions?.length - 1) {
       // dispatch({ type: "reset" })
       clearInterval(myInterval)
       setTimeout(() => {
@@ -101,6 +124,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
     resetTimer() // Reset timer for the next question
     dispatch({ type: "next" })
+    console.log("state?.index", state?.index)
+    console.log("allQuestions?.length", allQuestions?.length)
   }
 
   function resetTimer() {
@@ -142,33 +167,80 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   // Replace with your actual test submission logic
   const submitTest = () => {
     showResult(true)
-    console.log("Submitting test...")
   }
 
   useEffect(() => {
     const unsubscribe = AppState.addEventListener("change", handleAppStateChange)
+    const courseSubjects: Quize[] = getAllQuizes?.filter(
+      (quize) => quize?.courseId == getCurrentCourseId,
+    )
+    const allQuizOfCourseId: CourseSubjectQuize[] =
+      courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz
+    let timeInMinute: number = 0
+    let allQues: Question[] = []
+    allQuizOfCourseId.map((currentQuiz: CourseSubjectQuize, index: number) => {
+      timeInMinute += Number(currentQuiz?.timeInMinute)
+      let quizes: CourseSubjectQuizQuestion[] = currentQuiz?.courseSubjectQuizQuestion
+      let groupwiseQues: Question[] = quizes?.map(
+        (myQuiz: CourseSubjectQuizQuestion, index: number) => {
+          let findCorrectAns: string = ""
+          let ansArr: string[] = myQuiz?.courseSubjectQuizMultiAnswer?.map(
+            (item: CourseSubjectQuizMultiAnswer) => {
+              if (item?.isCorrectAnswer === true) {
+                findCorrectAns = "" + item.value
+              }
+              return "" + item.value
+            },
+          )
+          let convertIntoQuiz: Question = {
+            index: allQues.length, // increase index by 1 (before allQues.push(convertIntoQuiz))
+            countdown: 0,
+            title: "" + myQuiz?.question,
+            referenceUrl: undefined,
+            referenceImageUrl:
+              "https://drive.google.com/uc?export=view&id=14zQPC4_-NeAUVAgvNsAu3OptpR4SBxXM",
+            ansArr: ansArr,
+            // correctAns: "" + myQuiz?.correctAnswer,
+            correctAns: findCorrectAns,
+            answerExplanation: "" + myQuiz?.answerExplanation,
+            attemptTimestamp: undefined,
+            attempted: false,
+            isCorrect: false,
+            maxScore: 10,
+          }
+          allQues.push(convertIntoQuiz)
+          return convertIntoQuiz
+        },
+      )
+    })
+    setAllQuestions(allQues)
+    setTotalTimeLimit(timeInMinute)
+    // setAllQuestions(mockQuestions)
+    dispatch({ type: "index", index: 0 })
+
     return () => unsubscribe.remove()
   }, [])
 
   useEffect(() => {
-    setTimeLeft(state?.countdown)
-    if (myInterval) {
-      clearInterval(myInterval)
+    if (state?.countdown > 0) {
+      setTimeLeft(state?.countdown)
+      if (myInterval) {
+        clearInterval(myInterval)
+      }
+      myInterval = setInterval(() => {
+        setTimeLeft((prevTime: any) => {
+          const remTime = Math.max(prevTime - 1, 0)
+          if (remTime === 0) {
+            handleNextQuestion()
+          }
+          return remTime
+        }) // Ensure time doesn't go below 0
+      }, 1000) // Update every second
     }
-    myInterval = setInterval(() => {
-      setTimeLeft((prevTime: any) => {
-        const remTime = Math.max(prevTime - 1, 0)
-        if (remTime === 0) {
-          handleNextQuestion()
-        }
-        return remTime
-      }) // Ensure time doesn't go below 0
-    }, 1000) // Update every second
-
     return () => clearInterval(myInterval) // Cleanup function to clear interval
   }, [state]) // Dependency array: trigger effect only on timeLeft change
 
-  const isLastQuestion = currentQuestion === mockQuestions.length - 1
+  const isLastQuestion = currentQuestion === allQuestions.length - 1
 
   function showResult(confirmTest: boolean) {
     if (confirmTest) {
@@ -188,12 +260,14 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
 
   function checkAnswer(currentQue: Question, answer: string) {
     // modify existing array
-    let newMockQuestionFilterArr: Question[] = mockQuestions.filter(
+    let newMockQuestionFilterArr: Question[] = allQuestions.filter(
       (item, index) => item.index === state.index,
     )
-
+    console.log("newMockQuestionFilterArr: ", newMockQuestionFilterArr)
     let newMockQuestion: Question = newMockQuestionFilterArr[0]
     newMockQuestion.attempted = true
+    console.log("newMockQuestionFilterArr answer: ", answer)
+    console.log("newMockQuestionFilterArr newMockQuestion.correctAns: ", newMockQuestion.correctAns)
     newMockQuestion.isCorrect = answer === newMockQuestion.correctAns
     // mockQuestion = [mockQuestion..., newMockQuestion]
     setMyAnswer(answer)
@@ -260,10 +334,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           }}
         /> */}
         <Text tx="questionScreen.testSeries" style={$title} preset="heading" />
-        <CircularProgressBar
-          initialProgress={QuestionObject["totalTime"]}
-          maxProgess={QuestionObject["totalTime"]}
-        />
+        <CircularProgressBar initialProgress={totalTimeLimit} maxProgess={totalTimeLimit} />
       </View>
 
       <View style={$allQuestionView}>
@@ -272,7 +343,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          {mockQuestions?.map((item: Question, index: number) => {
+          {allQuestions?.map((item: Question, index: number) => {
             return (
               <TextRounded
                 key={index}
@@ -306,8 +377,12 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             />
           </View>
           <View style={$currentQuestionView}>
-            <Text preset="bold" tx="questionScreen.countDown" />
-            <Text preset="bold" text={` ${timeLeft}`} />
+            {state?.countdown > 0 && (
+              <>
+                <Text preset="bold" tx="questionScreen.countDown" />
+                <Text preset="bold" text={` ${timeLeft}`} />
+              </>
+            )}
             {/* <CircularProgressBar initialProgress={5} maxProgess={10} /> */}
           </View>
         </View>
@@ -364,14 +439,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           </View>
 
           <ScrollView persistentScrollbar={true} showsVerticalScrollIndicator={true}>
-            <Text preset="default">
-              British countess and mathematician Ada Lovelace is often considered to be the first
-              computer programmer, as she was the first to publish part of a program (specifically
-              an algorithm) intended for implementation on Charles Babbage's analytical engine in
-              October 1842. The algorithm was used to calculate Bernoulli numbers.[4] Because
-              Babbage's machine was never completed as a functioning standard in Lovelace's time,
-              she never had the opportunity to see the algorithm in action.
-            </Text>
+            <Text preset="default" text={state?.answerExplanation} />
           </ScrollView>
         </View>
       )}

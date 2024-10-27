@@ -198,6 +198,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       <View style={$line} />
       {sectionList.map(({ title, question, symbol, color }, index) => (
         <SectionItem
+          key={"" + (index + 1)}
           srNo={"" + (index + 1)}
           title={title}
           question={question}
