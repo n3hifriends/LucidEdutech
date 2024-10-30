@@ -32,7 +32,12 @@ import {
   useStores,
 } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-import { Question, QuestionObject, mockQuestions } from "./../../mocks/demoQuestions"
+import {
+  Question,
+  QuestionObject,
+  initialQuestion,
+  mockQuestions,
+} from "./../../mocks/demoQuestions"
 import CircularProgressBar from "app/components/CircularProgressBase"
 import { useNavigation } from "@react-navigation/core"
 import { Quize } from "app/models/Course"
@@ -55,27 +60,12 @@ interface QuestionScreenProps extends AppStackScreenProps<"QuestionScreen"> {}
 export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_props) {
   const {
     ongoingQuizeStore: { getCurrentCourseId },
-    quizeStore: { getAllQuizes },
+    quizeStore: { getAllQuizes, attendQuestion },
   } = useStores()
   const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
   const [allQuestions, setAllQuestions] = useState<Question[]>([])
   const [totalTimeLimit, setTotalTimeLimit] = useState<number>(25)
-
-  let initialState: Question = {
-    index: 0,
-    countdown: 100,
-    title: "Loading...",
-    referenceUrl: undefined,
-    referenceImageUrl: undefined,
-    ansArr: [],
-    correctAns: "",
-    attemptTimestamp: undefined,
-    attempted: false,
-    isCorrect: false,
-    maxScore: 0,
-    answerExplanation: "",
-  }
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {
@@ -98,7 +88,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialQuestion)
   const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
   const clearIntervalRef = useRef<any>(null)
@@ -207,6 +197,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             attempted: false,
             isCorrect: false,
             maxScore: 10,
+            courseSubjectQuizQuestionId: myQuiz?.courseSubjectQuizQuestionId as number,
           }
           allQues.push(convertIntoQuiz)
           return convertIntoQuiz
@@ -261,15 +252,17 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   function checkAnswer(currentQue: Question, answer: string) {
     // modify existing array
     let newMockQuestionFilterArr: Question[] = allQuestions.filter(
-      (item, index) => item.index === state.index,
+      (item, index) => item?.index === state?.index,
     )
     console.log("newMockQuestionFilterArr: ", newMockQuestionFilterArr)
     let newMockQuestion: Question = newMockQuestionFilterArr[0]
     newMockQuestion.attempted = true
     console.log("newMockQuestionFilterArr answer: ", answer)
     console.log("newMockQuestionFilterArr newMockQuestion.correctAns: ", newMockQuestion.correctAns)
-    newMockQuestion.isCorrect = answer === newMockQuestion.correctAns
-    // mockQuestion = [mockQuestion..., newMockQuestion]
+    let isCorrect: boolean = answer === newMockQuestion.correctAns
+    newMockQuestion.isCorrect = isCorrect
+    let currentCourseId: number = getCurrentCourseId as number
+    attendQuestion(currentCourseId, newMockQuestion?.courseSubjectQuizQuestionId, isCorrect)
     setMyAnswer(answer)
   }
 
@@ -477,7 +470,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           />
 
           {isLastQuestion ? (
-            <Button style={$button} tx="questionScreen.submit" onPress={showResult} />
+            <Button style={$button} tx="questionScreen.submit" onPress={() => submitTest()} />
           ) : (
             <Button style={$button} tx="questionScreen.next" onPress={handleNextQuestion} />
           )}

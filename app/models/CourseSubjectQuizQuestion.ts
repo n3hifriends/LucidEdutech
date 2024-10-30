@@ -16,7 +16,9 @@ export const CourseSubjectQuizQuestionProps = {
   createdDate: types.maybeNull(types.string), // Timestamp
   updatedBy: types.maybeNull(types.string),
   updatedDate: types.maybeNull(types.string), // Timestamp
-
+  attempted: types.maybeNull(types.boolean),
+  isCorrect: types.maybeNull(types.boolean),
+  maxScore: types.maybeNull(types.number), // missing parameter
   courseSubjectQuizMultiAnswer: types.array(CourseSubjectQuizMultiAnswerModel),
 }
 export const CourseSubjectQuizQuestionModel = types
@@ -24,7 +26,15 @@ export const CourseSubjectQuizQuestionModel = types
   .props(CourseSubjectQuizQuestionProps)
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions((store) => ({
+    setAttempted(isAttempted: boolean) {
+      // store?.attempted = isAttempted
+      store?.setProp("attempted", isAttempted)
+    },
+    setIsCorrect(isCorrect: boolean) {
+      store?.setProp("isCorrect", isCorrect)
+    },
+  })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export interface CourseSubjectQuizQuestion
   extends Instance<typeof CourseSubjectQuizQuestionModel> {}

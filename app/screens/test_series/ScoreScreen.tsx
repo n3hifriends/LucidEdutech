@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
+import { ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { Button, Icon, Screen, Text, TextRounded } from "./../../../app/components"
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-import { Question, mockQuestions } from "./../../mocks/demoQuestions"
+import { ScoreBoard, useStores } from "app/models"
 
 // import { useStores } from "app/models"
 
@@ -13,6 +13,11 @@ interface ScoreScreenProps extends AppStackScreenProps<"Score"> {}
 
 export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen() {
   const navigation = useNavigation()
+
+  const {
+    ongoingQuizeStore: { getCurrentCourseId },
+    quizeStore: { getScoreBoard },
+  } = useStores()
 
   // const sendResultToBackend = async (result: any) => {
   //   const url = "" // Replace with your backend URL
@@ -63,56 +68,29 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
     navigate({ name: "GeneralInstruction", params: undefined })
   }
 
-  const [showScore, setShowScore] = useState(false)
-  const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-
-  const handleNextQuestion = () => {
-    if (currentQuestion + 1 < mockQuestions.length) {
-      setCurrentQuestion(currentQuestion + 1)
-    } else {
-      setShowScore(true)
-    }
+  function calculateResult(): ScoreBoard {
+    let scoreBoard: ScoreBoard = getScoreBoard(getCurrentCourseId as number)
+    return scoreBoard
   }
 
-  const calculateResult = () => {
-    let correctAnswers: number = 0
-    let wrongAnswers: number = 0
-    let notAttempted: number = 0
-    let totalScore: number = 0
-    mockQuestions.forEach((answer) => {
-      if (answer?.attempted === true) {
-        if (answer?.isCorrect === true) {
-          correctAnswers++
-          totalScore += answer?.maxScore
-        } else {
-          wrongAnswers++
-        }
-      } else {
-        notAttempted++
-      }
-    })
-    return { correctAnswers, wrongAnswers, notAttempted, totalScore }
-  }
-
-  const result = calculateResult()
+  const result: ScoreBoard = calculateResult()
   // sendResultToBackend(result)
   const sectionList = [
     {
       title: "एकूण प्रश्न",
-      question: "" + mockQuestions.length,
+      question: "" + result?.totalQuestion,
       symbol: "?",
       color: colors.palette.accent100,
     },
     {
       title: "बरोबर उत्तरे",
-      question: "" + result?.correctAnswers,
+      question: "" + result?.totalCorrectAns,
       symbol: "=",
       color: colors.palette.neutral100,
     },
     {
       title: "चुकीची उत्तरे",
-      question: "" + result?.wrongAnswers,
+      question: "" + result?.totalWrongAns,
       symbol: "x",
       color: colors.palette.neutral100,
     },
@@ -124,7 +102,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
     },
     {
       title: "प्रयत्न न केलेले प्रश्न",
-      question: "" + result?.notAttempted,
+      question: "" + result?.totalNotAttempted,
       symbol: "!",
       color: colors.palette.primary300,
     },
@@ -179,7 +157,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
         <Text style={$vals} preset="formLabel">
-          {mockQuestions.length}
+          {result?.totalQuestion}
         </Text>
         <Text style={$duration} preset="formLabel" tx="score.question" />
         <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
@@ -191,7 +169,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       </View>
       <View style={{ flexDirection: "row" }}>
         <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading">
-          {"" + result?.totalScore}
+          {"" + result?.totalAchievedMarks}
         </Text>
         <Text style={$section} preset="subheading" tx="score.myscore" />
       </View>

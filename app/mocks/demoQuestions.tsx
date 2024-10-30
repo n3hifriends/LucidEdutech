@@ -11,6 +11,22 @@ export type Question = {
   isCorrect: boolean
   maxScore: number
   answerExplanation: string
+  courseSubjectQuizQuestionId: number
+}
+export let initialQuestion: Question = {
+  index: 0,
+  countdown: 100,
+  title: "Loading...",
+  referenceUrl: undefined,
+  referenceImageUrl: undefined,
+  ansArr: [],
+  correctAns: "",
+  attemptTimestamp: undefined,
+  attempted: false,
+  isCorrect: false,
+  maxScore: 0,
+  answerExplanation: "",
+  courseSubjectQuizQuestionId: 0,
 }
 export const QuestionObject = {
   totalTime: 2, // min
@@ -32,5 +48,6 @@ export var mockQuestions: Question[] = [
     isCorrect: false,
     maxScore: 10,
     answerExplanation: "hey",
+    courseSubjectQuizQuestionId: 0,
   },
 ]
