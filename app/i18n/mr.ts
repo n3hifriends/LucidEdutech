@@ -177,6 +177,7 @@ const mr = {
     marks: "मार्क्स",
     myscore: "गुण मिळाले",
     reattempt: "पुन्हा प्रयत्न करा",
+    home: "मुख्य पृष्ठ",
     accept: "कृपया अटी स्वीकारा",
   },
   examList: {

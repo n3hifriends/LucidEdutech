@@ -30,6 +30,8 @@ export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowU
   }
 
   async function openApp(packageName: string, directLink: string) {
+    Linking.openURL(directLink)
+    return
     const supported = await Linking.canOpenURL(
       `intent://open?package=${packageName}#Intent;scheme=package;end`,
     )
@@ -43,7 +45,7 @@ export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowU
 
   return (
     <Screen style={$root} preset="scroll">
-      <Text text="FollowUs" style={$text} />
+      <Text preset="heading" tx={"common.followus"} style={$text} />
       <View style={$container}>
         <CardImage
           style={$follow}

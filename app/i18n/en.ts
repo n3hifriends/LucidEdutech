@@ -178,6 +178,7 @@ const en = {
     marks: "Marks",
     myscore: "is your score",
     reattempt: "Reattempt Test",
+    home: "Home",
     accept: "Please accept terms.",
   },
   examList: {

@@ -65,7 +65,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
   // Pull in navigation via hook
   // const navigation = useNavigation()
   const startTestSeries = () => {
-    navigate({ name: "GeneralInstruction", params: undefined })
+    navigate({ name: "Home", params: undefined })
   }
 
   function calculateResult(): ScoreBoard {
@@ -184,7 +184,10 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
           color={color}
         />
       ))}
-      <Button style={$button} tx="score.reattempt" onPress={startTestSeries} />
+      <View style={$tryagain}>
+        <Button style={$button} tx="score.reattempt" onPress={startTestSeries} />
+        <Button style={$button} tx="score.home" onPress={startTestSeries} />
+      </View>
     </Screen>
   )
 })
@@ -212,6 +215,10 @@ const $line: TextStyle = {
   flex: 1,
   backgroundColor: colors.border,
   marginBottom: spacing.xs,
+}
+const $tryagain: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
 }
 
 const $duration: TextStyle = {

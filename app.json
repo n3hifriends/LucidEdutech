@@ -23,6 +23,7 @@
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "package": "com.lucideducation.conquer",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
         "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
@@ -67,7 +68,8 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      "@react-native-google-signin/google-signin"
     ],
     "experiments": {
       "tsconfigPaths": true

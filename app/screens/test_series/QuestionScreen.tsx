@@ -235,14 +235,15 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
 
   function showResult(confirmTest: boolean) {
     if (confirmTest) {
-      Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
+      Alert.alert("खा‍त्री करा", "तुम्हाला खात्री आहे की तुम्ही चाचणी सबमिट करू इच्छिता?", [
+        // Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
         {
-          text: "yes",
+          text: "होय",
           onPress: () => {
             navigate({ name: "Score", params: undefined })
           },
         },
-        { text: "no", onPress: () => {}, style: "cancel" },
+        { text: "नाही", onPress: () => {}, style: "cancel" },
       ])
     } else {
       navigate({ name: "Score", params: undefined })

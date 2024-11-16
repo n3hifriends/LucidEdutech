@@ -2,6 +2,7 @@ import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/nati
 import React, { Component, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
+  Dimensions,
   Image,
   ImageStyle,
   Linking,
@@ -26,7 +27,7 @@ import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe"
 import { AppStackScreenProps, goBack, navigate } from "./../../../app/navigators"
 
 const logo = require("../../../assets/images/logo.png")
-
+const { height } = Dimensions.get("window")
 export interface Demo {
   name: string
   description: string
@@ -200,6 +201,8 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
     setPlaying((prev) => !prev)
   }, [])
 
+  let youtubePlayerHeight = height * 0.3
+
   return (
     <Drawer
       open={open}
@@ -305,7 +308,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
       <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
         <DrawerIconButton onPress={toggleDrawer} />
         <YoutubePlayer
-          height={300}
+          height={youtubePlayerHeight}
           play={playing}
           videoId={"2ouN6xeF6Hk"}
           onChangeState={onStateChange}
