@@ -30,6 +30,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [signInError, setSignInError] = useState<string | undefined>(undefined)
   const [user, setUser] = useState("")
   const [isSigninInProgress, setIsSigninInProgress] = useState(false)
+  const [googleAccessToken, setGoogleAccessToken] = useState("")
   const { navigation } = _props
   // const { quizeStore } = useStores()
   // github: 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
@@ -68,6 +69,8 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         "https://www.googleapis.com/auth/user.phonenumbers.read",
         "https://www.googleapis.com/auth/user.birthday.read",
         "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.readonly",
       ],
     })
     // Here is where you could fetch credentials from keychain or storage
@@ -85,6 +88,30 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     }
   }, [])
 
+  async function getLiveBroadcastSchedules(accessToken: string) {
+    try {
+      const response = await fetch(
+        "https://youtube.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,contentDetails,status&mine=true&broadcastType=all&key=" +
+          "AIzaSyBq5-xtDH7XizJXBxJtiXmOtIFb8ljBiQA",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      const json = await response.json()
+      console.log("JSON DATA", JSON.stringify(json))
+
+      // setLiveBroadcast(json.items)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      // setLoading(false)
+    }
+  }
   // const error = isSubmitted ? validationError : ""
 
   async function loginAndSignIn() {
@@ -104,6 +131,11 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       if (hasPlayServices === true) {
         const userInfo = await GoogleSignin.signIn()
         console.log("🚀 ~ google login ~ userInfo:", userInfo)
+        const { accessToken } = await GoogleSignin.getTokens()
+        console.log("accessToken ::", accessToken)
+        setGoogleAccessToken(accessToken)
+        // getLiveBroadcastSchedules(accessToken)
+
         const email = userInfo?.user?.email
         const firstName = userInfo?.user?.givenName
         const lastName = userInfo?.user?.familyName

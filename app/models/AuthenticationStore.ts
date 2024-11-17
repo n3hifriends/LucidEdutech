@@ -1,6 +1,7 @@
 import { api } from "./../../app/services/api"
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { Alert } from "react-native"
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -39,6 +40,7 @@ export const AuthenticationStoreModel = types
         store.setProp("username", response.auth.username)
         // store.authEmail = username
       } else {
+        Alert.alert("अरेरे!!", "काहीतरी चूक झाली")
         console.tron.error(`Error fetching authenticate: ${JSON.stringify(response)}`, [])
       }
       // }

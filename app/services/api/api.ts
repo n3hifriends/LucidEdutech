@@ -20,6 +20,7 @@ import type {
 import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
 import { AuthenticateSnapshotIn } from "./../../../app/models/AuthenticationStore"
 import { ProfileSnapshotIn } from "./../../../app/models"
+import { Alert } from "react-native"
 
 /**
  * Configuring the apisauce instance.
@@ -111,6 +112,7 @@ export class Api {
       username: email,
       password: password,
     })
+    Alert.alert("1", JSON.stringify(response))
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
       if (problem) return problem
