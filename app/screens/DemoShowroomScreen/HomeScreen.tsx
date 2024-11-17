@@ -1,9 +1,11 @@
 import { Link, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
+import React, { Component, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
+  Dimensions,
   Image,
   ImageStyle,
+  Linking,
   Platform,
   SectionList,
   TextStyle,
@@ -12,7 +14,7 @@ import {
 } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
-import { ListItem, ListView, ListViewRef, Screen, Text } from "../../components"
+import { Button, ListItem, ListView, ListViewRef, Screen, Text } from "../../components"
 import { isRTL, translate } from "../../i18n"
 import { DemoTabParamList, DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
@@ -21,9 +23,11 @@ import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
 import { ProfileSnapshotIn, useStores } from "./../../../app/models"
 import { GeneralApiProblem } from "app/services/api/apiProblem"
+import YoutubePlayer, { PLAYER_STATES } from "react-native-youtube-iframe"
+import { AppStackScreenProps, goBack, navigate } from "./../../../app/navigators"
 
 const logo = require("../../../assets/images/logo.png")
-
+const { height } = Dimensions.get("window")
 export interface Demo {
   name: string
   description: string
@@ -85,6 +89,7 @@ const ShowroomListItem = Platform.select({ web: WebListItem, default: NativeList
 
 export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_props) {
   const [open, setOpen] = useState(false)
+  const [playing, setPlaying] = useState(false)
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const listRef = useRef<SectionList>(null)
   const menuRef = useRef<ListViewRef<DemoListItem["item"]>>(null)
@@ -96,6 +101,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
   } = useStores()
 
   function logoutApp() {
+    toggleDrawer()
     logout()
   }
 
@@ -127,7 +133,15 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
     const myRes: string = profileRes?.kind || "" // Provide a default value for undefined case
     if (myRes === "unauthorized") {
       Alert.alert(translate("common.loginAgain"), translate("common.tokenNotFound"), [
-        { text: translate("common.ok"), onPress: () => logout() },
+        {
+          text: translate("common.ok"),
+          onPress: () => {
+            if (__DEV__) {
+            } else {
+              // logout()
+            }
+          },
+        },
       ])
     }
   }
@@ -176,6 +190,19 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
 
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
+  const onStateChange = useCallback((state: PLAYER_STATES) => {
+    if (state === "ended") {
+      setPlaying(false)
+      Alert.alert("video has finished playing!")
+    }
+  }, [])
+
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev)
+  }, [])
+
+  let youtubePlayerHeight = height * 0.3
+
   return (
     <Drawer
       open={open}
@@ -189,7 +216,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             <Image source={logo} style={$logoImage} />
           </View>
 
-          <ListView<DemoListItem["item"]>
+          {/* <ListView<DemoListItem["item"]>
             ref={menuRef}
             contentContainerStyle={$listContentContainer}
             estimatedItemSize={250}
@@ -201,22 +228,106 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
             renderItem={({ item, index: sectionIndex }) => (
               <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
             )}
-          />
-          <View style={[$titleWrapperCenter]}>
-            <Text
-              weight="medium"
-              onPress={logoutApp}
-              size="md"
-              tx="common.logOut"
-              style={[$title]}
-            />
+          /> */}
+          <View style={{ flex: 0.9 }}>
+            <View style={$listContentContainer}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "Home" })
+                }}
+                size="md"
+                tx="demoNavigator.componentsTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.debugTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "ExamList" })
+                }}
+                size="md"
+                tx="demoNavigator.educationTab"
+                style={[$title]}
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  Linking.openURL("https://www.youtube.com/channel/UClxduICYrEk23b45F79PDZA")
+                }}
+                size="md"
+                style={[$title]}
+                tx="common.youtbe"
+              />
+            </View>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "FollowUsScreen" })
+                }}
+                size="md"
+                style={[$title]}
+                tx="common.followus"
+              />
+            </View>
+          </View>
+          <View style={{ flex: 0.1 }}>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={logoutApp}
+                size="md"
+                tx="common.logOut"
+                style={[$title, { color: colors.palette.red60 }]}
+              />
+            </View>
           </View>
         </View>
       )}
     >
       <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
         <DrawerIconButton onPress={toggleDrawer} />
-
+        <YoutubePlayer
+          height={youtubePlayerHeight}
+          play={playing}
+          videoId={"2ouN6xeF6Hk"}
+          onChangeState={onStateChange}
+        />
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <Button
+            text="Follow Us"
+            onPress={() => navigate({ name: "FollowUsScreen" })}
+            style={$follow}
+          />
+          <Button
+            text="YouTube"
+            onPress={() =>
+              Linking.openURL("https://www.youtube.com/channel/UClxduICYrEk23b45F79PDZA")
+            } // Replace with your YouTube channel URL
+            style={$youtube}
+            // icon={() => <FontAwesomeIcon icon={faYoutube} />} // YouTube icon
+          />
+        </View> */}
         <SectionList
           ref={listRef}
           contentContainerStyle={$sectionListContentContainer}
@@ -306,7 +417,17 @@ const $titleWrapperCenter: ViewStyle = {
 }
 
 const $title: TextStyle = {
+  padding: spacing.md,
+}
+
+const $youtube: TextStyle = {
   textAlign: "center",
   color: colors.palette.red60,
   padding: spacing.md,
+  borderBlockColor: colors.transparent,
+  borderWidth: 0,
+  backgroundColor: colors.transparent,
+}
+const $follow: TextStyle = {
+  color: colors.palette.blue,
 }

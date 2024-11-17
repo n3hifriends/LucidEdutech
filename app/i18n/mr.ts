@@ -6,6 +6,8 @@ const mr = {
     logOut: "बाहेर पडा", // @demo remove-current-line
     tokenNotFound: "आम्हाला काही तांत्रिक अडचणी येत आहेत. कृपया पुन्हा प्रयत्न करा.",
     loginAgain: "पुन्हा लॉगिन करा.",
+    youtbe: "यूट्यूब",
+    followus: "फॉलो करा",
   },
   welcomeScreen: {
     postscript:
@@ -15,6 +17,7 @@ const mr = {
     emailFieldLabel: "ई-मेल",
     emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
     goNext: "पुढे जा",
+    yourName: "नाव",
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
@@ -28,6 +31,15 @@ const mr = {
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
+  },
+  questionScreen: {
+    testSeries: "टेस्ट सीरीज",
+    countDown: "काउंटडाउन",
+    previous: "मागील",
+    next: "पुढे जा",
+    submit: "सबमिट",
+    yes: "होय",
+    no: "नाही",
   },
   errorScreen: {
     title: "काहीतरी चुकलं!",
@@ -71,6 +83,7 @@ const mr = {
     communityTab: "समुदाय",
     podcastListTab: "सूचना",
     educationTab: "शिक्षण",
+    referenceMaterialTab: "संदर्भ",
   },
   demoCommunityScreen: {
     title: "येथे आपल्या बॅचमेटसाठी कनेक्ट करा",
@@ -96,7 +109,7 @@ const mr = {
     hireUsLink: "आम्हाला संदेश पाठवा",
   },
   homeScreen: {
-    jumpStart: "येथे होम स्क्रीन येइल",
+    jumpStart: "येथे आपण YouTube व्हिडिओ दाखवू",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "खारे",
@@ -109,7 +122,7 @@ const mr = {
     tagLine:
       "अभिनंदन, आपल्याकडे एक अत्यंत उन्नत React Native अ‍ॅप टेंपलेट आहे. हे बॉइलरप्लेट वापरा!",
     reactotron: "Reactotronला पाठवा",
-    reportBugs: "बग्स रिपोर्ट करा",
+    reportBugs: "रिपोर्ट",
     demoList: "डेमो यादी",
     demoPodcastList: "डेमो पॉडकास्ट यादी",
     androidReactotronHint:
@@ -150,7 +163,7 @@ const mr = {
   testOverview: {
     testName: "चाचणी नाव",
     question: "प्रश्न",
-    duration: "तास",
+    duration: "मिनिटे",
     marks: "मार्क्स",
     section: "विभाग",
     attempt: "चाचणी सुरू करा",
@@ -164,11 +177,17 @@ const mr = {
     marks: "मार्क्स",
     myscore: "गुण मिळाले",
     reattempt: "पुन्हा प्रयत्न करा",
+    home: "मुख्य पृष्ठ",
     accept: "कृपया अटी स्वीकारा",
   },
   examList: {
     testSeriesList: "सराव पेपर्सची यादी",
     continue: "सुरू ठेवा",
+  },
+  referenceMaterial: {
+    references: "संदर्भ",
+    upcomingExams: "येणाऱ्या परीक्षा",
+    referenceMaterialTxt: "परीक्षेच्या योजना",
   },
 }
 

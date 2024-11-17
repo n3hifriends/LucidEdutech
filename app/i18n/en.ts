@@ -6,6 +6,8 @@ const en = {
     logOut: "Log Out", // @demo remove-current-line
     tokenNotFound: "We are experiencing some technical issues. Please try again later",
     loginAgain: "Relogin requierd",
+    youtbe: "YouTube",
+    followus: "Follow Us",
   },
   welcomeScreen: {
     letsGo: "Let's go!", // @demo remove-current-line
@@ -16,6 +18,7 @@ const en = {
     emailFieldLabel: "ईमेल",
     emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
     goNext: "पुढे जा",
+    yourName: "Name",
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
@@ -29,6 +32,15 @@ const en = {
     firstName: "पहिलं नाव",
     secondName: "आडनाव",
     mobileNumber: "मोबाइल नंबर",
+  },
+  questionScreen: {
+    testSeries: "Test Series",
+    countDown: "CountDown",
+    previous: "Previous",
+    next: "next",
+    submit: "Submit",
+    yes: "yes",
+    no: "no",
   },
   errorScreen: {
     title: "Something went wrong!",
@@ -71,6 +83,7 @@ const en = {
     communityTab: "Discussion",
     podcastListTab: "Announcement",
     educationTab: "Education",
+    referenceMaterialTab: "Material",
   },
   demoCommunityScreen: {
     title: "Connect with your batchmates here",
@@ -151,7 +164,7 @@ const en = {
   testOverview: {
     testName: "Test Name",
     question: "Question(s)",
-    duration: "Hours",
+    duration: "Minutes",
     marks: "Marks",
     section: "Sections",
     attempt: "Attempt Test",
@@ -165,11 +178,17 @@ const en = {
     marks: "Marks",
     myscore: "is your score",
     reattempt: "Reattempt Test",
+    home: "Home",
     accept: "Please accept terms.",
   },
   examList: {
     testSeriesList: "Test Series List",
     continue: "सुरू ठेवा",
+  },
+  referenceMaterial: {
+    references: "References",
+    upcomingExams: "Upcoming Exams",
+    referenceMaterialTxt: "Scheme of Examination",
   },
   // @demo remove-block-end
 }

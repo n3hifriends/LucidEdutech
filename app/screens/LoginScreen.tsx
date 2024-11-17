@@ -30,9 +30,10 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [signInError, setSignInError] = useState<string | undefined>(undefined)
   const [user, setUser] = useState("")
   const [isSigninInProgress, setIsSigninInProgress] = useState(false)
+  const [googleAccessToken, setGoogleAccessToken] = useState("")
   const { navigation } = _props
   // const { quizeStore } = useStores()
-
+  // github: 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
   function openLinkInBrowser(url: string) {
     Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
   }
@@ -59,7 +60,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   useEffect(() => {
     // This need to configure in GCP as per Debug / Release configuration
     GoogleSignin.configure({
-      webClientId: "1027729156446-rl67ttisfc4j3j76dr5b5v65eiqnj66o.apps.googleusercontent.com",
+      webClientId: "6544635437-pge1mbvu2l2p6vtrbkcmanhvi639un6t.apps.googleusercontent.com",
       offlineAccess: true,
       // iosClientId: "840573394871-ejhu0tfi50jp8qj9n826oir3v6867pto.apps.googleusercontent.com",
       scopes: [
@@ -68,6 +69,8 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         "https://www.googleapis.com/auth/user.phonenumbers.read",
         "https://www.googleapis.com/auth/user.birthday.read",
         "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.readonly",
       ],
     })
     // Here is where you could fetch credentials from keychain or storage
@@ -85,6 +88,30 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     }
   }, [])
 
+  async function getLiveBroadcastSchedules(accessToken: string) {
+    try {
+      const response = await fetch(
+        "https://youtube.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,contentDetails,status&mine=true&broadcastType=all&key=" +
+          "AIzaSyBq5-xtDH7XizJXBxJtiXmOtIFb8ljBiQA",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      const json = await response.json()
+      console.log("JSON DATA", JSON.stringify(json))
+
+      // setLiveBroadcast(json.items)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      // setLoading(false)
+    }
+  }
   // const error = isSubmitted ? validationError : ""
 
   async function loginAndSignIn() {
@@ -104,6 +131,11 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       if (hasPlayServices === true) {
         const userInfo = await GoogleSignin.signIn()
         console.log("🚀 ~ google login ~ userInfo:", userInfo)
+        const { accessToken } = await GoogleSignin.getTokens()
+        console.log("accessToken ::", accessToken)
+        setGoogleAccessToken(accessToken)
+        // getLiveBroadcastSchedules(accessToken)
+
         const email = userInfo?.user?.email
         const firstName = userInfo?.user?.givenName
         const lastName = userInfo?.user?.familyName
@@ -123,18 +155,18 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
           setAuthPassword("password")
         }
         console.log("🚀 ~ loginServer ~ login 3:", login)
-        if (__DEV__) {
-          loginServer("ketan@gmail.com")
-        } else {
-          loginServer(email)
-        }
+        // if (__DEV__) {
+        loginServer("ketan@gmail.com")
+        // } else {
+        //   loginServer(email)
+        // }
         setSignInError(undefined)
       } else {
         setSignInError("loginScreen.noService")
       }
     } catch (error: any) {
       setIsSigninInProgress(false)
-      console.log("🚀 ~ login ~ error:", error)
+      console.log("🚀 ~ login ~ error:", JSON.stringify(error))
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         setSignInError("loginScreen.oops")
       } else if (error.code === statusCodes.IN_PROGRESS) {

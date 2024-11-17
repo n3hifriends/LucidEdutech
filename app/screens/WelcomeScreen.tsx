@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useRef, useState } from "react"
-import { Alert, Image, ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
+import React, { FC, useRef, useState } from "react"
+import { ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
 import {
   Button, // @demo remove-current-line
   Text,
@@ -12,11 +12,8 @@ import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import { colors, spacing } from "../theme"
 import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-import { set } from "date-fns"
-import { api } from "./../../app/services/api"
-
-const welcomeLogo = require("../../assets/images/logo.png")
-const welcomeFace = require("../../assets/images/welcome-face.png")
+import { useNavigation } from "@react-navigation/native"
+import { $nonEmptyObject } from "mobx-state-tree/dist/internal"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -33,6 +30,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       setLastName,
       setMobileNumber,
     },
+    // quizeStore: { fetchQuize, getAllQuizes },
     // profileStore: { getProfile, userPassword },
   } = useStores()
   const [myFirstName, setMyFirstName] = useState(firstName)
@@ -174,6 +172,7 @@ const $bottomContainer: ViewStyle = {
   borderTopRightRadius: 16,
   paddingHorizontal: spacing.lg,
   justifyContent: "space-around",
+  marginBottom: spacing.xl,
 }
 const $welcomeLogo: ImageStyle = {
   height: 88,

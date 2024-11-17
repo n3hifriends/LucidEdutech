@@ -1,20 +1,26 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, View, Image, ImageStyle } from "react-native"
 import * as Application from "expo-application"
-import { Button, ListItem, Screen, Text } from "../components"
+import { ListItem, Screen, Text } from "../components"
 import { AppStackScreenProps, navigate } from "./../../app/navigators"
 import { colors, spacing } from "./../../app/theme"
 import { isRTL } from "./../../app/i18n"
-import { openLinkInBrowser } from "./../../app/utils/openLinkInBrowser"
 const mpsc = require("../../assets/images/mpsc.png")
-const mpsc_police = require("../../assets/images/mpsc_police.png")
+// const mpsc_police = require("../../assets/images/mpsc_police.png")
 // import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "app/models"
+import { useStores } from "app/models"
+import { QuizeSnapshotOut } from "app/models/Course"
 
 interface ExamListScreenProps extends AppStackScreenProps<"ExamList"> {}
 
 export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamListScreen() {
+  const {
+    ongoingQuizeStore: { setCurrentCouserId },
+    quizeStore: { fetchQuize, getAllQuizes },
+  } = useStores()
+  const [isExamLoaded, setExamLoaded] = useState<boolean>(false)
+
   const systemInstructionsEng = [
     "Maharashtra Gazetted Civil Services Examination - Scheme (December-2023)",
     "Maharashtra Gazetted Civil Services Examination - Scheme (Feb-2023)",
@@ -88,7 +94,55 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
     [],
   )
 
-  const startTestSeries = () => {
+  async function fetchAllExamination() {
+    await fetchQuize()
+    setExamLoaded(true)
+  }
+
+  useEffect(() => {
+    if (isExamLoaded == false) {
+      fetchAllExamination()
+    }
+  }, [isExamLoaded])
+
+  // set object values for objects as mapping is done
+  const startTestSeries = (currentCourseId: any) => {
+    const quizeModelProps: QuizeSnapshotOut = {
+      courseId: 123, // Replace with an actual course ID
+      courseSubjects: [
+        {
+          courseSubjectId: 456,
+          courseSubjectMedia: [
+            "https://example.com/image1.jpg",
+            "https://example.com/video2.mp4",
+          ] as any,
+          courseSubjectQuize: [
+            { question: "What is the capital of France?", answer: "Paris" },
+            { question: "Who painted the Mona Lisa?", answer: "Leonardo da Vinci" },
+          ] as any,
+          courseId: 123,
+          subjectName: "Introduction to Programming",
+          subjectDescription: "A beginner's guide to programming concepts",
+          subjectHeader: "Programming 101",
+          created_by: "John Doe",
+          created_date: "2023-12-31",
+          updated_by: "Jane Smith",
+          updatedDate: "2024-01-15",
+        },
+        // Add more course subjects as needed
+      ] as any,
+      courseName: "Web Development Fundamentals",
+      courseDescription: "Learn the basics of HTML, CSS, and JavaScript",
+      start_date: "2024-02-01",
+      end_date: "2024-03-31",
+      days: "7",
+      hours: "10",
+      created_by: "John Doe",
+      created_date: "2023-12-31",
+      updated_by: "Jane Smith",
+      updatedDate: "2024-01-15",
+    }
+    setCurrentCouserId(currentCourseId)
     navigate({ name: "GeneralInstruction", params: undefined })
   }
 
@@ -96,23 +150,21 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <Text style={$title} preset="heading" tx="examList.testSeriesList" />
       <View style={$itemsContainer}>
-        {systemInstructions.map((item, index) => (
+        {getAllQuizes.map((item, index) => (
           <ListItem
+            myKey={index}
             key={index}
-            text={item}
+            text={"" + item?.courseName}
             children={"children"}
             bottomSeparator
             rightIcon={isRTL ? "caretLeft" : "caretRight"}
             height={60}
             LeftComponent={
               <View style={$leftImageContainer}>
-                <Image
-                  source={item.indexOf("उप-निरीक्षक") >= 0 ? mpsc_police : mpsc}
-                  style={$leftImage}
-                />
+                <Image source={mpsc} style={$leftImage} />
               </View>
             }
-            onPress={() => startTestSeries()}
+            onPress={() => startTestSeries(item?.courseId)}
             // onPress={() => openLinkInBrowser("https://rn.live/")}
           />
         ))}

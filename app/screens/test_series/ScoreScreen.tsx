@@ -1,30 +1,99 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
+import { ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { Button, Icon, Screen, Text, TextRounded } from "./../../../app/components"
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
+import { ScoreBoard, useStores } from "app/models"
 
-// import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
 interface ScoreScreenProps extends AppStackScreenProps<"Score"> {}
 
 export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen() {
+  const navigation = useNavigation()
+
+  const {
+    ongoingQuizeStore: { getCurrentCourseId },
+    quizeStore: { getScoreBoard },
+  } = useStores()
+
+  // const sendResultToBackend = async (result: any) => {
+  //   const url = "" // Replace with your backend URL
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(result),
+  //     })
+
+  //     if (!response.ok) {
+  //       throw new Error(`Error sending result: ${response.statusText}`)
+  //     }
+
+  //     const data = await response.json()
+  //     console.log("Result submitted successfully:", data) // Handle success response (optional)
+  //   } catch (error) {
+  //     console.error("Error sending result:", error)
+  //     // Handle errors appropriately (e.g., display error message to user)
+  //   }
+  // }
+
+  // Handle back button
+  useEffect(() => {
+    // sendResultToBackend(result)
+
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      // Check if back button was pressed
+      if (e.data.action.type === "GO_BACK") {
+        e.preventDefault() // Prevent default back navigation
+        // Handle custom action here (optional)
+      }
+    })
+    return () => {
+      unsubscribe()
+    }
+  }, [navigation])
+
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
   const startTestSeries = () => {
-    navigate({ name: "QuestionScreen", params: undefined })
+    navigate({ name: "Home", params: undefined })
   }
 
+  function calculateResult(): ScoreBoard {
+    let scoreBoard: ScoreBoard = getScoreBoard(getCurrentCourseId as number)
+    return scoreBoard
+  }
+
+  const result: ScoreBoard = calculateResult()
+  // sendResultToBackend(result)
   const sectionList = [
-    { title: "एकूण प्रश्न", question: "80", symbol: "?", color: colors.palette.accent100 },
-    { title: "बरोबर उत्तरे", question: "0", symbol: "=", color: colors.palette.neutral100 },
-    { title: "चुकीची उत्तरे", question: "0", symbol: "x", color: colors.palette.angry100 },
+    {
+      title: "एकूण प्रश्न",
+      question: "" + result?.totalQuestion,
+      symbol: "?",
+      color: colors.palette.accent100,
+    },
+    {
+      title: "बरोबर उत्तरे",
+      question: "" + result?.totalCorrectAns,
+      symbol: "=",
+      color: colors.palette.neutral100,
+    },
+    {
+      title: "चुकीची उत्तरे",
+      question: "" + result?.totalWrongAns,
+      symbol: "x",
+      color: colors.palette.neutral100,
+    },
     {
       title: "अंशतः बरोबर उत्तरे",
       question: "0",
@@ -33,7 +102,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
     },
     {
       title: "प्रयत्न न केलेले प्रश्न",
-      question: "80",
+      question: "" + result?.totalNotAttempted,
       symbol: "!",
       color: colors.palette.primary300,
     },
@@ -87,7 +156,9 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       <View style={$line} />
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
-        <Text style={$vals} preset="formLabel" text="80" />
+        <Text style={$vals} preset="formLabel">
+          {result?.totalQuestion}
+        </Text>
         <Text style={$duration} preset="formLabel" tx="score.question" />
         <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
         <Text style={$vals} preset="formLabel" text="1" />
@@ -97,12 +168,15 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
         <Text style={$duration} preset="formLabel" tx="score.marks" />
       </View>
       <View style={{ flexDirection: "row" }}>
-        <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading" text="0" />
+        <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading">
+          {"" + result?.totalAchievedMarks}
+        </Text>
         <Text style={$section} preset="subheading" tx="score.myscore" />
       </View>
       <View style={$line} />
       {sectionList.map(({ title, question, symbol, color }, index) => (
         <SectionItem
+          key={"" + (index + 1)}
           srNo={"" + (index + 1)}
           title={title}
           question={question}
@@ -110,7 +184,10 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
           color={color}
         />
       ))}
-      <Button style={$button} tx="score.reattempt" onPress={startTestSeries} />
+      <View style={$tryagain}>
+        <Button style={$button} tx="score.reattempt" onPress={startTestSeries} />
+        <Button style={$button} tx="score.home" onPress={startTestSeries} />
+      </View>
     </Screen>
   )
 })
@@ -138,6 +215,10 @@ const $line: TextStyle = {
   flex: 1,
   backgroundColor: colors.border,
   marginBottom: spacing.xs,
+}
+const $tryagain: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
 }
 
 const $duration: TextStyle = {

@@ -1,10 +1,14 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Dimensions, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Checkbox, Icon, Screen, Text, TextRounded } from "./../../../app/components"
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
+import { Question, mockQuestions } from "../../../app/mocks/demoQuestions"
+import { QuestionObject } from "../../../app/mocks/demoQuestions"
+import { CourseSubjectQuize, useStores } from "app/models"
+import { Quize } from "app/models/Course"
 // import { useStores } from "app/models"
 interface TestOverviewScreenProps extends AppStackScreenProps<"TestOverview"> {}
 
@@ -12,7 +16,15 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
   function TestOverviewScreen() {
     const [checked, setChecked] = useState(false)
     // Pull in one of our MST stores
-    // const { someStore, anotherStore } = useStores()
+    const {
+      ongoingQuizeStore: { getCurrentCourseId },
+      quizeStore: { getAllQuizes },
+    } = useStores()
+    const [totalQuestion, setTotalQuestion] = useState(0)
+    const [timeInMinute, setTimeInMinute] = useState(0)
+    const [totalMarks, setTotalMarks] = useState(0)
+    const [sectionList, setSectionList] = useState<SectionType[]>()
+
     // Pull in navigation via hook
     // const navigation = useNavigation()
     const startTestSeries = () => {
@@ -22,12 +34,12 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
       navigate({ name: "QuestionScreen", params: undefined })
     }
 
-    const sectionList = [
-      { title: "विभाग अ सामान्य बुद्धिमत्ता आणि तर्क", question: "45", marks: "45" },
-      { title: "विभाग ब सामान्य ज्ञान आणि सामान्य जागरूकता", question: "45", marks: "45" },
-      { title: "विभाग क प्राथमिक गणित", question: "45", marks: "45" },
-      { title: "विभाग ड हिंदी", question: "45", marks: "45" },
-    ]
+    // const sectionList = [
+    //   { title: "विभाग अ सामान्य बुद्धिमत्ता आणि तर्क", question: "45", marks: "45" },
+    //   { title: "विभाग ब सामान्य ज्ञान आणि सामान्य जागरूकता", question: "45", marks: "45" },
+    //   { title: "विभाग क प्राथमिक गणित", question: "45", marks: "45" },
+    //   { title: "विभाग ड हिंदी", question: "45", marks: "45" },
+    // ]
 
     type SectionType = {
       srNo: string
@@ -35,6 +47,17 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
       question: string
       marks: string
     }
+
+    const calculateResult = () => {
+      let totalScore: number = 0
+
+      mockQuestions.forEach((answer) => {
+        totalScore += answer?.maxScore
+      })
+      return { totalScore }
+    }
+
+    const result = calculateResult()
 
     function SectionItem(obj: SectionType) {
       return (
@@ -63,8 +86,41 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
       )
     }
 
+    useEffect(() => {
+      const courseSubjects: Quize[] = getAllQuizes?.filter(
+        (quize) => quize?.courseId == getCurrentCourseId,
+      )
+      const allQuizOfCourseId: CourseSubjectQuize[] =
+        courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz // always first index would be the currentCourseId
+
+      var myTotalQuestion: number = 0
+      var myTimeInMinute: number = 0
+      var myTotalMarks: number = 0
+      let mySectionList: SectionType[] = []
+      allQuizOfCourseId.map((currentQuiz: CourseSubjectQuize, index: number) => {
+        let currentQuestions: number = currentQuiz?.totalQuestion as number
+        let currentMarks: number = currentQuiz?.totalMarks as number
+        myTotalQuestion += currentQuestions
+        myTimeInMinute += currentQuiz?.timeInMinute as number
+        myTotalMarks += currentMarks
+
+        let mySectionType: SectionType = {
+          title: "" + currentQuiz?.quizName,
+          question: currentQuestions > 0 ? "" + currentQuestions : "0",
+          marks: currentMarks > 0 ? "" + currentMarks : "0",
+          srNo: "" + index + 1,
+        }
+        mySectionList.push(mySectionType)
+      })
+
+      setSectionList(mySectionList)
+      setTotalQuestion(myTotalQuestion)
+      setTimeInMinute(myTimeInMinute)
+      setTotalMarks(myTotalMarks)
+    }, [])
+    const sections: boolean = sectionList && sectionList?.length > 0 ? true : false
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
+      <Screen preset="scroll" safeAreaEdges={["top", "bottom"]} contentContainerStyle={$container}>
         <Text
           style={$title}
           preset="heading"
@@ -74,26 +130,27 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
         <View style={$line} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Icon size={20} style={$icon} icon={"lock"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="180" />
+          <Text style={$vals} preset="formLabel" text={`${totalQuestion}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.question" />
           <Icon size={20} style={$icon} icon={"heart"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="1" />
+          <Text style={$vals} preset="formLabel" text={`${timeInMinute}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.duration" />
           <Icon size={20} style={$icon} icon={"settings"} color={"black"} />
-          <Text style={$vals} preset="formLabel" text="60" />
+          <Text style={$vals} preset="formLabel" text={`${totalMarks}`} />
           <Text style={$duration} preset="formLabel" tx="testOverview.marks" />
         </View>
         <Text style={$section} preset="subheading" tx="testOverview.section" />
         <View style={$line} />
-        {sectionList.map(({ title, question, marks }, index) => (
-          <SectionItem
-            key={index}
-            srNo={"" + (index + 1)}
-            title={title}
-            question={question}
-            marks={marks}
-          />
-        ))}
+        {sections == true &&
+          sectionList?.map(({ title, question, marks }, index) => (
+            <SectionItem
+              key={index}
+              srNo={"" + (index + 1)}
+              title={title}
+              question={question}
+              marks={marks}
+            />
+          ))}
         <View style={{ marginTop: spacing.xxxl }}>
           <View style={$line} />
           {!checked && <Text style={$notChecked} preset="formLabel" tx="testOverview.accept" />}

@@ -1,6 +1,7 @@
 import { api } from "./../../app/services/api"
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { Alert } from "react-native"
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -28,6 +29,10 @@ export const AuthenticationStoreModel = types
   .actions(withSetPropAction)
   .actions((store) => ({
     async login(username: string, password: string) {
+      // if (__DEV__) {
+      //   store.setProp("jwtToken", "response.auth.jwtToken")
+      //   store.setProp("username", "response.auth.username")
+      // } else {
       const response = await api.login(username, password)
       console.log("🚀 ~ login ~ response:", response)
       if (response.kind === "ok") {
@@ -35,8 +40,10 @@ export const AuthenticationStoreModel = types
         store.setProp("username", response.auth.username)
         // store.authEmail = username
       } else {
+        Alert.alert("अरेरे!!", "काहीतरी चूक झाली")
         console.tron.error(`Error fetching authenticate: ${JSON.stringify(response)}`, [])
       }
+      // }
     },
     setJwtToken(value?: string) {
       store.jwtToken = value

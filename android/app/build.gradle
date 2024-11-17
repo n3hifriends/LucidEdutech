@@ -98,20 +98,20 @@ android {
         buildConfigField("boolean", "REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS", (findProperty("reactNative.unstable_useRuntimeSchedulerAlways") ?: true).toString())
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
 //        debug {
-//            storeFile file('../debug_key')
-//            storePassword 'Conquer'
-//            keyAlias 'Conquer'
-//            keyPassword 'Conquer'
+//            storeFile file('debug.keystore')
+//            storePassword 'android'
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
 //        }
+        debug {
+            storeFile file('../new_debug_key')
+            storePassword 'Conquer'
+            keyAlias 'Conquer'
+            keyPassword 'Conquer'
+        }
         release {
-            storeFile file('../release_key')
+            storeFile file('../new_release_key')
             storePassword 'Conquer'
             keyAlias 'Conquer'
             keyPassword 'Conquer'

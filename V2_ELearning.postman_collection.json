@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "f46ad710-d1f3-4f6f-9520-49fe0fceedd7",
+		"name": "ELearning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/authenticate",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\":\"ketan@gmail.com\",\r\n\"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV}}/authenticate",
+					"host": [
+						"{{DEV}}"
+					],
+					"path": [
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTM5ODQ3LCJleHAiOjE3Mjc5NDM0NDd9.cV1I2JoP9hdQIVphk9EdYLnF885TyNqUPue2zfBDx_5DEADck9WseIQPuUYf9d2ih2ggJnEmAbF9UP4AfQ6ymw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"role\": \"admin\",\r\n    \"firstName\": \"Ketan1\",\r\n    \"lastName\": \"Mahajan\",\r\n    \"userName\": \"mk15\",\r\n    \"email\": \"mk1@gmail.com\",\r\n    \"userPassword\": \"password\",\r\n    \"mobileNumber\": \"9921122122\",\r\n    \"statusId\": \"ACTIVE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV}}/user",
+					"host": [
+						"{{DEV}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/userDetails",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTQwMDEyLCJleHAiOjE3Mjc5NDM2MTJ9.aIuzmtenV1JhnaDsBj2LqtXAELlPL2yhVegoMVHLPA9De-3hG_OZVueTVY5OFsSE-y8LaF1Hl-1-qn8U33V1JQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV}}/userDetails",
+					"host": [
+						"{{DEV}}"
+					],
+					"path": [
+						"userDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/course/add",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTU0MjQzLCJleHAiOjE3Mjc5NTc4NDN9.wF6N-bB9CGmidFyT88GarqvnYvWYR8gAT93Ulut0_8m9ycrtnGmRx04dY_RlqGEPEnzd81Uly0ekdmGDhti2Ow",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseSubjects\": [\r\n        {\r\n            \"courseSubjectMedia\": [\r\n                {\r\n                    \"mediaLink\": \"link\",\r\n                    \"type\": \"pdf\",\r\n                    \"description\": \"dsdsds\"\r\n                }\r\n            ],\r\n            \"courseSubjectQuiz\": [\r\n                {\r\n                    \"quizName\": \"ads\",\r\n                    \"description\": \"dsaddasds\",\r\n                    \"isPaid\": true,\r\n                    \"totalQuestion\": 10,\r\n                    \"totalMarks\": 100,\r\n                    \"timeInMinute\": 25,\r\n                    \"startTimestamp\": \"2024-02-06T13:54:22.262+00:00\",\r\n                    \"endTimestamp\": \"2024-05-06T13:54:22.262+00:00\",\r\n                    \"isActive\": true,\r\n                    \"courseSubjectQuizQuestion\": [\r\n                        {\r\n                            \"userId\": \"1\",\r\n                            \"question\": \"dssdsad?\",\r\n                            \"correctAnswer\": \"sdadsd\",\r\n                            \"answerExplanation\": \"adds\",\r\n                            \"courseSubjectQuizMultiAnswer\": [\r\n                                {\r\n                                    \"userId\": \"1\",\r\n                                    \"type\": \"dssdsad?\",\r\n                                    \"value\": \"sdadsd\",\r\n                                    \"isCorrectAnswer\": true,\r\n                                    \"description\": \"dasds\",\r\n                                    \"isActive\": true\r\n                                }\r\n                            ]\r\n                        }\r\n                    ]\r\n                }\r\n            ],\r\n            \"subjectName\": \"sadas\",\r\n            \"subjectDescription\": \"dasdsa\",\r\n            \"subjectHeader\": \"sdasa\",\r\n            \"createdBy\": null,\r\n            \"createdDate\": null,\r\n            \"updatedBy\": null,\r\n            \"updatedDate\": null\r\n        }\r\n    ],\r\n    \"courseName\": \"sa\",\r\n    \"courseDescription\": \"dds\",\r\n    \"startDate\": null,\r\n    \"endDate\": null,\r\n    \"days\": null,\r\n    \"hours\": null,\r\n    \"createdBy\": null,\r\n    \"createdDate\": null,\r\n    \"updatedBy\": null,\r\n    \"updatedDate\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV}}/course",
+					"host": [
+						"{{DEV}}"
+					],
+					"path": [
+						"course"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "/course/add",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseSubjects\": [\r\n        {\r\n            \"courseSubjectMedia\": [\r\n                {\r\n                    \"mediaLink\": \"link\",\r\n                    \"type\": \"pdf\",\r\n                    \"description\": \"dsdsds\"\r\n                }\r\n            ],\r\n            \"courseSubjectQuiz\": [\r\n                {\r\n                    \"quizName\": \"ads\",\r\n                    \"description\": \"dsaddasds\",\r\n                    \"isPaid\": true,\r\n                    \"totalQuestion\": 10,\r\n                    \"totalMarks\": 100,\r\n                    \"timeInMinute\": 25,\r\n                    \"startTimestamp\": \"2024-02-06T13:54:22.262+00:00\",\r\n                    \"endTimestamp\": \"2024-05-06T13:54:22.262+00:00\",\r\n                    \"isActive\": true,\r\n                    \"courseSubjectQuizQuestion\": [\r\n                        {\r\n                            \"userId\": \"1\",\r\n                            \"question\": \"dssdsad?\",\r\n                            \"correctAnswer\": \"sdadsd\",\r\n                            \"answerExplanation\": \"adds\",\r\n                            \"courseSubjectQuizMultiAnswer\": [\r\n                                {\r\n                                    \"userId\": \"1\",\r\n                                    \"type\": \"dssdsad?\",\r\n                                    \"value\": \"sdadsd\",\r\n                                    \"isCorrectAnswer\": true,\r\n                                    \"description\": \"dasds\",\r\n                                    \"isActive\": true\r\n                                }\r\n                            ]\r\n                        }\r\n                    ]\r\n                }\r\n            ],\r\n            \"subjectName\": \"sadas\",\r\n            \"subjectDescription\": \"dasdsa\",\r\n            \"subjectHeader\": \"sdasa\",\r\n            \"created_by\": null,\r\n            \"created_date\": null,\r\n            \"updated_by\": null,\r\n            \"updatedDate\": null\r\n        }\r\n    ],\r\n    \"courseName\": \"sa\",\r\n    \"courseDescription\": \"dds\",\r\n    \"start_date\": null,\r\n    \"end_date\": null,\r\n    \"days\": null,\r\n    \"hours\": null,\r\n    \"created_by\": null,\r\n    \"created_date\": null,\r\n    \"updated_by\": null,\r\n    \"updatedDate\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEV}}/course",
+							"host": [
+								"{{DEV}}"
+							],
+							"path": [
+								"course"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "origin,access-control-request-method,access-control-request-headers,accept-encoding"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 03 Oct 2024 11:17:30 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"courseId\": 30,\n    \"courseSubjects\": [\n        {\n            \"courseSubjectId\": 29,\n            \"courseSubjectMedia\": [\n                {\n                    \"courseSubjectMediaId\": 21,\n                    \"mediaLink\": \"link\",\n                    \"type\": \"pdf\",\n                    \"description\": \"dsdsds\",\n                    \"created_by\": null,\n                    \"created_date\": null,\n                    \"updated_by\": null,\n                    \"updatedDate\": null\n                }\n            ],\n            \"courseSubjectQuiz\": [\n                {\n                    \"courseSubjectQuizId\": 19,\n                    \"courseSubjectId\": null,\n                    \"quizName\": \"ads\",\n                    \"description\": \"dsaddasds\",\n                    \"isPaid\": true,\n                    \"totalQuestion\": 10,\n                    \"totalMarks\": 100,\n                    \"timeInMinute\": 25,\n                    \"startTimestamp\": \"2024-02-06T13:54:22.262+00:00\",\n                    \"endTimestamp\": \"2024-05-06T13:54:22.262+00:00\",\n                    \"isActive\": true,\n                    \"created_by\": null,\n                    \"created_date\": null,\n                    \"updated_by\": null,\n                    \"updatedDate\": null,\n                    \"courseSubjectQuizQuestion\": [\n                        {\n                            \"courseSubjectQuizQuestionId\": 15,\n                            \"courseSubjectQuizId\": null,\n                            \"question\": \"dssdsad?\",\n                            \"answerExplanation\": \"adds\",\n                            \"created_by\": null,\n                            \"created_date\": null,\n                            \"updated_by\": null,\n                            \"updatedDate\": null,\n                            \"courseSubjectQuizMultiAnswer\": [\n                                {\n                                    \"courseSubjectQuizMultiAnsId\": 4,\n                                    \"courseSubjectQuizQuestionId\": null,\n                                    \"userId\": 1,\n                                    \"type\": \"dssdsad?\",\n                                    \"value\": \"sdadsd\",\n                                    \"isCorrectAnswer\": true,\n                                    \"description\": \"dasds\",\n                                    \"isActive\": true,\n                                    \"created_by\": null,\n                                    \"created_date\": null,\n                                    \"updated_by\": null,\n                                    \"updatedDate\": null\n                                }\n                            ]\n                        }\n                    ]\n                }\n            ],\n            \"courseId\": null,\n            \"subjectName\": \"sadas\",\n            \"subjectDescription\": \"dasdsa\",\n            \"subjectHeader\": \"sdasa\",\n            \"created_by\": null,\n            \"created_date\": null,\n            \"updated_by\": null,\n            \"updatedDate\": null\n        }\n    ],\n    \"courseName\": \"sa\",\n    \"courseDescription\": \"dds\",\n    \"start_date\": null,\n    \"end_date\": null,\n    \"days\": null,\n    \"hours\": null,\n    \"created_by\": null,\n    \"created_date\": null,\n    \"updated_by\": null,\n    \"updatedDate\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "/event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTYwMDcwLCJleHAiOjE3Mjc5NjM2NzB9.HXm9F8ZdRw2JzfKDOY09CtVbJoO2H2zw5uo58ypdNL0z454DemDR470XL46c8_81Xav6xY3N9OuN80hTjMPIWw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eventName\": \"Event 1\",\r\n    \"eventDescription\": \"dummy event\",\r\n    \"eventLink\": \"\",\r\n    \"startDate\": \"2024-02-06\",\r\n    \"endDate\": \"2024-02-06\",\r\n    \"eventInfo\": [\r\n        {\r\n            \"eventInfoName\": \"event info\",\r\n            \"eventInfoDescription\": \"sss\",\r\n            \"eventInfoLink\": \"ssss2w\",\r\n            \"startDate\": \"2024-02-06\",\r\n            \"endDate\": \"2024-02-06\",\r\n            \"createdBy\": null,\r\n            \"createdDate\": null,\r\n            \"updatedBy\": null,\r\n            \"updatedDate\": null\r\n        }\r\n    ],\r\n    \"createdBy\": null,\r\n    \"createdDate\": null,\r\n    \"updatedBy\": null,\r\n    \"updatedDate\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}/event",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/course",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTM4NjE1LCJleHAiOjE3Mjc5NDIyMTV9.E0amgcVfRb7M87TBvXvfKFvSNg6OIG8QFVWfEcw3HnQfEDhS6H66Zor0-LubTX0RiAdi9LIh-S72vU9y40XPdw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV}}/course",
+					"host": [
+						"{{DEV}}"
+					],
+					"path": [
+						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtazE1IiwiaWF0IjoxNzI3OTYwMDcwLCJleHAiOjE3Mjc5NjM2NzB9.HXm9F8ZdRw2JzfKDOY09CtVbJoO2H2zw5uo58ypdNL0z454DemDR470XL46c8_81Xav6xY3N9OuN80hTjMPIWw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}/event",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"event"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

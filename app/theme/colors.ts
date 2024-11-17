@@ -39,7 +39,7 @@ const palette = {
   green60: "rgba(0, 256, 0, 0.6)",
   red60: "rgba(256, 0, 0, 0.6)",
 
-  blue:"#0000FF"
+  blue: "#0000FF",
 } as const
 
 export const colors = {
