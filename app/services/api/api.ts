@@ -112,7 +112,6 @@ export class Api {
       username: email,
       password: password,
     })
-    Alert.alert("1", JSON.stringify(response))
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
       if (problem) return problem

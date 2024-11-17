@@ -131,11 +131,11 @@ const $itemsContainer: ViewStyle = {
 }
 
 const $button: ViewStyle = {
-  marginBottom: spacing.xs,
+  // marginBottom: spacing.xxs,
 }
 
 const $buttonContainer: ViewStyle = {
-  marginBottom: spacing.md,
+  marginBottom: spacing.xxl,
 }
 
 const $hint: TextStyle = {
