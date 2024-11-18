@@ -188,6 +188,7 @@ const en = {
   referenceMaterial: {
     references: "References",
     upcomingExams: "Upcoming Exams",
+    noUpcomingExams: "No Upcoming Exams",
     referenceMaterialTxt: "Scheme of Examination",
   },
   // @demo remove-block-end

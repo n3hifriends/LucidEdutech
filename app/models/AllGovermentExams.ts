@@ -18,7 +18,7 @@ export const AllGovermentExamsModel = types
     },
     get upcomingExams() {
       return store?.exams?.filter((exam) => {
-        return exam?.startDate != undefined
+        return exam?.isUpcoming
       })
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars

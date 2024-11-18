@@ -41,7 +41,7 @@ import {
 import CircularProgressBar from "app/components/CircularProgressBase"
 import { useNavigation } from "@react-navigation/core"
 import { Quize } from "app/models/Course"
-import { number } from "mobx-state-tree/dist/internal"
+import { number, reference } from "mobx-state-tree/dist/internal"
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
@@ -78,7 +78,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
           return allQuestions[state.index + 1]
         }
       case "index":
-        if (action.index < allQuestions.length - 1) {
+        if (action.index < allQuestions.length) {
           return allQuestions[action.index]
         }
       case "reset":
@@ -352,6 +352,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                 preset="default"
                 text={String(index + 1)}
                 onPress={() => {
+                  console.log("Index: " + index)
                   dispatch({ type: "index", index })
                 }}
               />
@@ -419,16 +420,16 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       {showOnCorrectAnswer() && (
         <View style={{ flex: 0.3 }}>
           <View style={$itemsContainer}>
-            <Text preset="bold">Solution: 5</Text>
-            <Text preset="bold">52% got it right</Text>
+            {/* <Text preset="bold">Solution: 5</Text>
+            <Text preset="bold">52% got it right</Text> */}
             <Text
               style={{ color: "blue", textDecorationLine: "underline" }}
               preset="formHelper"
               onPress={() => {
-                openLinkInBrowser("https://en.wikipedia.org/wiki/Programmer")
+                openLinkInBrowser("" + state?.referenceUrl)
               }}
             >
-              Reference
+              Reference: Ketan to provide
             </Text>
           </View>
 

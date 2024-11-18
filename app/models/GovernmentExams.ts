@@ -18,6 +18,7 @@ export const GovernmentExamsProps = {
   updatedBy: types.maybeNull(types.string), // Corresponds to updated_by
   updatedDate: types.maybeNull(types.Date), // Needs conversion from Timestamp
   eventInfo: types.array(GovernmentExamsInfoModel),
+  isUpcoming: types.boolean,
 }
 
 export const GovernmentExamsModel = types

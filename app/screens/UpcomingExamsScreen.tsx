@@ -20,10 +20,18 @@ export const UpcomingExamsScreen: FC<UpcomingExamsScreenProps> = observer(
     const [exams, setExams] = useState<GovernmentExams[]>(upcomingExams)
     // Pull in navigation via hook
     // const navigation = useNavigation()
+    let noUpcomingExams: boolean = exams?.length == 0
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
         <Text style={$title} preset="heading" tx="referenceMaterial.upcomingExams" />
         <View style={$itemsContainer}>
+          {noUpcomingExams && (
+            <Text
+              style={$noUpcomingTitle}
+              preset="default"
+              tx="referenceMaterial.noUpcomingExams"
+            />
+          )}
           {exams?.map((item, index) => (
             <ListItem
               myKey={index}
@@ -51,6 +59,11 @@ const $container: ViewStyle = {
 
 const $title: TextStyle = {
   marginBottom: spacing.sm,
+}
+
+const $noUpcomingTitle: TextStyle = {
+  marginTop: spacing.xxl,
+  alignSelf: "center",
 }
 
 const $date: TextStyle = {
