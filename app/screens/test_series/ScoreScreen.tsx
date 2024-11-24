@@ -172,6 +172,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
           {"" + result?.totalAchievedMarks}
         </Text>
         <Text style={$section} preset="subheading" tx="score.myscore" />
+        <Text style={$section} preset="subheading" text=" Ketan_to_provide" />
       </View>
       <View style={$line} />
       {sectionList.map(({ title, question, symbol, color }, index) => (

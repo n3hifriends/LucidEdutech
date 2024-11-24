@@ -164,8 +164,11 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     const courseSubjects: Quize[] = getAllQuizes?.filter(
       (quize) => quize?.courseId == getCurrentCourseId,
     )
-    const allQuizOfCourseId: CourseSubjectQuize[] =
+    let allQuizOfCourseId: CourseSubjectQuize[] =
       courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz
+    if (allQuizOfCourseId == undefined) {
+      allQuizOfCourseId = []
+    }
     let timeInMinute: number = 0
     let allQues: Question[] = []
     allQuizOfCourseId.map((currentQuiz: CourseSubjectQuize, index: number) => {
