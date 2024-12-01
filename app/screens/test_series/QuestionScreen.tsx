@@ -88,8 +88,11 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, initialQuestion)
-  const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
+  const [statex, dispatch] = useReducer(reducer, initialQuestion)
+  const state: Question = statex
+  const isReferenceImageAvailable: boolean = state?.referenceImageUrl
+    ? state?.referenceImageUrl?.length > 0
+    : false
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
   const clearIntervalRef = useRef<any>(null)
   const [appState, setAppState] = useState(AppState.currentState)
@@ -258,11 +261,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     let newMockQuestionFilterArr: Question[] = allQuestions.filter(
       (item, index) => item?.index === state?.index,
     )
-    console.log("newMockQuestionFilterArr: ", newMockQuestionFilterArr)
     let newMockQuestion: Question = newMockQuestionFilterArr[0]
     newMockQuestion.attempted = true
-    console.log("newMockQuestionFilterArr answer: ", answer)
-    console.log("newMockQuestionFilterArr newMockQuestion.correctAns: ", newMockQuestion.correctAns)
     let isCorrect: boolean = answer === newMockQuestion.correctAns
     newMockQuestion.isCorrect = isCorrect
     let currentCourseId: number = getCurrentCourseId as number
@@ -270,24 +270,29 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     setMyAnswer(answer)
   }
 
-  function isCorrectAnswer(index: string) {
+  function isCorrectAnswer(index: string, option: string) {
+    console.log("1 index: ", index)
+    console.log("2 myAnswer: ", myAnswer)
+    console.log("3 correctAnswer: ", correctAnswer)
     const isCorrectAns =
       myAnswer === undefined
         ? undefined
-        : myAnswer === correctAnswer && myAnswer === "" + index
+        : myAnswer === correctAnswer && myAnswer === "" + option
         ? "yes"
-        : myAnswer != "" + index
+        : myAnswer != "" + option
         ? undefined
         : "no"
+    console.log("4 isCorrectAns: ", isCorrectAns)
+
     return isCorrectAns
   }
 
-  function answerIcon(index: string) {
+  function answerIcon(index: string, option: string) {
     return myAnswer === undefined
       ? undefined
-      : myAnswer === correctAnswer && myAnswer === "" + index
+      : myAnswer === correctAnswer && myAnswer === "" + option
       ? "check"
-      : myAnswer != "" + index
+      : myAnswer != "" + option
       ? undefined
       : "x"
   }
@@ -412,10 +417,10 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             id={"" + index}
             text={"" + item}
             leftText={index + 1 + "."}
-            isCorrect={isCorrectAnswer("" + index) as AnswerTypes}
+            isCorrect={isCorrectAnswer("" + index, item) as AnswerTypes}
             topSeparator={true}
             bottomSeparator={true}
-            rightIcon={answerIcon("" + index)}
+            rightIcon={answerIcon("" + index, item)}
             onPress={() => checkAnswer(state, item)}
           />
         ))}
