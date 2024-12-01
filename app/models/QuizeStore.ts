@@ -48,6 +48,7 @@ export const QuizeStoreModel = types
       myCurrentCourseId: number,
       myCourseSubjectQuizQuestionId: number,
       isCorrect: boolean,
+      userAnswer: string,
     ) {
       const courseSubjects: Quize[] = store?.quize?.filter(
         (quize) => quize?.courseId == myCurrentCourseId,
@@ -62,12 +63,9 @@ export const QuizeStoreModel = types
               courseSubjectQuizQuestion?.courseSubjectQuizQuestionId ==
               myCourseSubjectQuizQuestionId
             ) {
+              courseSubjectQuizQuestion?.setUserAnswer(userAnswer)
               courseSubjectQuizQuestion?.setAttempted(true)
               courseSubjectQuizQuestion?.setIsCorrect(isCorrect)
-              console.log(
-                "attendAuestion: isCorrect: " + isCorrect,
-                JSON.stringify(courseSubjectQuizQuestion),
-              )
               return true
             } else {
               return false

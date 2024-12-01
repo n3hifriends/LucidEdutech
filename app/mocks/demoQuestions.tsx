@@ -9,6 +9,7 @@ export type Question = {
   attemptTimestamp: number | undefined
   attempted: boolean
   isCorrect: boolean
+  userAnswer: string
   maxScore: number
   answerExplanation: string
   courseSubjectQuizQuestionId: number
@@ -24,6 +25,7 @@ export let initialQuestion: Question = {
   attemptTimestamp: undefined,
   attempted: false,
   isCorrect: false,
+  userAnswer: "",
   maxScore: 0,
   answerExplanation: "",
   courseSubjectQuizQuestionId: 0,
@@ -46,6 +48,7 @@ export var mockQuestions: Question[] = [
     attemptTimestamp: undefined,
     attempted: false,
     isCorrect: false,
+    userAnswer: "",
     maxScore: 10,
     answerExplanation: "hey",
     courseSubjectQuizQuestionId: 0,

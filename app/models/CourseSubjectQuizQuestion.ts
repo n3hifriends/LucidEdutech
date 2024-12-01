@@ -18,6 +18,7 @@ export const CourseSubjectQuizQuestionProps = {
   updatedDate: types.maybeNull(types.string), // Timestamp
   attempted: types.maybeNull(types.boolean),
   isCorrect: types.maybeNull(types.boolean),
+  userAnswer: types.maybeNull(types.string),
   maxScore: types.maybeNull(types.number), // missing parameter
   courseSubjectQuizMultiAnswer: types.array(CourseSubjectQuizMultiAnswerModel),
 }
@@ -33,6 +34,9 @@ export const CourseSubjectQuizQuestionModel = types
     },
     setIsCorrect(isCorrect: boolean) {
       store?.setProp("isCorrect", isCorrect)
+    },
+    setUserAnswer(answer: string) {
+      store?.setProp("userAnswer", answer)
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

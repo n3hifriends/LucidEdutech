@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useReducer, useRef } from "react"
+import React, { FC, useEffect, useState, useReducer, useRef, useMemo } from "react"
 import * as Application from "expo-application"
 import {
   Linking,
@@ -62,7 +62,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     ongoingQuizeStore: { getCurrentCourseId },
     quizeStore: { getAllQuizes, attendQuestion },
   } = useStores()
-  const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
   const [allQuestions, setAllQuestions] = useState<Question[]>([])
   const [totalTimeLimit, setTotalTimeLimit] = useState<number>(25)
@@ -90,6 +89,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
 
   const [statex, dispatch] = useReducer(reducer, initialQuestion)
   const state: Question = statex
+  const [myAnswer, setMyAnswer] = useState<string | undefined>(state?.userAnswer)
+
   const isReferenceImageAvailable: boolean = state?.referenceImageUrl
     ? state?.referenceImageUrl?.length > 0
     : false
@@ -117,8 +118,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
     resetTimer() // Reset timer for the next question
     dispatch({ type: "next" })
-    console.log("state?.index", state?.index)
-    console.log("allQuestions?.length", allQuestions?.length)
   }
 
   function resetTimer() {
@@ -162,7 +161,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     showResult(true)
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const unsubscribe = AppState.addEventListener("change", handleAppStateChange)
     const courseSubjects: Quize[] = getAllQuizes?.filter(
       (quize) => quize?.courseId == getCurrentCourseId,
@@ -200,6 +199,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             correctAns: findCorrectAns,
             answerExplanation: "" + myQuiz?.answerExplanation,
             attemptTimestamp: undefined,
+            userAnswer: "" + myQuiz?.userAnswer,
             attempted: false,
             isCorrect: false,
             maxScore: 10,
@@ -237,6 +237,12 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     return () => clearInterval(myInterval) // Cleanup function to clear interval
   }, [state]) // Dependency array: trigger effect only on timeLeft change
 
+  useEffect(() => {
+    if (state?.attempted) {
+      checkAnswer(state, state?.userAnswer)
+    }
+  }, [state])
+
   const isLastQuestion = currentQuestion === allQuestions.length - 1
 
   function showResult(confirmTest: boolean) {
@@ -262,37 +268,45 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       (item, index) => item?.index === state?.index,
     )
     let newMockQuestion: Question = newMockQuestionFilterArr[0]
+
     newMockQuestion.attempted = true
+    newMockQuestion.userAnswer = answer
     let isCorrect: boolean = answer === newMockQuestion.correctAns
     newMockQuestion.isCorrect = isCorrect
     let currentCourseId: number = getCurrentCourseId as number
-    attendQuestion(currentCourseId, newMockQuestion?.courseSubjectQuizQuestionId, isCorrect)
+    attendQuestion(currentCourseId, newMockQuestion?.courseSubjectQuizQuestionId, isCorrect, answer)
     setMyAnswer(answer)
   }
 
-  function isCorrectAnswer(index: string, option: string) {
-    console.log("1 index: ", index)
-    console.log("2 myAnswer: ", myAnswer)
-    console.log("3 correctAnswer: ", correctAnswer)
+  function isCorrectAnswer(state: Question, index: string, option: string) {
+    let ans = myAnswer
+    // if (state?.attempted) {
+    //   return state?.userAnswer === "" + option ? "yes" : "no"
+    // }
+
     const isCorrectAns =
-      myAnswer === undefined
+      ans === undefined
         ? undefined
-        : myAnswer === correctAnswer && myAnswer === "" + option
+        : ans === correctAnswer && ans === "" + option
         ? "yes"
-        : myAnswer != "" + option
+        : ans != "" + option
         ? undefined
         : "no"
-    console.log("4 isCorrectAns: ", isCorrectAns)
 
     return isCorrectAns
   }
 
   function answerIcon(index: string, option: string) {
-    return myAnswer === undefined
+    let ans = myAnswer
+    // if (state?.attempted) {
+    //   return state?.isCorrect && state?.userAnswer === "" + option ? "check" : "x"
+    // }
+
+    return ans === undefined
       ? undefined
-      : myAnswer === correctAnswer && myAnswer === "" + option
+      : ans === correctAnswer && ans === "" + option
       ? "check"
-      : myAnswer != "" + option
+      : ans != "" + option
       ? undefined
       : "x"
   }
@@ -351,16 +365,15 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                 key={index}
                 style={$title}
                 backgroundColor={
-                  index < currentQuestion
-                    ? colors.palette.overlay50
-                    : index == currentQuestion
+                  index == currentQuestion
                     ? colors.palette.secondary300
+                    : item?.attempted
+                    ? colors.palette.overlay50
                     : undefined
                 }
                 preset="default"
                 text={String(index + 1)}
                 onPress={() => {
-                  console.log("Index: " + index)
                   dispatch({ type: "index", index })
                 }}
               />
@@ -417,7 +430,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             id={"" + index}
             text={"" + item}
             leftText={index + 1 + "."}
-            isCorrect={isCorrectAnswer("" + index, item) as AnswerTypes}
+            isCorrect={isCorrectAnswer(state, "" + index, item) as AnswerTypes}
             topSeparator={true}
             bottomSeparator={true}
             rightIcon={answerIcon("" + index, item)}
