@@ -49,6 +49,7 @@ export type AppStackParamList = {
   ReferenceMaterial: undefined
   ReferencePdf: undefined
   UpcomingExams: undefined
+  Subscriptions: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -86,6 +87,7 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
           <Stack.Screen name="Score" component={Screens.ScoreScreen} />
           <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+          <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
           <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
           <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
           <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />

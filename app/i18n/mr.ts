@@ -84,6 +84,7 @@ const mr = {
     podcastListTab: "सूचना",
     educationTab: "शिक्षण",
     referenceMaterialTab: "संदर्भ",
+    subscriptionTab: "सदस्यता",
   },
   demoCommunityScreen: {
     title: "येथे आपल्या बॅचमेटसाठी कनेक्ट करा",
@@ -183,6 +184,9 @@ const mr = {
   examList: {
     testSeriesList: "सराव पेपर्सची यादी",
     continue: "सुरू ठेवा",
+  },
+  subscriptionList: {
+    subscriptionList: "सदस्यता यादी",
   },
   referenceMaterial: {
     references: "संदर्भ",

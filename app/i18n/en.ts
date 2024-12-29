@@ -84,6 +84,7 @@ const en = {
     podcastListTab: "Announcement",
     educationTab: "Education",
     referenceMaterialTab: "Material",
+    subscriptionTab: "Subscriptions",
   },
   demoCommunityScreen: {
     title: "Connect with your batchmates here",
@@ -184,6 +185,9 @@ const en = {
   examList: {
     testSeriesList: "Test Series List",
     continue: "सुरू ठेवा",
+  },
+  subscriptionList: {
+    subscriptionList: "Subscription List",
   },
   referenceMaterial: {
     references: "References",
