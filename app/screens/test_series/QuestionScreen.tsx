@@ -338,7 +338,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const calculateProgress = () => {
     return 1 - timeLeft / state?.countdown
   }
-
+  const bigQuestionLength = state?.title?.length > 200
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -405,7 +405,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         <View style={{ flex: 0.7 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: showImage ? 0.7 : 1 }}>
-              <Text preset="bold" size={showImage ? "xxs" : "sm"}>
+              <Text preset="bold" size={showImage || bigQuestionLength ? "xxs" : "sm"}>
                 {state?.title}
               </Text>
             </View>
@@ -424,19 +424,49 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       </View>
 
       <View style={{ flex: 0.35 }}>
-        {state?.ansArr?.map((item: string, index: number) => (
-          <AnswerItem
-            key={"" + index}
-            id={"" + index}
-            text={"" + item}
-            leftText={index + 1 + "."}
-            isCorrect={isCorrectAnswer(state, "" + index, item) as AnswerTypes}
-            topSeparator={true}
-            bottomSeparator={true}
-            rightIcon={answerIcon("" + index, item)}
-            onPress={() => checkAnswer(state, item)}
-          />
-        ))}
+        {state?.ansArr?.map((item: string, index: number) => {
+          if (item.startsWith("http")) {
+            return (
+              <TouchableOpacity
+                style={{
+                  width: "12%",
+                  height: "15%",
+                  margin: 10,
+                  padding: 2,
+                  backgroundColor:
+                    isCorrectAnswer(state, "" + index, item) == undefined
+                      ? undefined
+                      : isCorrectAnswer(state, "" + index, item) === "yes"
+                      ? colors.palette.green60
+                      : colors.palette.red60,
+                }}
+                onPress={() => {
+                  checkAnswer(state, item)
+                }}
+              >
+                <AutoImage
+                  style={{ width: "100%", height: "100%" }}
+                  source={{
+                    uri: item,
+                  }}
+                />
+              </TouchableOpacity>
+            )
+          }
+          return (
+            <AnswerItem
+              key={"" + index}
+              id={"" + index}
+              text={"" + item}
+              leftText={index + 1 + "."}
+              isCorrect={isCorrectAnswer(state, "" + index, item) as AnswerTypes}
+              topSeparator={true}
+              bottomSeparator={true}
+              rightIcon={answerIcon("" + index, item)}
+              onPress={() => checkAnswer(state, item)}
+            />
+          )
+        })}
       </View>
       {showOnCorrectAnswer() && (
         <View style={{ flex: 0.3 }}>
