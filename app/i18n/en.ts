@@ -85,6 +85,14 @@ const en = {
     educationTab: "Education",
     referenceMaterialTab: "Material",
     subscriptionTab: "Subscriptions",
+    Courses: "Courses",
+    TestSeries: "Test Series",
+    LiveClasses: "Live Classes",
+    CurrentAffair: "Current Affairs",
+    Books: "Books",
+    Support: "Support",
+    Download: "Download",
+    Welcome: "Welcome",
   },
   demoCommunityScreen: {
     title: "Connect with your batchmates here",
@@ -194,6 +202,11 @@ const en = {
     upcomingExams: "Upcoming Exams",
     noUpcomingExams: "No Upcoming Exams",
     referenceMaterialTxt: "Scheme of Examination",
+  },
+  languageChange: {
+    English: "English",
+    Marathi: "Marathi",
+    Hindi: "Hindi",
   },
   // @demo remove-block-end
 }

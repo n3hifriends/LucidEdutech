@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import React, { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import * as Screens from "./../../app/screens"
 import Config from "../config"
@@ -20,6 +20,8 @@ import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "./../../app/theme"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import I18n from "i18n-js"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -50,6 +52,7 @@ export type AppStackParamList = {
   ReferencePdf: undefined
   UpcomingExams: undefined
   Subscriptions: undefined
+  Language: { lastScreen: "" } // from which screen Language being called
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -74,7 +77,7 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
+      initialRouteName={isAuthenticated ? "Language" : "Language"}
     >
       {isAuthenticated ? (
         <>
@@ -91,10 +94,15 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
           <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
           <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
+          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
         </>
       ) : (
         <>
+          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
+          {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
+
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
         </>
       )}
       {/** 🔥 Your screens go here */}
@@ -110,6 +118,17 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
   const colorScheme = useColorScheme()
 
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
+
+  async function loadLanguage() {
+    const storedLang = await AsyncStorage.getItem("language")
+    if (storedLang) {
+      I18n.locale = storedLang
+    }
+  }
+
+  useEffect(() => {
+    loadLanguage()
+  }, [])
 
   return (
     <NavigationContainer

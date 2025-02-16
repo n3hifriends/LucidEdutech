@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import * as Application from "expo-application"
 import { Linking, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { Button, ListItem, Screen, Text } from "../components"
@@ -6,6 +6,9 @@ import { DemoTabScreenProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
 import { isRTL } from "../i18n"
 import { useStores } from "../models"
+import I18n from "i18n-js"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { navigate } from "app/navigators"
 
 /**
  * @param {string} url - The URL to open in the browser.
@@ -22,6 +25,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     authenticationStore: { logout, authEmail, firstName, lastName, mobileNumber },
     // profileStore: { getProfile, userPassword },
   } = useStores()
+  const [currentLanguage, setNewLanguage] = useState<string>("en")
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
   // @ts-expect-error
   const usingFabric = global.nativeFabricUIManager != null
@@ -45,7 +49,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     [],
   )
   const handleBugpress = () => {
-    const recipientEmail = "shivanjalikalokhe10@gmail.com" // Replace with the desired recipient email
+    const recipientEmail = "agastiguidance@gmail.com" // Replace with the desired recipient email
     const subject = "Subject of the email" // Optional subject line (can be left blank)
     const body = "Body of the email" // Optional email body (can be left blank)
 
@@ -54,6 +58,14 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     }`
 
     Linking.openURL(url).catch((err) => console.error("Error opening email:", err))
+  }
+
+  async function changeLanguage(lang: string) {
+    let currentLang: string | null = await AsyncStorage.getItem("language")
+    if (currentLang == null) {
+      currentLang = "en"
+    }
+    setNewLanguage("" + currentLang)
   }
 
   return (
@@ -99,6 +111,15 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
               <Text>{Application.nativeBuildVersion}</Text>
             </View>
           }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={$item}>
+              <Text preset="bold">Change Language</Text>
+              <Text>{currentLanguage}</Text>
+            </View>
+          }
+          onPress={() => navigate("Language", { lastScreen: "Profile" })}
         />
       </View>
       <View style={$buttonContainer}>

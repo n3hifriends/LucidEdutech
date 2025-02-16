@@ -85,6 +85,14 @@ const mr = {
     educationTab: "शिक्षण",
     referenceMaterialTab: "संदर्भ",
     subscriptionTab: "सदस्यता",
+    Courses: "अभ्यासक्रम",
+    TestSeries: "चाचणी मालिका",
+    LiveClasses: "थेट वर्ग",
+    CurrentAffair: "चालू घडामोडी",
+    Books: "पुस्तके",
+    Support: "समर्थन",
+    Download: "डाउनलोड करा",
+    Welcome: "स्वागत आहे",
   },
   demoCommunityScreen: {
     title: "येथे आपल्या बॅचमेटसाठी कनेक्ट करा",
@@ -193,6 +201,11 @@ const mr = {
     upcomingExams: "येणाऱ्या परीक्षा",
     noUpcomingExams: "कोणतीही आगामी परीक्षा उपलब्ध नाही",
     referenceMaterialTxt: "परीक्षेच्या योजना",
+  },
+  languageChange: {
+    English: "अंग्रेज़ी",
+    Marathi: "मराठी",
+    Hindi: "हिंदी",
   },
 }
 
