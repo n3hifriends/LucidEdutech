@@ -93,17 +93,23 @@ const AppStack = observer(function AppStack() {
       )}
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
-      <Stack.Screen name="Language" component={Screens.LanguageScreen} />
-      <Stack.Screen name="Demo" component={DemoNavigator} />
-      <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
-      <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
-      <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
-      <Stack.Screen name="Score" component={Screens.ScoreScreen} />
-      <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
-      <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
-      <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
-      <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
-      <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
+          <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
+          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
+          <Stack.Screen name="Score" component={Screens.ScoreScreen} />
+          <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+          <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
+          <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
+          <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
+          <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
+          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
+        </>
+      ) : (
+        <></>
+      )}
     </Stack.Navigator>
   )
 })
@@ -113,7 +119,9 @@ export interface NavigationProps
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()
-
+  const {
+    authenticationStore: { jwtToken },
+  } = useStores()
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
 
   async function loadLanguage() {
@@ -121,6 +129,10 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
     if (storedLang) {
       I18n.locale = storedLang
       api.setLanguage(storedLang) // makes default/previously set language
+    }
+
+    if (jwtToken) {
+      api.setJwtToken(jwtToken)
     }
   }
 

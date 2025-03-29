@@ -33,10 +33,18 @@ export const ReferencePdfScreen: FC<ReferencePdfScreenProps> = observer(
     ]
     // Pull in navigation via hook
     // const navigation = useNavigation()
+    let noUpcomingExams: boolean = exams?.length == 0
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
         <Text style={$title} preset="heading" tx="referenceMaterial.references" />
         <View style={$itemsContainer}>
+          {noUpcomingExams && (
+            <Text
+              style={$noUpcomingTitle}
+              preset="default"
+              tx="referenceMaterial.noExamsAvailable"
+            />
+          )}
           {exams.map((item, index) => (
             <ListItem
               myKey={index}
@@ -82,4 +90,9 @@ const $title: TextStyle = {
 
 const $itemsContainer: ViewStyle = {
   marginBottom: spacing.xl,
+}
+
+const $noUpcomingTitle: TextStyle = {
+  marginTop: spacing.xxl,
+  alignSelf: "center",
 }

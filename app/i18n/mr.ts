@@ -25,6 +25,8 @@ const mr = {
     secondNamePlaceholder: "आपलं आडनाव टाका",
     mobileNumberPlaceholder: "आपला मोबाइल नंबर टाका",
     fillAllFields: "कृपया सर्व फील्ड भरा",
+    appBuildNumber: "एप्प बिल्ड क्रमांक",
+    changeLanguage: "भाषा बदला",
   },
   profileScreen: {
     emailFieldLabel: "ई-मेल",
@@ -201,6 +203,7 @@ const mr = {
     upcomingExams: "येणाऱ्या परीक्षा",
     noUpcomingExams: "कोणतीही आगामी परीक्षा उपलब्ध नाही",
     referenceMaterialTxt: "परीक्षेच्या योजना",
+    noExamsAvailable: "कोणतीही परीक्षा उपलब्ध नाही",
   },
   languageChange: {
     English: "अंग्रेज़ी",

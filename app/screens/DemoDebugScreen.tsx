@@ -52,8 +52,8 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
   )
   const handleBugpress = () => {
     const recipientEmail = "agastiguidance@gmail.com" // Replace with the desired recipient email
-    const subject = "Subject of the email" // Optional subject line (can be left blank)
-    const body = "Body of the email" // Optional email body (can be left blank)
+    const subject = "" // Optional subject line (can be left blank)
+    const body = "" // Optional email body (can be left blank)
 
     const url = `mailto:${recipientEmail}${subject ? `?subject=${subject}` : ""}${
       body ? `&body=${body}` : ""
@@ -115,7 +115,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text preset="bold">App Build Version</Text>
+              <Text preset="bold" tx="welcomeScreen.appBuildNumber"></Text>
               <Text>{Application.nativeBuildVersion}</Text>
             </View>
           }
@@ -123,7 +123,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
         <ListItem
           LeftComponent={
             <View style={$item}>
-              <Text preset="bold">Change Language</Text>
+              <Text preset="bold" tx="welcomeScreen.changeLanguage"></Text>
               <Text>{language}</Text>
             </View>
           }

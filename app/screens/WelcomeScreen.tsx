@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import React, { FC, useRef, useState } from "react"
+import React, { FC, useEffect, useRef, useState } from "react"
 import { ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
 import {
   Button, // @demo remove-current-line
@@ -8,12 +8,13 @@ import {
 } from "../components"
 import { isRTL } from "../i18n"
 import { useStores } from "../models" // @demo remove-current-line
-import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
+import { AppStackScreenProps, navigate } from "../navigators" // @demo remove-current-line
 import { colors, spacing } from "../theme"
 import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { useNavigation } from "@react-navigation/native"
 import { $nonEmptyObject } from "mobx-state-tree/dist/internal"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -41,7 +42,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   const { navigation } = _props
   const [signInError, setSignInError] = useState<string | undefined>(undefined)
 
-  function goNext() {
+  async function goNext() {
     if (
       myFirstName.length === 0 ||
       myLastName.length === 0 ||
@@ -55,7 +56,13 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     setFirstName(myFirstName)
     setLastName(myLastName)
     setMobileNumber(myMobileNumber)
-    navigation.navigate("Demo", { screen: "Home", params: {} })
+
+    const storedLang = await AsyncStorage.getItem("language")
+    if (storedLang) {
+      navigation.navigate("Demo", { screen: "Home", params: {} })
+    } else {
+      navigate("Language", { lastScreen: "Login" })
+    }
   }
 
   useHeader(

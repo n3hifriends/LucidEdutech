@@ -18,6 +18,8 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import I18n from "i18n-js"
 const { width, height } = Dimensions.get("window")
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -86,6 +88,19 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       setUsername("")
       // subscriber()
     }
+  }, [])
+
+  async function loadLanguage() {
+    const storedLang = await AsyncStorage.getItem("language")
+    console.log("🚀 ~ LoginScreen ~ storedLang:", storedLang)
+
+    if (storedLang) {
+      I18n.locale = storedLang
+    }
+  }
+
+  useEffect(() => {
+    loadLanguage()
   }, [])
 
   async function getLiveBroadcastSchedules(accessToken: string) {

@@ -11,6 +11,7 @@ const mpsc = require("../../assets/images/mpsc.png")
 // import { useNavigation } from "@react-navigation/native"
 import { useStores } from "app/models"
 import { QuizeSnapshotOut } from "app/models/Course"
+import { useLanguage } from "app/i18n/LanguageContext"
 
 interface ExamListScreenProps extends AppStackScreenProps<"ExamList"> {}
 
@@ -19,6 +20,7 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
     ongoingQuizeStore: { setCurrentCouserId },
     quizeStore: { fetchQuize, getAllQuizes },
   } = useStores()
+  const { language } = useLanguage()
   const [isExamLoaded, setExamLoaded] = useState<boolean>(false)
 
   const systemInstructionsEng = [
@@ -100,10 +102,14 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
   }
 
   useEffect(() => {
-    if (isExamLoaded == false) {
-      fetchAllExamination()
-    }
-  }, [isExamLoaded])
+    fetchAllExamination()
+  }, [language])
+
+  // useEffect(() => {
+  //   if (isExamLoaded == false) {
+  //     fetchAllExamination()
+  //   }
+  // }, [isExamLoaded, language])
 
   // set object values for objects as mapping is done
   const startTestSeries = (currentCourseId: any) => {

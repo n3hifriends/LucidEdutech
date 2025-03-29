@@ -26,12 +26,13 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
 
   const { changeLanguage } = useLanguage()
   const {
-    authenticationStore: { isAuthenticated },
+    authenticationStore: { isAuthenticated, jwtToken },
   } = useStores()
   const handleLanguageSelection = (language: string) => {
     changeLanguage(language)
     setSelectedLanguage(language)
     api.setLanguage(language)
+    api.setJwtToken(jwtToken)
 
     const callFrom = route?.params?.lastScreen
     if (callFrom && callFrom === "Profile") {
@@ -93,7 +94,7 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
         >
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={$letterStyle}>म</Text>
-            <Text style={$languageButtonText} tx="languageChange.Marathi"></Text>
+            <Text style={$languageButtonText}>मराठी</Text>
             <Text style={$languageButtonText}>Marathi</Text>
           </View>
         </TouchableOpacity>
