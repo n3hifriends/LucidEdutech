@@ -20,7 +20,6 @@ import type {
 import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
 import { AuthenticateSnapshotIn } from "./../../../app/models/AuthenticationStore"
 import { ProfileSnapshotIn } from "./../../../app/models"
-import { Alert } from "react-native"
 
 /**
  * Configuring the apisauce instance.
@@ -48,12 +47,18 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
+        languageCode: "en",
       },
     })
   }
 
   setJwtToken(jwtToken?: string) {
     this.apisauce.setHeader("Authorization", `Bearer ${jwtToken}`)
+  }
+
+  // Function to update language header dynamically
+  setLanguage(languageCode: string) {
+    this.apisauce.setHeader("languageCode", languageCode)
   }
 
   async getQuize(): Promise<{ kind: "ok"; quize: QuizeStore[] } | GeneralApiProblem> {

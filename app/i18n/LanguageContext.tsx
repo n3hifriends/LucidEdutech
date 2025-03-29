@@ -14,7 +14,8 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 //Language provider component
 export const LanguageProvider: React.FC = ({ children }) => {
-  const [language, setLanguage] = useState<string>(I18n.locale)
+  // const [language, setLanguage] = useState<string>(I18n.locale)
+  const [language, setLanguage] = useState<string>("en")
 
   //Local language
   async function loadLanguage() {

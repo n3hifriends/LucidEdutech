@@ -26,7 +26,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     authenticationStore: { logout, authEmail, firstName, lastName, mobileNumber },
     // profileStore: { getProfile, userPassword },
   } = useStores()
-  const [currentLanguage, setNewLanguage] = useState<string>("-")
+  // const [newLanguage, setNewLanguage] = useState<string>("-")
   const { language } = useLanguage()
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
   // @ts-expect-error
@@ -62,19 +62,19 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     Linking.openURL(url).catch((err) => console.error("Error opening email:", err))
   }
 
-  async function changeLanguage() {
-    let currentLang: string | null = await AsyncStorage.getItem("language")
-    console.log("🚀 ~ changeLanguage ~ currentLang:", currentLang)
+  // async function changeLanguage() {
+  //   let currentLang: string | null = await AsyncStorage.getItem("language")
+  //   console.log("🚀 ~ changeLanguage ~ currentLang:", currentLang)
 
-    if (currentLang == null) {
-      currentLang = "en"
-    }
-    setNewLanguage("" + currentLang)
-  }
+  //   if (currentLang == null) {
+  //     currentLang = "en"
+  //   }
+  //   setNewLanguage("" + currentLang)
+  // }
 
-  useEffect(() => {
-    changeLanguage()
-  }, [])
+  // useEffect(() => {
+  //   changeLanguage()
+  // }, [])
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>

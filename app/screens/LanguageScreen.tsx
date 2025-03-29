@@ -11,6 +11,7 @@ import { spacing } from "app/theme/spacing"
 // import { useStores } from "app/models"
 import { useLanguage } from "app/i18n/LanguageContext"
 import { useStores } from "app/models"
+import { api } from "./../../app/services/api"
 
 interface LanguageScreenProps extends AppStackScreenProps<"Language"> {}
 
@@ -30,6 +31,8 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
   const handleLanguageSelection = (language: string) => {
     changeLanguage(language)
     setSelectedLanguage(language)
+    api.setLanguage(language)
+
     const callFrom = route?.params?.lastScreen
     if (callFrom && callFrom === "Profile") {
       // if (navigationRef.canGoBack()) {

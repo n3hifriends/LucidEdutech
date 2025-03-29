@@ -22,7 +22,8 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "./../../app/theme"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import I18n from "i18n-js"
-import { LanguageProvider } from "app/i18n/LanguageContext"
+import { LanguageProvider, useLanguage } from "app/i18n/LanguageContext"
+import { api } from "app/services/api"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -119,6 +120,7 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
     const storedLang = await AsyncStorage.getItem("language")
     if (storedLang) {
       I18n.locale = storedLang
+      api.setLanguage(storedLang) // makes default/previously set language
     }
   }
 
