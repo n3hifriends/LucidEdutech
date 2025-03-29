@@ -22,6 +22,7 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "./../../app/theme"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import I18n from "i18n-js"
+import { LanguageProvider } from "app/i18n/LanguageContext"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -77,36 +78,31 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Language" : "Language"}
+      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
-          <Stack.Screen name="Demo" component={DemoNavigator} />
-          <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
-
-          <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
-          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
-          <Stack.Screen name="Score" component={Screens.ScoreScreen} />
-          <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
-          <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
-          <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
-          <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
-          <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
-          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
         </>
       ) : (
         <>
-          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
           {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
-
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
         </>
       )}
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="Language" component={Screens.LanguageScreen} />
+      <Stack.Screen name="Demo" component={DemoNavigator} />
+      <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
+      <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
+      <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
+      <Stack.Screen name="Score" component={Screens.ScoreScreen} />
+      <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+      <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
+      <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
+      <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
+      <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
     </Stack.Navigator>
   )
 })
@@ -131,12 +127,14 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
   }, [])
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      {...props}
-    >
-      <AppStack />
-    </NavigationContainer>
+    <LanguageProvider>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        {...props}
+      >
+        <AppStack />
+      </NavigationContainer>
+    </LanguageProvider>
   )
 })

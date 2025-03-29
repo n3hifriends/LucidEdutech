@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import * as Application from "expo-application"
 import { Linking, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { Button, ListItem, Screen, Text } from "../components"
@@ -9,6 +9,7 @@ import { useStores } from "../models"
 import I18n from "i18n-js"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { navigate } from "app/navigators"
+import { useLanguage } from "app/i18n/LanguageContext"
 
 /**
  * @param {string} url - The URL to open in the browser.
@@ -25,7 +26,8 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     authenticationStore: { logout, authEmail, firstName, lastName, mobileNumber },
     // profileStore: { getProfile, userPassword },
   } = useStores()
-  const [currentLanguage, setNewLanguage] = useState<string>("en")
+  const [currentLanguage, setNewLanguage] = useState<string>("-")
+  const { language } = useLanguage()
   const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
   // @ts-expect-error
   const usingFabric = global.nativeFabricUIManager != null
@@ -60,13 +62,19 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
     Linking.openURL(url).catch((err) => console.error("Error opening email:", err))
   }
 
-  async function changeLanguage(lang: string) {
+  async function changeLanguage() {
     let currentLang: string | null = await AsyncStorage.getItem("language")
+    console.log("🚀 ~ changeLanguage ~ currentLang:", currentLang)
+
     if (currentLang == null) {
       currentLang = "en"
     }
     setNewLanguage("" + currentLang)
   }
+
+  useEffect(() => {
+    changeLanguage()
+  }, [])
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
@@ -116,7 +124,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           LeftComponent={
             <View style={$item}>
               <Text preset="bold">Change Language</Text>
-              <Text>{currentLanguage}</Text>
+              <Text>{language}</Text>
             </View>
           }
           onPress={() => navigate("Language", { lastScreen: "Profile" })}

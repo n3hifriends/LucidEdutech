@@ -9,8 +9,8 @@ import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { spacing } from "app/theme/spacing"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
-import I18n from "i18n-js"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useLanguage } from "app/i18n/LanguageContext"
+import { useStores } from "app/models"
 
 interface LanguageScreenProps extends AppStackScreenProps<"Language"> {}
 
@@ -23,10 +23,13 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
   const [selectedLanguage, setSelectedLanguage] = useState<string>("")
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
 
-  async function changeLanguage(lang: string) {
-    I18n.locale = lang
-    await AsyncStorage.setItem("language", lang) // Store language preference
-
+  const { changeLanguage } = useLanguage()
+  const {
+    authenticationStore: { isAuthenticated },
+  } = useStores()
+  const handleLanguageSelection = (language: string) => {
+    changeLanguage(language)
+    setSelectedLanguage(language)
     const callFrom = route?.params?.lastScreen
     if (callFrom && callFrom === "Profile") {
       // if (navigationRef.canGoBack()) {
@@ -34,14 +37,12 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
       // } else {
       navigate("Demo", { screen: "Home" })
       // }
+    } else if (isAuthenticated) {
+      // this is workaround,not the sulution
+      navigate("Demo", { screen: "Home" })
     } else {
-      navigate({ name: "Home" })
+      navigate({ name: "Login" })
     }
-  }
-
-  const handleLanguageSelection = (language: string) => {
-    setSelectedLanguage(language)
-    changeLanguage(language)
   }
 
   return (
@@ -69,12 +70,14 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
             $languageButton,
             selectedLanguage === "hindi" && $selectedButton, // Highlight selected
           ]}
-          onPress={() => handleLanguageSelection("hi")}
+          onPress={() => {
+            // handleLanguageSelection("hi")
+          }}
         >
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={$letterStyle}>अ</Text>
             <Text style={$languageButtonText}>हिंदी</Text>
-            <Text style={$languageButtonText}>Hindi</Text>
+            <Text style={$languageButtonText}>Hindi (coming soon)</Text>
           </View>
         </TouchableOpacity>
 
@@ -83,7 +86,7 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
             $languageButton,
             selectedLanguage === "marathi" && $selectedButton, // Highlight selected
           ]}
-          onPress={() => handleLanguageSelection("marathi")}
+          onPress={() => handleLanguageSelection("mr")}
         >
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={$letterStyle}>म</Text>
@@ -91,11 +94,6 @@ export const LanguageScreen: FC<LanguageScreenProps> = observer(function Languag
             <Text style={$languageButtonText}>Marathi</Text>
           </View>
         </TouchableOpacity>
-
-        {/* Optional: Display selected language */}
-        {selectedLanguage && (
-          <Text style={$selectedLanguageText}>Selected:ViewStyle={selectedLanguage}</Text>
-        )}
       </View>
       {/* <View
         style={[$bottomContainer, $bottomContainerInsets, { backgroundColor: colors.background }]}
