@@ -20,6 +20,7 @@ import type {
 import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
 import { AuthenticateSnapshotIn } from "./../../../app/models/AuthenticationStore"
 import { ProfileSnapshotIn } from "./../../../app/models"
+import { UserType } from "../models/user"
 
 /**
  * Configuring the apisauce instance.
@@ -184,6 +185,27 @@ export class Api {
       const rawData = response.data
       const govermentExams: GovernmentExams[] = rawData as GovernmentExams[]
       return { kind: "ok", exams: govermentExams }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async signUp(user: UserType): Promise<{ kind: "ok" } | GeneralApiProblem> {
+    const response = await this.apisauce.post("/user", user)
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const rawData = response.data
+      return { kind: "ok" }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(

@@ -15,6 +15,8 @@ import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { useNavigation } from "@react-navigation/native"
 import { $nonEmptyObject } from "mobx-state-tree/dist/internal"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { api } from "app/services/api"
+import { UserType, RoleType } from "app/services/models/user"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -23,6 +25,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     authenticationStore: {
       logout,
       jwtToken,
+      isAuthenticated,
       authEmail,
       firstName,
       lastName,
@@ -30,6 +33,8 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       setFirstName,
       setLastName,
       setMobileNumber,
+      login,
+      signUp,
     },
     // quizeStore: { fetchQuize, getAllQuizes },
     // profileStore: { getProfile, userPassword },
@@ -52,23 +57,45 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       setSignInError("welcomeScreen.fillAllFields")
       return
     }
-    setSignInError(undefined)
-    setFirstName(myFirstName)
-    setLastName(myLastName)
-    setMobileNumber(myMobileNumber)
 
-    const storedLang = await AsyncStorage.getItem("language")
-    if (storedLang) {
-      navigation.navigate("Demo", { screen: "Home", params: {} })
+    if (isAuthenticated) {
+      setSignInError(undefined)
+      setFirstName(myFirstName)
+      setLastName(myLastName)
+      setMobileNumber(myMobileNumber)
+
+      const storedLang = await AsyncStorage.getItem("language")
+      if (storedLang) {
+        navigation.navigate("Demo", { screen: "Home", params: {} })
+      } else {
+        navigate("Language", { lastScreen: "Login" })
+      }
     } else {
-      navigate("Language", { lastScreen: "Login" })
+      // Create New User
+      const user: UserType = {
+        firstName: myFirstName,
+        lastName: myLastName,
+        email: authEmail,
+        mobileNumber: myMobileNumber,
+        userName: myFirstName,
+        role: "student",
+        userPassword: "password",
+        statusId: "ACTIVE",
+      }
+      const response = await signUp(user)
+      if (response.kind == "ok") {
+        await login(authEmail, user.userPassword)
+      }
     }
   }
 
   useHeader(
     {
       rightTx: "common.logOut",
-      onRightPress: logout,
+      onRightPress: () => {
+        logout()
+        navigate("Login")
+      },
     },
     [logout],
   )
