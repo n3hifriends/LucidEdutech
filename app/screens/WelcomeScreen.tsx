@@ -17,6 +17,8 @@ import { $nonEmptyObject } from "mobx-state-tree/dist/internal"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { api } from "app/services/api"
 import { UserType, RoleType } from "app/services/models/user"
+import { AuthenticateSnapshotIn } from "app/models/AuthenticationStore"
+import { GeneralApiProblem } from "app/services/api/apiProblem"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -84,7 +86,13 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       }
       const response = await signUp(user)
       if (response.kind == "ok") {
-        await login(authEmail, user.userPassword)
+        const loginResponse: { kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem =
+          await login(authEmail, user.userPassword)
+        if (loginResponse.kind == "ok") {
+          navigate("Demo", { screen: "Home" })
+        } else {
+          setSignInError("welcomeScreen.fillAllFields")
+        }
       }
     }
   }
@@ -171,9 +179,9 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
           status={error ? "error" : undefined}
         />
       </View>
+      {signInError && <Text tx={err} size="sm" weight="light" style={$hint} />}
 
       <View style={[$bottomContainer, $bottomContainerInsets]}>
-        {signInError && <Text tx={err} size="sm" weight="light" style={$hint} />}
         <Button
           testID="next-screen-button"
           preset="reversed"

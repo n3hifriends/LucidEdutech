@@ -169,18 +169,18 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         async function loginServer(email: string) {
           const response: { kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem =
             await login(email, "password")
-          if (response.kind == "ok") {
-            setAuthEmail(email)
-            // setMobileNumber(mobileNumber)
-            setAuthPassword("password")
-            navigate("Welcome")
-          }
+          // if (response.kind == "ok") {
+          setAuthEmail(email)
+          // setMobileNumber(mobileNumber)
+          setAuthPassword("password")
+          navigate("Welcome")
+          // }
         }
         console.log("🚀 ~ loginServer ~ login 3:", login)
         // if (__DEV__) {
-        loginServer("ketan@gmail.com")
+        // loginServer("ketan@gmail.com")
         // } else {
-        //   loginServer(email)
+        loginServer(email)
         // }
         setSignInError(undefined)
       } else {

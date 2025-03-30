@@ -26,6 +26,8 @@ const en = {
     secondNamePlaceholder: "Enter your last name",
     mobileNumberPlaceholder: "Enter your mobile number",
     fillAllFields: "Please fill in all fields",
+    unableToProcess:
+      "Currently we are unable to process your request. Please contact administration.",
     appBuildNumber: "App Build Number",
     changeLanguage: "Change Language",
   },

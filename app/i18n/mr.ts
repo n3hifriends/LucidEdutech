@@ -27,6 +27,7 @@ const mr = {
     fillAllFields: "कृपया सर्व फील्ड भरा",
     appBuildNumber: "एप्प बिल्ड क्रमांक",
     changeLanguage: "भाषा बदला",
+    unableToProcess: "सध्या आम्ही तुमच्या विनंतीवर प्रक्रिया करू शकत नाही.",
   },
   profileScreen: {
     emailFieldLabel: "ई-मेल",

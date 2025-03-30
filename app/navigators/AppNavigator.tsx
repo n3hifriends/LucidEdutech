@@ -89,6 +89,7 @@ const AppStack = observer(function AppStack() {
         <>
           {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} /> */}
         </>
       )}
       {/** 🔥 Your screens go here */}
