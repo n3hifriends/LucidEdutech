@@ -17,6 +17,7 @@ export const CourseSubjectQuizQuestionProps = {
   updatedBy: types.maybeNull(types.string),
   updatedDate: types.maybeNull(types.string), // Timestamp
   attempted: types.maybeNull(types.boolean),
+  attemptedCourseSubjectQuizMultiAnsId: types.maybeNull(types.number),
   isCorrect: types.maybeNull(types.boolean),
   userAnswer: types.maybeNull(types.string),
   maxScore: types.maybeNull(types.number), // missing parameter
@@ -31,6 +32,10 @@ export const CourseSubjectQuizQuestionModel = types
     setAttempted(isAttempted: boolean) {
       // store?.attempted = isAttempted
       store?.setProp("attempted", isAttempted)
+    },
+    setAttemptedCourseSubjectQuizMultiAnsId(courseSubjectQuizMultiAnsId: number) {
+      // store?.attempted = isAttempted
+      store?.setProp("attemptedCourseSubjectQuizMultiAnsId", courseSubjectQuizMultiAnsId)
     },
     setIsCorrect(isCorrect: boolean) {
       store?.setProp("isCorrect", isCorrect)

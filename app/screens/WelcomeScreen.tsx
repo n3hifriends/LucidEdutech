@@ -102,7 +102,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       rightTx: "common.logOut",
       onRightPress: () => {
         logout()
-        navigate("Login")
+        // navigate("Login")
       },
     },
     [logout],

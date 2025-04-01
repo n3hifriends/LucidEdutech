@@ -33,6 +33,7 @@ import {
 } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import {
+  AnsAndId,
   Question,
   QuestionObject,
   initialQuestion,
@@ -179,12 +180,15 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       let groupwiseQues: Question[] = quizes?.map(
         (myQuiz: CourseSubjectQuizQuestion, index: number) => {
           let findCorrectAns: string = ""
-          let ansArr: string[] = myQuiz?.courseSubjectQuizMultiAnswer?.map(
+          let ansArr: AnsAndId[] = myQuiz?.courseSubjectQuizMultiAnswer?.map(
             (item: CourseSubjectQuizMultiAnswer) => {
               if (item?.isCorrectAnswer === true) {
                 findCorrectAns = "" + item.value
               }
-              return "" + item.value
+              return {
+                answer: "" + item.value,
+                answerId: item.courseSubjectQuizMultiAnsId as number,
+              }
             },
           )
           let convertIntoQuiz: Question = {
@@ -204,6 +208,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             isCorrect: false,
             maxScore: 10,
             courseSubjectQuizQuestionId: myQuiz?.courseSubjectQuizQuestionId as number,
+            attemptedCourseSubjectQuizMultiAnsId: 0,
           }
           allQues.push(convertIntoQuiz)
           return convertIntoQuiz
@@ -274,7 +279,17 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     let isCorrect: boolean = answer === newMockQuestion.correctAns
     newMockQuestion.isCorrect = isCorrect
     let currentCourseId: number = getCurrentCourseId as number
-    attendQuestion(currentCourseId, newMockQuestion?.courseSubjectQuizQuestionId, isCorrect, answer)
+    const myAns: AnsAndId[] = newMockQuestion?.ansArr?.filter(
+      (item: AnsAndId, index: number) => item?.answer == answer,
+    )
+    const attemptedCourseSubjectQuizMultiAnsId: number = myAns[0]?.answerId
+    attendQuestion(
+      currentCourseId,
+      newMockQuestion?.courseSubjectQuizQuestionId,
+      attemptedCourseSubjectQuizMultiAnsId,
+      isCorrect,
+      answer,
+    )
     setMyAnswer(answer)
   }
 
@@ -424,8 +439,8 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       </View>
 
       <View style={{ flex: 0.35 }}>
-        {state?.ansArr?.map((item: string, index: number) => {
-          if (item.startsWith("http")) {
+        {state?.ansArr?.map((item: AnsAndId, index: number) => {
+          if (item?.answer.startsWith("http")) {
             return (
               <TouchableOpacity
                 style={{
@@ -434,20 +449,20 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                   margin: 10,
                   padding: 2,
                   backgroundColor:
-                    isCorrectAnswer(state, "" + index, item) == undefined
+                    isCorrectAnswer(state, "" + index, item?.answer) == undefined
                       ? undefined
-                      : isCorrectAnswer(state, "" + index, item) === "yes"
+                      : isCorrectAnswer(state, "" + index, item?.answer) === "yes"
                       ? colors.palette.green60
                       : colors.palette.red60,
                 }}
                 onPress={() => {
-                  checkAnswer(state, item)
+                  checkAnswer(state, item?.answer)
                 }}
               >
                 <AutoImage
                   style={{ width: "100%", height: "100%" }}
                   source={{
-                    uri: item,
+                    uri: item?.answer,
                   }}
                 />
               </TouchableOpacity>
@@ -457,13 +472,13 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             <AnswerItem
               key={"" + index}
               id={"" + index}
-              text={"" + item}
+              text={"" + item?.answer}
               leftText={index + 1 + "."}
-              isCorrect={isCorrectAnswer(state, "" + index, item) as AnswerTypes}
+              isCorrect={isCorrectAnswer(state, "" + index, item?.answer) as AnswerTypes}
               topSeparator={true}
               bottomSeparator={true}
-              rightIcon={answerIcon("" + index, item)}
-              onPress={() => checkAnswer(state, item)}
+              rightIcon={answerIcon("" + index, item?.answer)}
+              onPress={() => checkAnswer(state, item?.answer)}
             />
           )
         })}

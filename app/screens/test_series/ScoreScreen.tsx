@@ -5,7 +5,8 @@ import { Button, Icon, Screen, Text, TextRounded } from "./../../../app/componen
 import { colors, spacing } from "./../../../app/theme"
 import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
-import { ScoreBoard, useStores } from "app/models"
+import { CourseSubjectQuize, ScoreBoard, useStores } from "app/models"
+import { SaveQuizAndGenerateReportResponse } from "app/services/models/saveQuizAndGenerateReport"
 
 // import { useStores } from "app/models"
 
@@ -13,10 +14,10 @@ interface ScoreScreenProps extends AppStackScreenProps<"Score"> {}
 
 export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen() {
   const navigation = useNavigation()
-
+  const [totalAchievedMarks, setTotalAchievedMarks] = useState<string>("-1")
   const {
     ongoingQuizeStore: { getCurrentCourseId },
-    quizeStore: { getScoreBoard },
+    quizeStore: { getScoreBoard, getCurrentCourse, saveCurrentCourseAttempt },
   } = useStores()
 
   // const sendResultToBackend = async (result: any) => {
@@ -43,6 +44,25 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
   //   }
   // }
 
+  async function saveAttemptedQuiz() {
+    const quiz: CourseSubjectQuize[] = getCurrentCourse(getCurrentCourseId as number)
+    const saveAttemptResponse: SaveQuizAndGenerateReportResponse | undefined =
+      await saveCurrentCourseAttempt(quiz)
+    if (saveAttemptResponse) {
+      setTotalAchievedMarks("" + saveAttemptResponse?.score)
+      // return {
+      //   totalTimeInMinute,
+      //   totalQuestion,
+      //   totalMarks,
+      //   totalAchievedMarks,
+      //   totalCorrectAns,
+      //   totalWrongAns,
+      //   totalAttempted,
+      //   totalNotAttempted,
+      // } as ScoreBoard
+    }
+  }
+
   // Handle back button
   useEffect(() => {
     // sendResultToBackend(result)
@@ -54,6 +74,7 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
         // Handle custom action here (optional)
       }
     })
+    saveAttemptedQuiz()
     return () => {
       unsubscribe()
     }
@@ -169,10 +190,9 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
       </View>
       <View style={{ flexDirection: "row" }}>
         <Text style={[$section, { marginRight: spacing.sm }]} preset="subheading">
-          {"" + result?.totalAchievedMarks}
+          {"" + totalAchievedMarks ? totalAchievedMarks : result?.totalAchievedMarks}
         </Text>
         <Text style={$section} preset="subheading" tx="score.myscore" />
-        <Text style={$section} preset="subheading" text=" Ketan_to_provide" />
       </View>
       <View style={$line} />
       {sectionList.map(({ title, question, symbol, color }, index) => (
