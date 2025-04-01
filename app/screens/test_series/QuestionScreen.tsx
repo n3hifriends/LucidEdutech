@@ -24,7 +24,7 @@ import {
 } from "../../components"
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
-import { isRTL } from "../../i18n"
+import { isRTL, translate } from "../../i18n"
 import {
   CourseSubjectQuize,
   CourseSubjectQuizMultiAnswer,
@@ -252,15 +252,14 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
 
   function showResult(confirmTest: boolean) {
     if (confirmTest) {
-      Alert.alert("खा‍त्री करा", "तुम्हाला खात्री आहे की तुम्ही चाचणी सबमिट करू इच्छिता?", [
-        // Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
+      Alert.alert(translate("questionScreen.confirm"), translate("questionScreen.reConfirm"), [
         {
-          text: "होय",
+          text: translate("questionScreen.yes"),
           onPress: () => {
             navigate({ name: "Score", params: undefined })
           },
         },
-        { text: "नाही", onPress: () => {}, style: "cancel" },
+        { text: translate("questionScreen.no"), onPress: () => {}, style: "cancel" },
       ])
     } else {
       navigate({ name: "Score", params: undefined })

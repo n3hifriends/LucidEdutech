@@ -17,7 +17,7 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
     const [checked, setChecked] = useState(false)
     // Pull in one of our MST stores
     const {
-      ongoingQuizeStore: { getCurrentCourseId },
+      ongoingQuizeStore: { getCurrentCourseId, getCurrentCourseName },
       quizeStore: { getAllQuizes },
     } = useStores()
     const [totalQuestion, setTotalQuestion] = useState(0)
@@ -126,7 +126,7 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
         <Text
           style={$title}
           preset="heading"
-          text="एसएससी जीडी मॉक चाचणी"
+          text={"" + getCurrentCourseName}
           // tx="testOverview.testName"
         />
         <View style={$line} />
@@ -157,16 +157,19 @@ export const TestOverviewScreen: FC<TestOverviewScreenProps> = observer(
           <View style={$line} />
           {!checked && <Text style={$notChecked} preset="formLabel" tx="testOverview.accept" />}
           <Checkbox
-            text={
-              "मी सूचना वाचल्या आणि समजल्या आहेत. मी सहमत आहे की सूचनांचे पालन न केल्यास, मला या चाचणीपासून व/किंवा शिस्तभंगाच्या कारवाईपासून वगळण्यात येईल, ज्यामध्ये भविष्यातील चाचण्यांवरील बंदी समाविष्ट असू शकते."
-            }
+            tx="testOverview.checkbox"
             multiline={true}
             value={checked}
             onToggle={(isChecked) => {
               setChecked(isChecked)
             }}
           />
-          <Button style={$button} tx="testOverview.attempt" onPress={startTestSeries} />
+          <Button
+            style={$button}
+            disabled={sectionList?.length == 0}
+            tx="testOverview.attempt"
+            onPress={startTestSeries}
+          />
         </View>
       </Screen>
     )

@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import { CourseSubjectQuize, ScoreBoard, useStores } from "app/models"
 import { SaveQuizAndGenerateReportResponse } from "app/services/models/saveQuizAndGenerateReport"
+import { translate } from "app/i18n"
 
 // import { useStores } from "app/models"
 
@@ -96,33 +97,34 @@ export const ScoreScreen: FC<ScoreScreenProps> = observer(function ScoreScreen()
 
   const result: ScoreBoard = calculateResult()
   // sendResultToBackend(result)
+
   const sectionList = [
     {
-      title: "एकूण प्रश्न",
+      title: translate("score.totalQuestions"),
       question: "" + result?.totalQuestion,
       symbol: "?",
       color: colors.palette.accent100,
     },
     {
-      title: "बरोबर उत्तरे",
+      title: translate("score.correctAnswers"),
       question: "" + result?.totalCorrectAns,
       symbol: "=",
       color: colors.palette.neutral100,
     },
     {
-      title: "चुकीची उत्तरे",
+      title: translate("score.wrongAnswers"),
       question: "" + result?.totalWrongAns,
       symbol: "x",
       color: colors.palette.neutral100,
     },
     {
-      title: "अंशतः बरोबर उत्तरे",
+      title: translate("score.partialCorrectAnswers"),
       question: "0",
       symbol: "~",
       color: colors.palette.secondary100,
     },
     {
-      title: "प्रयत्न न केलेले प्रश्न",
+      title: translate("score.unattemptedQuestion"),
       question: "" + result?.totalNotAttempted,
       symbol: "!",
       color: colors.palette.primary300,
