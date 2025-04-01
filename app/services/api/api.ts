@@ -1,4 +1,10 @@
-import { GovernmentExams, QuizeStore } from "./../../../app/models"
+import {
+  CourseSubjectQuize,
+  CourseSubjectQuizMultiAnswerModel,
+  CourseSubjectQuizQuestion,
+  GovernmentExams,
+  QuizeStore,
+} from "./../../../app/models"
 /**
  * This Api class lets you define an API endpoint and methods to request
  * data and process it.
@@ -20,7 +26,12 @@ import type {
 import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
 import { AuthenticateSnapshotIn } from "./../../../app/models/AuthenticationStore"
 import { ProfileSnapshotIn } from "./../../../app/models"
-import { Alert } from "react-native"
+import { UserType } from "../models/user"
+import {
+  SaveQuizAndGenerateReportResponse,
+  SaveQuizAndGenerateReportRequest,
+  CourseSubjectQuizUserDtls,
+} from "../models/saveQuizAndGenerateReport"
 
 /**
  * Configuring the apisauce instance.
@@ -48,12 +59,18 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
+        languageCode: "en",
       },
     })
   }
 
   setJwtToken(jwtToken?: string) {
     this.apisauce.setHeader("Authorization", `Bearer ${jwtToken}`)
+  }
+
+  // Function to update language header dynamically
+  setLanguage(languageCode: string) {
+    this.apisauce.setHeader("languageCode", languageCode)
   }
 
   async getQuize(): Promise<{ kind: "ok"; quize: QuizeStore[] } | GeneralApiProblem> {
@@ -178,7 +195,97 @@ export class Api {
     try {
       const rawData = response.data
       const govermentExams: GovernmentExams[] = rawData as GovernmentExams[]
+      console.log("🚀 ~ Api ~ fetchGovermentExamList:", govermentExams)
       return { kind: "ok", exams: govermentExams }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async signUp(user: UserType): Promise<{ kind: "ok" } | GeneralApiProblem> {
+    const response = await this.apisauce.post("/user", user)
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const rawData = response.data
+      console.log("🚀 ~ Api ~ signUp :", rawData)
+      return { kind: "ok" }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        )
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async saveQuizAndGenerateReport(
+    quiz: CourseSubjectQuize[],
+  ): Promise<{ kind: "ok"; quiz: SaveQuizAndGenerateReportResponse } | GeneralApiProblem> {
+    const questions: CourseSubjectQuizUserDtls[] = []
+
+    var myCourseSubjectQuizId: number | null = 0
+
+    quiz.map((currentQuiz: CourseSubjectQuize, index: number) => {
+      myCourseSubjectQuizId = currentQuiz?.courseSubjectQuizId
+      let quizes: CourseSubjectQuizQuestion[] = currentQuiz?.courseSubjectQuizQuestion
+      quizes?.map((myQuiz: CourseSubjectQuizQuestion, index: number) => {
+        var courseSubjectQuizQuestionId: number | null = 0
+        var courseSubjectQuizMultiAnsId: number | null = 0
+        if (myQuiz?.attempted) {
+          courseSubjectQuizMultiAnsId = myQuiz?.attemptedCourseSubjectQuizMultiAnsId
+          const questoinObj = myQuiz?.courseSubjectQuizMultiAnswer?.filter(
+            (multiAns, index) =>
+              myQuiz?.attemptedCourseSubjectQuizMultiAnsId == multiAns?.courseSubjectQuizMultiAnsId,
+          )
+          const myCourseSubjectQuizQuestionId = questoinObj[0]?.courseSubjectQuizQuestionId
+          if (myCourseSubjectQuizQuestionId) {
+            courseSubjectQuizQuestionId = myCourseSubjectQuizQuestionId
+          } else {
+            courseSubjectQuizQuestionId = -1
+          }
+          questions.push({
+            courseSubjectQuizQuestionId: courseSubjectQuizQuestionId as number,
+            courseSubjectQuizMultiAnsId: courseSubjectQuizMultiAnsId as number,
+            createdBy: "",
+            createdDate: "",
+            updatedBy: "",
+            updatedDate: "",
+          })
+        }
+      })
+    })
+
+    const attemptedQuiz: SaveQuizAndGenerateReportRequest = {
+      courseSubjectQuizId: myCourseSubjectQuizId,
+      startTime: "",
+      endTime: "",
+      courseSubjectQuizUserDtls: questions,
+    }
+
+    const response = await this.apisauce.post("/saveQuizAndGenerateReport", attemptedQuiz)
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const quizResult: SaveQuizAndGenerateReportResponse =
+        response.data as SaveQuizAndGenerateReportResponse
+      console.log("🚀 ~ Api ~ saveQuizAndGenerateReport :", quizResult)
+
+      return { kind: "ok", quiz: quizResult }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(

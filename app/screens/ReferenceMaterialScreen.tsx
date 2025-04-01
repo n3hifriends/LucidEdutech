@@ -9,6 +9,7 @@ import { TxKeyPath } from "./../i18n"
 // import { useStores } from "app/models"
 import { navigate } from "./../../app/navigators"
 import { useStores } from "app/models"
+import { useLanguage } from "app/i18n/LanguageContext"
 
 interface ReferenceMaterialScreenProps extends DemoTabScreenProps<"ReferenceMaterial"> {}
 
@@ -18,13 +19,14 @@ export const ReferenceMaterialScreen: FC<ReferenceMaterialScreenProps> = observe
     const {
       govermentExamsStore: { fetchGovermentExamList },
     } = useStores()
+    const { language } = useLanguage()
 
     async function fetchGovermentExamListFromApi() {
       await fetchGovermentExamList()
     }
     useEffect(() => {
       fetchGovermentExamListFromApi()
-    })
+    }, [language])
 
     const systemInstructionsEng: TxKeyPath[] = [
       "referenceMaterial.references",

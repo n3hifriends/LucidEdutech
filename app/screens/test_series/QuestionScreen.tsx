@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useReducer, useRef } from "react"
+import React, { FC, useEffect, useState, useReducer, useRef, useMemo } from "react"
 import * as Application from "expo-application"
 import {
   Linking,
@@ -24,7 +24,7 @@ import {
 } from "../../components"
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import { colors, spacing } from "../../theme"
-import { isRTL } from "../../i18n"
+import { isRTL, translate } from "../../i18n"
 import {
   CourseSubjectQuize,
   CourseSubjectQuizMultiAnswer,
@@ -33,6 +33,7 @@ import {
 } from "../../models"
 import { AppStackScreenProps, navigate } from "./../../../app/navigators"
 import {
+  AnsAndId,
   Question,
   QuestionObject,
   initialQuestion,
@@ -62,7 +63,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     ongoingQuizeStore: { getCurrentCourseId },
     quizeStore: { getAllQuizes, attendQuestion },
   } = useStores()
-  const [myAnswer, setMyAnswer] = useState<string | undefined>(undefined)
 
   const [allQuestions, setAllQuestions] = useState<Question[]>([])
   const [totalTimeLimit, setTotalTimeLimit] = useState<number>(25)
@@ -88,8 +88,13 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, initialQuestion)
-  const isReferenceImageAvailable: boolean = state?.referenceImageUrl?.length > 0
+  const [statex, dispatch] = useReducer(reducer, initialQuestion)
+  const state: Question = statex
+  const [myAnswer, setMyAnswer] = useState<string | undefined>(state?.userAnswer)
+
+  const isReferenceImageAvailable: boolean = state?.referenceImageUrl
+    ? state?.referenceImageUrl?.length > 0
+    : false
   const [showImage, setShowImage] = useState(isReferenceImageAvailable)
   const clearIntervalRef = useRef<any>(null)
   const [appState, setAppState] = useState(AppState.currentState)
@@ -114,8 +119,6 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     }
     resetTimer() // Reset timer for the next question
     dispatch({ type: "next" })
-    console.log("state?.index", state?.index)
-    console.log("allQuestions?.length", allQuestions?.length)
   }
 
   function resetTimer() {
@@ -159,13 +162,16 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     showResult(true)
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const unsubscribe = AppState.addEventListener("change", handleAppStateChange)
     const courseSubjects: Quize[] = getAllQuizes?.filter(
       (quize) => quize?.courseId == getCurrentCourseId,
     )
-    const allQuizOfCourseId: CourseSubjectQuize[] =
+    let allQuizOfCourseId: CourseSubjectQuize[] =
       courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz
+    if (allQuizOfCourseId == undefined) {
+      allQuizOfCourseId = []
+    }
     let timeInMinute: number = 0
     let allQues: Question[] = []
     allQuizOfCourseId.map((currentQuiz: CourseSubjectQuize, index: number) => {
@@ -174,12 +180,15 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       let groupwiseQues: Question[] = quizes?.map(
         (myQuiz: CourseSubjectQuizQuestion, index: number) => {
           let findCorrectAns: string = ""
-          let ansArr: string[] = myQuiz?.courseSubjectQuizMultiAnswer?.map(
+          let ansArr: AnsAndId[] = myQuiz?.courseSubjectQuizMultiAnswer?.map(
             (item: CourseSubjectQuizMultiAnswer) => {
               if (item?.isCorrectAnswer === true) {
                 findCorrectAns = "" + item.value
               }
-              return "" + item.value
+              return {
+                answer: "" + item.value,
+                answerId: item.courseSubjectQuizMultiAnsId as number,
+              }
             },
           )
           let convertIntoQuiz: Question = {
@@ -194,10 +203,12 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
             correctAns: findCorrectAns,
             answerExplanation: "" + myQuiz?.answerExplanation,
             attemptTimestamp: undefined,
+            userAnswer: "" + myQuiz?.userAnswer,
             attempted: false,
             isCorrect: false,
             maxScore: 10,
             courseSubjectQuizQuestionId: myQuiz?.courseSubjectQuizQuestionId as number,
+            attemptedCourseSubjectQuizMultiAnsId: 0,
           }
           allQues.push(convertIntoQuiz)
           return convertIntoQuiz
@@ -231,19 +242,24 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     return () => clearInterval(myInterval) // Cleanup function to clear interval
   }, [state]) // Dependency array: trigger effect only on timeLeft change
 
+  useEffect(() => {
+    if (state?.attempted) {
+      checkAnswer(state, state?.userAnswer)
+    }
+  }, [state])
+
   const isLastQuestion = currentQuestion === allQuestions.length - 1
 
   function showResult(confirmTest: boolean) {
     if (confirmTest) {
-      Alert.alert("खा‍त्री करा", "तुम्हाला खात्री आहे की तुम्ही चाचणी सबमिट करू इच्छिता?", [
-        // Alert.alert("Confirm Submission", "Are you sure you want to submit the  test?", [
+      Alert.alert(translate("questionScreen.confirm"), translate("questionScreen.reConfirm"), [
         {
-          text: "होय",
+          text: translate("questionScreen.yes"),
           onPress: () => {
             navigate({ name: "Score", params: undefined })
           },
         },
-        { text: "नाही", onPress: () => {}, style: "cancel" },
+        { text: translate("questionScreen.no"), onPress: () => {}, style: "cancel" },
       ])
     } else {
       navigate({ name: "Score", params: undefined })
@@ -255,36 +271,56 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
     let newMockQuestionFilterArr: Question[] = allQuestions.filter(
       (item, index) => item?.index === state?.index,
     )
-    console.log("newMockQuestionFilterArr: ", newMockQuestionFilterArr)
     let newMockQuestion: Question = newMockQuestionFilterArr[0]
+
     newMockQuestion.attempted = true
-    console.log("newMockQuestionFilterArr answer: ", answer)
-    console.log("newMockQuestionFilterArr newMockQuestion.correctAns: ", newMockQuestion.correctAns)
+    newMockQuestion.userAnswer = answer
     let isCorrect: boolean = answer === newMockQuestion.correctAns
     newMockQuestion.isCorrect = isCorrect
     let currentCourseId: number = getCurrentCourseId as number
-    attendQuestion(currentCourseId, newMockQuestion?.courseSubjectQuizQuestionId, isCorrect)
+    const myAns: AnsAndId[] = newMockQuestion?.ansArr?.filter(
+      (item: AnsAndId, index: number) => item?.answer == answer,
+    )
+    const attemptedCourseSubjectQuizMultiAnsId: number = myAns[0]?.answerId
+    attendQuestion(
+      currentCourseId,
+      newMockQuestion?.courseSubjectQuizQuestionId,
+      attemptedCourseSubjectQuizMultiAnsId,
+      isCorrect,
+      answer,
+    )
     setMyAnswer(answer)
   }
 
-  function isCorrectAnswer(index: string) {
+  function isCorrectAnswer(state: Question, index: string, option: string) {
+    let ans = myAnswer
+    // if (state?.attempted) {
+    //   return state?.userAnswer === "" + option ? "yes" : "no"
+    // }
+
     const isCorrectAns =
-      myAnswer === undefined
+      ans === undefined
         ? undefined
-        : myAnswer === correctAnswer && myAnswer === "" + index
+        : ans === correctAnswer && ans === "" + option
         ? "yes"
-        : myAnswer != "" + index
+        : ans != "" + option
         ? undefined
         : "no"
+
     return isCorrectAns
   }
 
-  function answerIcon(index: string) {
-    return myAnswer === undefined
+  function answerIcon(index: string, option: string) {
+    let ans = myAnswer
+    // if (state?.attempted) {
+    //   return state?.isCorrect && state?.userAnswer === "" + option ? "check" : "x"
+    // }
+
+    return ans === undefined
       ? undefined
-      : myAnswer === correctAnswer && myAnswer === "" + index
+      : ans === correctAnswer && ans === "" + option
       ? "check"
-      : myAnswer != "" + index
+      : ans != "" + option
       ? undefined
       : "x"
   }
@@ -316,7 +352,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
   const calculateProgress = () => {
     return 1 - timeLeft / state?.countdown
   }
-
+  const bigQuestionLength = state?.title?.length > 200
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -343,16 +379,15 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
                 key={index}
                 style={$title}
                 backgroundColor={
-                  index < currentQuestion
-                    ? colors.palette.overlay50
-                    : index == currentQuestion
+                  index == currentQuestion
                     ? colors.palette.secondary300
+                    : item?.attempted
+                    ? colors.palette.overlay50
                     : undefined
                 }
                 preset="default"
                 text={String(index + 1)}
                 onPress={() => {
-                  console.log("Index: " + index)
                   dispatch({ type: "index", index })
                 }}
               />
@@ -384,7 +419,7 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
         <View style={{ flex: 0.7 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: showImage ? 0.7 : 1 }}>
-              <Text preset="bold" size={showImage ? "xxs" : "sm"}>
+              <Text preset="bold" size={showImage || bigQuestionLength ? "xxs" : "sm"}>
                 {state?.title}
               </Text>
             </View>
@@ -403,19 +438,49 @@ export const QuestionScreen: FC<QuestionScreenProps> = function QuestionScreen(_
       </View>
 
       <View style={{ flex: 0.35 }}>
-        {state?.ansArr?.map((item: string, index: number) => (
-          <AnswerItem
-            key={"" + index}
-            id={"" + index}
-            text={"" + item}
-            leftText={index + 1 + "."}
-            isCorrect={isCorrectAnswer("" + index) as AnswerTypes}
-            topSeparator={true}
-            bottomSeparator={true}
-            rightIcon={answerIcon("" + index)}
-            onPress={() => checkAnswer(state, item)}
-          />
-        ))}
+        {state?.ansArr?.map((item: AnsAndId, index: number) => {
+          if (item?.answer.startsWith("http")) {
+            return (
+              <TouchableOpacity
+                style={{
+                  width: "12%",
+                  height: "15%",
+                  margin: 10,
+                  padding: 2,
+                  backgroundColor:
+                    isCorrectAnswer(state, "" + index, item?.answer) == undefined
+                      ? undefined
+                      : isCorrectAnswer(state, "" + index, item?.answer) === "yes"
+                      ? colors.palette.green60
+                      : colors.palette.red60,
+                }}
+                onPress={() => {
+                  checkAnswer(state, item?.answer)
+                }}
+              >
+                <AutoImage
+                  style={{ width: "100%", height: "100%" }}
+                  source={{
+                    uri: item?.answer,
+                  }}
+                />
+              </TouchableOpacity>
+            )
+          }
+          return (
+            <AnswerItem
+              key={"" + index}
+              id={"" + index}
+              text={"" + item?.answer}
+              leftText={index + 1 + "."}
+              isCorrect={isCorrectAnswer(state, "" + index, item?.answer) as AnswerTypes}
+              topSeparator={true}
+              bottomSeparator={true}
+              rightIcon={answerIcon("" + index, item?.answer)}
+              onPress={() => checkAnswer(state, item?.answer)}
+            />
+          )
+        })}
       </View>
       {showOnCorrectAnswer() && (
         <View style={{ flex: 0.3 }}>

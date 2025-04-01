@@ -1,17 +1,24 @@
+export type AnsAndId = {
+  answer: string
+  answerId: number
+}
+
 export type Question = {
   index: number
   countdown: number
   title: string
   referenceUrl: string | undefined
   referenceImageUrl: string | undefined
-  ansArr: string[]
+  ansArr: AnsAndId[]
   correctAns: string
   attemptTimestamp: number | undefined
   attempted: boolean
   isCorrect: boolean
+  userAnswer: string
   maxScore: number
   answerExplanation: string
   courseSubjectQuizQuestionId: number
+  attemptedCourseSubjectQuizMultiAnsId: number
 }
 export let initialQuestion: Question = {
   index: 0,
@@ -24,9 +31,11 @@ export let initialQuestion: Question = {
   attemptTimestamp: undefined,
   attempted: false,
   isCorrect: false,
+  userAnswer: "",
   maxScore: 0,
   answerExplanation: "",
   courseSubjectQuizQuestionId: 0,
+  attemptedCourseSubjectQuizMultiAnsId: 0,
 }
 export const QuestionObject = {
   totalTime: 2, // min
@@ -41,13 +50,20 @@ export var mockQuestions: Question[] = [
     referenceUrl: undefined,
     referenceImageUrl:
       "https://drive.google.com/uc?export=view&id=14zQPC4_-NeAUVAgvNsAu3OptpR4SBxXM",
-    ansArr: ["Ada Lovelace", "Charles Babbage", "K. Giloi", "Raúl Rojas"],
+    ansArr: [
+      { answer: "Ada Lovelace", answerId: 0 },
+      { answer: "Charles Babbage", answerId: 0 },
+      { answer: "K. Giloi", answerId: 0 },
+      { answer: "Raúl Rojas", answerId: 0 },
+    ],
     correctAns: "Ada Lovelace",
     attemptTimestamp: undefined,
     attempted: false,
     isCorrect: false,
+    userAnswer: "",
     maxScore: 10,
     answerExplanation: "hey",
     courseSubjectQuizQuestionId: 0,
+    attemptedCourseSubjectQuizMultiAnsId: 0,
   },
 ]

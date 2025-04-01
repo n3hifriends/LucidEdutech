@@ -4,6 +4,11 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
 import { api } from "../services/api"
 import { CourseSubjectQuize } from "./CourseSubjectQuize"
 import { CourseSubjectQuizQuestion } from "./CourseSubjectQuizQuestion"
+import {
+  SaveQuizAndGenerateReportRequest,
+  SaveQuizAndGenerateReportResponse,
+} from "app/services/models/saveQuizAndGenerateReport"
+import { GeneralApiProblem } from "app/services/api/apiProblem"
 
 export type ScoreBoard = {
   totalTimeInMinute: number
@@ -47,7 +52,9 @@ export const QuizeStoreModel = types
     attendQuestion(
       myCurrentCourseId: number,
       myCourseSubjectQuizQuestionId: number,
+      attemptedCourseSubjectQuizMultiAnsId: number,
       isCorrect: boolean,
+      userAnswer: string,
     ) {
       const courseSubjects: Quize[] = store?.quize?.filter(
         (quize) => quize?.courseId == myCurrentCourseId,
@@ -62,11 +69,11 @@ export const QuizeStoreModel = types
               courseSubjectQuizQuestion?.courseSubjectQuizQuestionId ==
               myCourseSubjectQuizQuestionId
             ) {
+              courseSubjectQuizQuestion?.setUserAnswer(userAnswer)
               courseSubjectQuizQuestion?.setAttempted(true)
               courseSubjectQuizQuestion?.setIsCorrect(isCorrect)
-              console.log(
-                "attendAuestion: isCorrect: " + isCorrect,
-                JSON.stringify(courseSubjectQuizQuestion),
+              courseSubjectQuizQuestion?.setAttemptedCourseSubjectQuizMultiAnsId(
+                attemptedCourseSubjectQuizMultiAnsId,
               )
               return true
             } else {
@@ -114,6 +121,22 @@ export const QuizeStoreModel = types
         totalAttempted,
         totalNotAttempted,
       } as ScoreBoard
+    },
+    getCurrentCourse(myCurrentCourseId: number): CourseSubjectQuize[] {
+      const courseSubjects: Quize[] = store?.quize.filter(
+        (quize) => quize?.courseId == myCurrentCourseId,
+      )
+      const allQuizOfCourseId: CourseSubjectQuize[] =
+        courseSubjects?.[0].courseSubjects?.[0]?.courseSubjectQuiz
+      return allQuizOfCourseId
+    },
+    async saveCurrentCourseAttempt(attempted: CourseSubjectQuize[]) {
+      const response = await api.saveQuizAndGenerateReport(attempted)
+      if (response.kind == "ok") {
+        return response?.quiz as SaveQuizAndGenerateReportResponse
+      } else {
+        return undefined
+      }
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

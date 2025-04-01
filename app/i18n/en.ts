@@ -12,26 +12,30 @@ const en = {
   welcomeScreen: {
     letsGo: "Let's go!", // @demo remove-current-line
     postscript:
-      "प्स्ट  — आम्ही लवकरच छान कंटेंट आपल्यासाठी येत आहोत! तब्बल, आपण आमच्या मुक्त सामग्र्यांमध्ये देखील देखील देखू शकता.",
-    readyForLaunch: "तुमची माहिती भरा!",
-    exciting: "(हो, हे आवडतंय!)",
-    emailFieldLabel: "ईमेल",
-    emailFieldPlaceholder: "आपला ईमेल पत्ता टाका",
-    goNext: "पुढे जा",
+      "P.S. — We've got some great content coming for you soon! You can also check out our free content.",
+    readyForLaunch: "Fill in your information!",
+    exciting: "(Yes, I love this!)",
+    emailFieldLabel: "E-mail",
+    emailFieldPlaceholder: "Enter your email address",
+    goNext: "Next",
     yourName: "Name",
-    firstName: "पहिलं नाव",
-    secondName: "आडनाव",
-    mobileNumber: "मोबाइल नंबर",
-    firstNamePlaceholder: "आपलं पहिलं नाव टाका",
-    secondNamePlaceholder: "आपलं आडनाव टाका",
-    mobileNumberPlaceholder: "आपला मोबाइल नंबर टाका",
-    fillAllFields: "कृपया सर्व फील्ड भरा",
+    firstName: "First Name",
+    secondName: "Second Name",
+    mobileNumber: "Mobile No.",
+    firstNamePlaceholder: "Enter your first name",
+    secondNamePlaceholder: "Enter your last name",
+    mobileNumberPlaceholder: "Enter your mobile number",
+    fillAllFields: "Please fill in all fields",
+    unableToProcess:
+      "Currently we are unable to process your request. Please contact administration.",
+    appBuildNumber: "App Build Number",
+    changeLanguage: "Change Language",
   },
   profileScreen: {
-    emailFieldLabel: "ई-मेल",
-    firstName: "पहिलं नाव",
-    secondName: "आडनाव",
-    mobileNumber: "मोबाइल नंबर",
+    emailFieldLabel: "E-mail",
+    firstName: "First Name",
+    secondName: "Second Name",
+    mobileNumber: "Mobile No.",
   },
   questionScreen: {
     testSeries: "Test Series",
@@ -41,6 +45,8 @@ const en = {
     submit: "Submit",
     yes: "yes",
     no: "no",
+    confirm: "Confirm Submission",
+    reConfirm: "Are you sure you want to submit the  test?",
   },
   errorScreen: {
     title: "Something went wrong!",
@@ -84,6 +90,15 @@ const en = {
     podcastListTab: "Announcement",
     educationTab: "Education",
     referenceMaterialTab: "Material",
+    subscriptionTab: "Subscriptions",
+    Courses: "Courses",
+    TestSeries: "Test Series",
+    LiveClasses: "Live Classes",
+    CurrentAffair: "Current Affairs",
+    Books: "Books",
+    Support: "Support",
+    Download: "Download",
+    Welcome: "Welcome",
   },
   demoCommunityScreen: {
     title: "Connect with your batchmates here",
@@ -160,6 +175,24 @@ const en = {
   generalInstruction: {
     generalInstructionTitle: "General Instruction",
     continue: "Continue",
+    one: "This is a timed test; the running time is displayed on top left corner of the screen.",
+    two: "The bar above the question text displays the question numbers in the current section of the test. You can move to any question by clicking on the respective number.",
+    three:
+      "The question screen displays the question number along with the question and respective options.",
+    four: "The top right of section above the question has an option to mark the question for review. You can later view the marked question.",
+    five: "You can mark or unmark any option you have chosen by tapping on the respective option.",
+    six: "The bottom left corner contains the option to move to the previous question.",
+    seven: "The bottom right corner contains the option to move to the next question.",
+    eight:
+      "You can jump between sections(if allowed by tutor) by choosing the section in bottom centre drop down.",
+    nine: "You can submit the test at any point of time by clicking the Submit button on top right corner of the screen.",
+    ten: "Test must be completed in one attempt. Test once submitted cannot be re-attempted or started again.",
+    eleven: "You should not change or close the test screen while attempting test.",
+    twelve:
+      "If the app is closed or screen is changed more than three times by any means, the test will be submitted automatically.",
+    thirteen:
+      "After completion of test, a test summary screen will be displayed with section details & solutions.",
+    fourteen: "If something goes wrong, contact your tutor and communicate the problem.",
   },
   testOverview: {
     testName: "Test Name",
@@ -169,6 +202,8 @@ const en = {
     section: "Sections",
     attempt: "Attempt Test",
     accept: "Please accept terms.",
+    checkbox:
+      "I have read and understood the instructions. I agree that failure to follow the instructions may result in my exclusion from this test and/or disciplinary action, which may include a ban from future tests.",
   },
   score: {
     score: "Score",
@@ -180,16 +215,30 @@ const en = {
     reattempt: "Reattempt Test",
     home: "Home",
     accept: "Please accept terms.",
+    totalQuestions: "Questions",
+    correctAnswers: "Correct",
+    wrongAnswers: "In-Correct",
+    partialCorrectAnswers: "Partial Correct",
+    unattemptedQuestion: "Unattempted",
   },
   examList: {
     testSeriesList: "Test Series List",
-    continue: "सुरू ठेवा",
+    continue: "Continue",
+  },
+  subscriptionList: {
+    subscriptionList: "Subscription List",
   },
   referenceMaterial: {
     references: "References",
     upcomingExams: "Upcoming Exams",
     noUpcomingExams: "No Upcoming Exams",
     referenceMaterialTxt: "Scheme of Examination",
+    noExamsAvailable: "No exam available",
+  },
+  languageChange: {
+    English: "English",
+    Marathi: "Marathi",
+    Hindi: "Hindi",
   },
   // @demo remove-block-end
 }

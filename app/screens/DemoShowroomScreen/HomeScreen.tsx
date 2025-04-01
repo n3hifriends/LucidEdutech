@@ -96,7 +96,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
   const route = useRoute<RouteProp<DemoTabParamList, "Home">>()
   const params = route.params
   const {
-    authenticationStore: { logout, jwtToken },
+    authenticationStore: { logout, jwtToken, firstName },
     profileStore: { getProfile },
   } = useStores()
 
@@ -229,7 +229,33 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
               <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
             )}
           /> */}
+          {/* <ListItem
+                    LeftComponent={
+                      <View style={$item}>
+                        <Text tx="welcomeScreen.yourName" preset="bold" />
+                        <Text>{firstName + " " + lastName}</Text>
+                      </View>
+                    }
+                  /> */}
+
           <View style={{ flex: 0.9 }}>
+            <View style={$listContentContainer}>
+              <ListItem
+                LeftComponent={
+                  <View style={{ flexDirection: "row" }}>
+                    <Text
+                      weight="medium"
+                      size="md"
+                      style={[$title]}
+                      tx="demoNavigator.Welcome"
+                    ></Text>
+                    <Text weight="medium" size="md" style={[$titleUser]}>
+                      {" " + firstName}
+                    </Text>
+                  </View>
+                }
+              />
+            </View>
             <View style={$listContentContainer}>
               <Text
                 weight="medium"
@@ -242,7 +268,99 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 style={[$title]}
               />
             </View>
+            {/* courses */}
             <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.Courses"
+                style={[$title]}
+              ></Text>
+            </View>
+            {/* Test series */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.TestSeries"
+                style={[$title]}
+              />
+            </View>
+            {/* Live Classes */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.LiveClasses"
+                style={[$title]}
+              />
+            </View>
+            {/* Current affair */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.CurrentAffair"
+                style={[$title]}
+              />
+            </View>
+            {/* books */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.Books"
+                style={[$title]}
+              />
+            </View>
+            {/* Support */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.Support"
+                text="Support"
+                style={[$title]}
+              />
+            </View>
+            {/* downloads */}
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
+                size="md"
+                tx="demoNavigator.Download"
+                style={[$title]}
+              />
+            </View>
+            {/* <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
@@ -277,7 +395,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 style={[$title]}
                 tx="common.youtbe"
               />
-            </View>
+            </View> */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
@@ -298,6 +416,17 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 onPress={logoutApp}
                 size="md"
                 tx="common.logOut"
+                style={[$title, { color: colors.palette.red60 }]}
+              />
+            </View>
+          </View>
+          <View style={{ flex: 0.1 }}>
+            <View style={[$listContentContainer]}>
+              <Text
+                weight="medium"
+                onPress={logoutApp}
+                size="md"
+                // tx="common.logOut"
                 style={[$title, { color: colors.palette.red60 }]}
               />
             </View>
@@ -417,7 +546,11 @@ const $titleWrapperCenter: ViewStyle = {
 }
 
 const $title: TextStyle = {
-  padding: spacing.md,
+  padding: spacing.sm,
+}
+const $titleUser: TextStyle = {
+  padding: spacing.sm,
+  paddingLeft: 0,
 }
 
 const $youtube: TextStyle = {
@@ -430,4 +563,7 @@ const $youtube: TextStyle = {
 }
 const $follow: TextStyle = {
   color: colors.palette.blue,
+}
+const $item: ViewStyle = {
+  marginBottom: spacing.md,
 }

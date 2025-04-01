@@ -149,7 +149,6 @@ export function AnswerItem(props: AnswerItemProps) {
     isCorrect === "no" && $incorrectStyle,
     $containerStyleOverride,
   ]
-
   const $touchableStyles = [$touchableStyle, { minHeight: height }, style]
 
   return (
@@ -168,7 +167,7 @@ export function AnswerItem(props: AnswerItemProps) {
         <AnswerItemAction
           side="right"
           size={height}
-          icon={rightIcon}
+          icon={rightIcon as IconTypes}
           iconColor={rightIconColor}
           Component={RightComponent}
         />

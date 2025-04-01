@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import React, { useEffect } from "react"
 import { useColorScheme } from "react-native"
 import * as Screens from "./../../app/screens"
 import Config from "../config"
@@ -20,6 +20,10 @@ import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "./../../app/theme"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import I18n from "i18n-js"
+import { LanguageProvider, useLanguage } from "app/i18n/LanguageContext"
+import { api } from "app/services/api"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -49,6 +53,8 @@ export type AppStackParamList = {
   ReferenceMaterial: undefined
   ReferencePdf: undefined
   UpcomingExams: undefined
+  Subscriptions: undefined
+  Language: { lastScreen: "" } // from which screen Language being called
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -78,25 +84,33 @@ const AppStack = observer(function AppStack() {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
-          <Stack.Screen name="Demo" component={DemoNavigator} />
-          <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
-
-          <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
-          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
-          <Stack.Screen name="Score" component={Screens.ScoreScreen} />
-          <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
-          <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
-          <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
-          <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
         </>
       ) : (
         <>
+          {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} /> */}
         </>
       )}
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
+          <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
+          <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
+          <Stack.Screen name="Score" component={Screens.ScoreScreen} />
+          <Stack.Screen name="ExamList" component={Screens.ExamListScreen} />
+          <Stack.Screen name="Subscriptions" component={Screens.SubscriptionsScreen} />
+          <Stack.Screen name="GeneralInstruction" component={Screens.GeneralInstructionScreen} />
+          <Stack.Screen name="ReferencePdf" component={Screens.ReferencePdfScreen} />
+          <Stack.Screen name="UpcomingExams" component={Screens.UpcomingExamsScreen} />
+          <Stack.Screen name="Language" component={Screens.LanguageScreen} />
+        </>
+      ) : (
+        <></>
+      )}
     </Stack.Navigator>
   )
 })
@@ -106,16 +120,36 @@ export interface NavigationProps
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()
-
+  const {
+    authenticationStore: { jwtToken },
+  } = useStores()
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
 
+  async function loadLanguage() {
+    const storedLang = await AsyncStorage.getItem("language")
+    if (storedLang) {
+      I18n.locale = storedLang
+      api.setLanguage(storedLang) // makes default/previously set language
+    }
+
+    if (jwtToken) {
+      api.setJwtToken(jwtToken)
+    }
+  }
+
+  useEffect(() => {
+    loadLanguage()
+  }, [])
+
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      {...props}
-    >
-      <AppStack />
-    </NavigationContainer>
+    <LanguageProvider>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        {...props}
+      >
+        <AppStack />
+      </NavigationContainer>
+    </LanguageProvider>
   )
 })

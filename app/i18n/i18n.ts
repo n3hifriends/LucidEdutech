@@ -31,7 +31,7 @@ if (Object.prototype.hasOwnProperty.call(i18n.translations, systemLocaleTag)) {
     i18n.locale = fallbackLocale
   }
 }
-i18n.locale = "mr" //preferredLanguage.languageTag
+i18n.locale = "en" //preferredLanguage.languageTag
 
 // handle RTL languages
 export const isRTL = systemLocale?.textDirection === "rtl"

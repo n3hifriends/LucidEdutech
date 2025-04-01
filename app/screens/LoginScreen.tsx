@@ -18,6 +18,10 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import I18n from "i18n-js"
+import { AuthenticateSnapshotIn } from "app/models/AuthenticationStore"
+import { GeneralApiProblem, getGeneralApiProblem } from "app/services/api/apiProblem"
 const { width, height } = Dimensions.get("window")
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -49,6 +53,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       setLastName,
       setMobileNumber,
       login,
+      signUp,
     },
   } = useStores()
 
@@ -86,6 +91,19 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       setUsername("")
       // subscriber()
     }
+  }, [])
+
+  async function loadLanguage() {
+    const storedLang = await AsyncStorage.getItem("language")
+    console.log("🚀 ~ LoginScreen ~ storedLang:", storedLang)
+
+    if (storedLang) {
+      I18n.locale = storedLang
+    }
+  }
+
+  useEffect(() => {
+    loadLanguage()
   }, [])
 
   async function getLiveBroadcastSchedules(accessToken: string) {
@@ -149,16 +167,20 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
 
         // const idToken = userInfo?.idToken
         async function loginServer(email: string) {
-          await login(email, "password")
+          const response: { kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem =
+            await login(email, "password")
+          // if (response.kind == "ok") {
           setAuthEmail(email)
           // setMobileNumber(mobileNumber)
           setAuthPassword("password")
+          navigate("Welcome")
+          // }
         }
         console.log("🚀 ~ loginServer ~ login 3:", login)
         // if (__DEV__) {
-        loginServer("ketan@gmail.com")
+        // loginServer("ketan@gmail.com")
         // } else {
-        //   loginServer(email)
+        loginServer(email)
         // }
         setSignInError(undefined)
       } else {

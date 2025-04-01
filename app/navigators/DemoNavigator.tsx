@@ -11,8 +11,8 @@ import {
   DemoDebugScreen,
   ExamListScreen,
   ReferenceMaterialScreen,
+  SubscriptionsScreen,
 } from "../screens"
-import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
@@ -24,6 +24,7 @@ export type DemoTabParamList = {
   EducationTabScreen: undefined
   ExamList: undefined
   ReferenceMaterial: undefined
+  Subscriptions: undefined
 }
 
 /**
@@ -60,6 +61,16 @@ export function DemoNavigator() {
         tabBarItemStyle: $tabBarItem,
       }}
     >
+      <Tab.Screen
+        name="DemoDebug"
+        component={DemoDebugScreen}
+        options={{
+          tabBarLabel: translate("demoNavigator.debugTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="debug" color={focused ? colors.tint : undefined} size={30} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -106,22 +117,22 @@ export function DemoNavigator() {
       /> */}
 
       <Tab.Screen
-        name="DemoDebug"
-        component={DemoDebugScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator.debugTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="debug" color={focused ? colors.tint : undefined} size={30} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="ExamList"
         component={ExamListScreen}
         options={{
           tabBarLabel: translate("demoNavigator.educationTab"),
           tabBarIcon: ({ focused }) => (
-            <Icon icon="components" color={focused && colors.tint} size={30} />
+            <Icon icon="components" color={focused ? colors.tint : undefined} size={30} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Subscriptions"
+        component={SubscriptionsScreen}
+        options={{
+          tabBarLabel: translate("demoNavigator.subscriptionTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="components" color={focused ? colors.tint : undefined} size={30} />
           ),
         }}
       />
