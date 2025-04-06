@@ -84,19 +84,20 @@ const AppStack = observer(function AppStack() {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
+          <Stack.Screen name="Demo" component={DemoNavigator} />
         </>
       ) : (
         <>
           {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
-          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} /> */}
+          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
         </>
       )}
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
       {isAuthenticated ? (
         <>
-          <Stack.Screen name="Demo" component={DemoNavigator} />
+          {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
           <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
           <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
           <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />

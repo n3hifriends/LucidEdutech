@@ -38,8 +38,12 @@ export const AuthenticationStoreModel = types
       //   store.setProp("jwtToken", "response.auth.jwtToken")
       //   store.setProp("username", "response.auth.username")
       // } else {
-      const response = await api.login(username, password)
+      const response: { kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem =
+        await api.login(username, password)
       console.log("🚀 ~ login ~ response:", response)
+      if (response.kind != "ok") {
+        return response
+      }
       if (response.kind === "ok") {
         store.setProp("jwtToken", response.auth.jwtToken)
         store.setProp("username", response.auth.username)

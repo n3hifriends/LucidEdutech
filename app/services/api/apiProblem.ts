@@ -18,6 +18,10 @@ export type GeneralApiProblem =
    */
   | { kind: "unauthorized" }
   /**
+   * 409 Conflict is specifically intended for situations like duplicate users, existing usernames, or emails, etc.
+   */
+  | { kind: "conflict" }
+  /**
    * We don't have access to perform that request. This is 403.
    */
   | { kind: "forbidden" }
@@ -63,6 +67,8 @@ export function getGeneralApiProblem(response: ApiResponse<any>): GeneralApiProb
           return { kind: "forbidden" }
         case 404:
           return { kind: "not-found" }
+        case 409:
+          return { kind: "conflict" }
         default:
           return { kind: "rejected" }
       }

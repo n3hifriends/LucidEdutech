@@ -80,7 +80,7 @@ export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
 
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="subscriptionList.subscriptionList" />
+        <Text style={$title} preset="heading" tx="subscriptionList.subscription" />
         <View style={$itemsContainer}>
           {systemInstructions.map((item, index) => (
             <ListItem

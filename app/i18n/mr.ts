@@ -49,7 +49,7 @@ const mr = {
   errorScreen: {
     title: "काहीतरी चुकलं!",
     friendlySubtitle:
-      "हे एक तुमच्या वापरकर्त्यांना उत्पन्न होणार्‍या त्रुटीप्रकारे प्रदर्शित होईल डिफॉल्ट स्थिती आहे. आपल्याला हे संदेश (ज्याचं स्थान `app/i18n/en.ts` आहे) आणि शायद लेआऊट आणि (`app/screens/ErrorScreen`). आपण हे पूर्णपणे काढच आपलं असलं तर, <ErrorBoundary> कॉम्पोनेंटसाठी `app/app.tsx` तपासा.",
+      "अरेरे!!! तुम्ही जे शोधत होता ते आम्हाला सापडले नाही. कृपया पुन्हा प्रयत्न करा.",
     reset: "एप रिसेट करा",
     traceTitle: "%{name} स्टॅकमधील त्रुटी", // @demo remove-current-line
   },
@@ -223,7 +223,7 @@ const mr = {
     continue: "सुरू ठेवा",
   },
   subscriptionList: {
-    subscriptionList: "सदस्यता यादी",
+    subscription: "सदस्यता यादी",
   },
   referenceMaterial: {
     references: "संदर्भ",

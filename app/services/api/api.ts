@@ -32,6 +32,7 @@ import {
   SaveQuizAndGenerateReportRequest,
   CourseSubjectQuizUserDtls,
 } from "../models/saveQuizAndGenerateReport"
+import { Alert } from "react-native"
 
 /**
  * Configuring the apisauce instance.

@@ -140,7 +140,11 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           tx="common.logOut"
           onPress={() => {
             logout()
-            // navigate("Login")
+            // After logout "Login" screeen doesn't appear immediately in the stack, so putting delay to get it add to the stack
+            // and then navigate to it
+            setTimeout(() => {
+              navigate("Login")
+            }, 100)
           }}
         />
       </View>
