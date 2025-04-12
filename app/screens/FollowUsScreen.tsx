@@ -103,7 +103,7 @@ export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowU
           onPress={() =>
             openApp(
               "org.telegram.messenger",
-              "https://www.instagram.com/central_police_bharti_guidance?igsh=bnp5NXM5MHF6N3pl&utm_source=qr",
+              "https://www.instagram.com/central_police_bharti_guidance/?igsh=bnp5NXM5MHF6N3pl",
             )
           }
         />

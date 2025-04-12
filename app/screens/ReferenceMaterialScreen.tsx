@@ -10,6 +10,7 @@ import { TxKeyPath } from "./../i18n"
 import { navigate } from "./../../app/navigators"
 import { useStores } from "app/models"
 import { useLanguage } from "app/i18n/LanguageContext"
+import { useHeader } from "app/utils/useHeader"
 
 interface ReferenceMaterialScreenProps extends DemoTabScreenProps<"ReferenceMaterial"> {}
 
@@ -28,6 +29,13 @@ export const ReferenceMaterialScreen: FC<ReferenceMaterialScreenProps> = observe
       fetchGovermentExamListFromApi()
     }, [language])
 
+    useHeader(
+      {
+        titleTx: "referenceMaterial.referenceMaterialTxt",
+      },
+      [],
+    )
+
     const systemInstructionsEng: TxKeyPath[] = [
       "referenceMaterial.references",
       "referenceMaterial.upcomingExams",
@@ -36,7 +44,6 @@ export const ReferenceMaterialScreen: FC<ReferenceMaterialScreenProps> = observe
     // const navigation = useNavigation()
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="referenceMaterial.referenceMaterialTxt" />
         <View style={$itemsContainer}>
           {systemInstructionsEng.map((item, index) => (
             <ListItem

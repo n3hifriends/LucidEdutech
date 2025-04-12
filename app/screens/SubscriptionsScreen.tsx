@@ -12,6 +12,7 @@ const mpsc = require("../../assets/images/mpsc.png")
 // import { useStores } from "app/models"
 // import { QuizeSnapshotOut } from "app/models/Course"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
+import { useHeader } from "app/utils/useHeader"
 
 interface SubscriptionsScreenProps extends AppStackScreenProps<"Subscriptions"> {}
 
@@ -78,9 +79,15 @@ export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
       [],
     )
 
+    useHeader(
+      {
+        titleTx: "subscriptionList.subscription",
+      },
+      [],
+    )
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="subscriptionList.subscription" />
+        {/* <Text style={$title} preset="heading" tx="subscriptionList.subscription" /> */}
         <View style={$itemsContainer}>
           {systemInstructions.map((item, index) => (
             <ListItem

@@ -10,6 +10,7 @@ import I18n from "i18n-js"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { navigate } from "app/navigators"
 import { useLanguage } from "app/i18n/LanguageContext"
+import { useHeader } from "app/utils/useHeader"
 
 /**
  * @param {string} url - The URL to open in the browser.
@@ -75,10 +76,18 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
   // useEffect(() => {
   //   changeLanguage()
   // }, [])
+  useHeader(
+    {
+      titleTx: "demoDebugScreen.title",
+      rightTx: "demoDebugScreen.reportBugs",
+      onRightPress: () => handleBugpress(),
+    },
+    [],
+  )
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-      <Text
+    <Screen preset="scroll" safeAreaEdges={["bottom"]} contentContainerStyle={$container}>
+      {/* <Text
         style={$reportBugsLink}
         tx="demoDebugScreen.reportBugs"
         onPress={() => {
@@ -86,7 +95,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           handleBugpress()
         }}
       />
-      <Text style={$title} preset="heading" tx="demoDebugScreen.title" />
+      <Text style={$title} preset="heading" tx="demoDebugScreen.title" /> */}
       <View style={$itemsContainer}>
         <ListItem
           LeftComponent={
