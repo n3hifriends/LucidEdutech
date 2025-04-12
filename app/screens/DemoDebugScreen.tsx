@@ -121,14 +121,14 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
             </View>
           }
         />
-        <ListItem
+        {/* <ListItem
           LeftComponent={
             <View style={$item}>
               <Text preset="bold" tx="welcomeScreen.appBuildNumber"></Text>
               <Text>{Application.nativeBuildVersion}</Text>
             </View>
           }
-        />
+        /> */}
         <ListItem
           LeftComponent={
             <View style={$item}>
@@ -157,6 +157,14 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           }}
         />
       </View>
+      <View style={$buildNumber}>
+        <Text
+          style={{ margin: 0, padding: 0 }}
+          preset="default"
+          tx="welcomeScreen.appBuildNumber"
+        ></Text>
+        <Text>{" " + Application.nativeBuildVersion}</Text>
+      </View>
     </Screen>
   )
 }
@@ -181,6 +189,12 @@ const $item: ViewStyle = {
   marginBottom: spacing.md,
 }
 
+const $buildNumber: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "flex-end",
+  alignItems: "center",
+}
+
 const $itemsContainer: ViewStyle = {
   marginBottom: spacing.xl,
 }
@@ -190,7 +204,7 @@ const $button: ViewStyle = {
 }
 
 const $buttonContainer: ViewStyle = {
-  marginBottom: spacing.md,
+  // marginBottom: spacing.md,
 }
 
 const $hint: TextStyle = {
