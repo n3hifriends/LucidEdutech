@@ -254,6 +254,11 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                     </Text>
                   </View>
                 }
+                rightIcon="caretRight"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
               />
             </View>
             <View style={$line} />
