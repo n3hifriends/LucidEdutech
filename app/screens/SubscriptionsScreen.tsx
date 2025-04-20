@@ -13,11 +13,17 @@ const mpsc = require("../../assets/images/mpsc.png")
 // import { QuizeSnapshotOut } from "app/models/Course"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
 import { useHeader } from "app/utils/useHeader"
+import { SubscriptionSnapshotIn, useStores } from "app/models"
 
 interface SubscriptionsScreenProps extends AppStackScreenProps<"Subscriptions"> {}
 
 export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
   function SubscriptionsScreen() {
+    const {
+      subscriptionStore: { fetchSubscription, getAllSubscriptions },
+    } = useStores()
+    const [systemInstructions, setSystemInstructions] = useState<TypeSystemInstruction[]>([])
+
     const systemInstructionsEng = [
       "Maharashtra Gazetted Civil Services Examination - Scheme (December-2023)",
       "Maharashtra Gazetted Civil Services Examination - Scheme (Feb-2023)",
@@ -44,19 +50,23 @@ export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
       "Maharashtra Subordinate Services group B Examination	",
     ]
 
-    const systemInstructions = [
-      { title: "MPSC Wallah", link: "https://www.youtube.com/channel/UC1Fc-8RLxmoi6Tw9cbNoxxQ" },
-      { title: "Unacademy Live - MPSC", link: "https://www.youtube.com/c/UnacademyLiveMPSC" },
-      { title: "Dnyanadeep Academy Pune", link: "https://www.youtube.com/@DnyandeepPune" },
-      {
-        title: "Let's Crack MPSC Exams",
-        link: "https://www.youtube.com/channel/UCuqNqk4DwYpD6xVmAqpUqig",
-      },
-      {
-        title: "BYJU'S Exam Prep",
-        link: "https://www.youtube.com/@BYJUSExamPrepMPSCOtherGovtExam",
-      },
-    ]
+    type TypeSystemInstruction = {
+      title: string
+      link: string
+    }
+    // const systemInstructions: TypeSystemInstruction[] = [
+    //   { title: "MPSC Wallah", link: "https://www.youtube.com/channel/UC1Fc-8RLxmoi6Tw9cbNoxxQ" },
+    //   { title: "Unacademy Live - MPSC", link: "https://www.youtube.com/c/UnacademyLiveMPSC" },
+    //   { title: "Dnyanadeep Academy Pune", link: "https://www.youtube.com/@DnyandeepPune" },
+    //   {
+    //     title: "Let's Crack MPSC Exams",
+    //     link: "https://www.youtube.com/channel/UCuqNqk4DwYpD6xVmAqpUqig",
+    //   },
+    //   {
+    //     title: "BYJU'S Exam Prep",
+    //     link: "https://www.youtube.com/@BYJUSExamPrepMPSCOtherGovtExam",
+    //   },
+    // ]
 
     const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
@@ -85,15 +95,23 @@ export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
       },
       [],
     )
+
+    useEffect(() => {
+      async function fetchData() {
+        await fetchSubscription()
+      }
+      fetchData()
+    }, [])
+
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
         {/* <Text style={$title} preset="heading" tx="subscriptionList.subscription" /> */}
         <View style={$itemsContainer}>
-          {systemInstructions.map((item, index) => (
+          {getAllSubscriptions?.map((item, index) => (
             <ListItem
               myKey={index}
               key={index}
-              text={"" + item?.title}
+              text={"" + item?.subscriptionName}
               children={"children"}
               bottomSeparator
               rightIcon={isRTL ? "caretLeft" : "caretRight"}
@@ -103,7 +121,7 @@ export const SubscriptionsScreen: FC<SubscriptionsScreenProps> = observer(
                   <Image source={mpsc} style={$leftImage} />
                 </View>
               }
-              onPress={() => openLinkInBrowser(item?.link)}
+              onPress={() => openLinkInBrowser("" + item?.subscription_link)}
             />
           ))}
         </View>

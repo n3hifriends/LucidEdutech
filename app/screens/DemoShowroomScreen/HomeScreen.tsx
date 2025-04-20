@@ -295,7 +295,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "ExamList" })
                 }}
                 size="md"
                 tx="demoNavigator.TestSeries"
@@ -309,7 +309,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "Home" })
                 }}
                 size="md"
                 tx="demoNavigator.LiveClasses"

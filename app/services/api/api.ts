@@ -4,6 +4,7 @@ import {
   CourseSubjectQuizQuestion,
   GovernmentExams,
   QuizeStore,
+  SubscriptionSnapshotIn,
 } from "./../../../app/models"
 /**
  * This Api class lets you define an API endpoint and methods to request
@@ -293,6 +294,32 @@ export class Api {
           `Bad data: ${(e as Error).message}\n${response.data}`,
           (e as Error).stack,
         )
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async getSubscriptions(): Promise<
+    { kind: "ok"; subscription: SubscriptionSnapshotIn[] } | GeneralApiProblem
+  > {
+    const response = await this.apisauce.get("/subscription")
+    console.log("🚀 ~ Api ~ getSubscriptions ~ response:", response)
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const rawData = response.data as any[]
+      const subscription: SubscriptionSnapshotIn[] = rawData as SubscriptionSnapshotIn[]
+      return { kind: "ok", subscription }
+    } catch (e) {
+      // Explicitly type 'e' as an error object
+      if (__DEV__) {
+        console.tron.error(
+          `Bad data: ${(e as Error).message}\n${response.data}`,
+          (e as Error).stack,
+        ) // Cast 'e' as Error to access 'message' and 'stack' properties
       }
       return { kind: "bad-data" }
     }
