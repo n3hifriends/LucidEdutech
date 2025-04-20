@@ -254,8 +254,14 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                     </Text>
                   </View>
                 }
+                rightIcon="caretRight"
+                onPress={() => {
+                  toggleDrawer()
+                  navigate({ name: "DemoDebug" })
+                }}
               />
             </View>
+            <View style={$line} />
             <View style={$listContentContainer}>
               <Text
                 weight="medium"
@@ -268,98 +274,105 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* courses */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "Courses" })
                 }}
                 size="md"
                 tx="demoNavigator.Courses"
                 style={[$title]}
               ></Text>
             </View>
+            <View style={$line} />
             {/* Test series */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "ExamList" })
                 }}
                 size="md"
                 tx="demoNavigator.TestSeries"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* Live Classes */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "LiveClasses" })
                 }}
                 size="md"
                 tx="demoNavigator.LiveClasses"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* Current affair */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "CurrentAffairs" })
                 }}
                 size="md"
                 tx="demoNavigator.CurrentAffair"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* books */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "Books" })
                 }}
                 size="md"
                 tx="demoNavigator.Books"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* Support */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "Support" })
                 }}
                 size="md"
                 tx="demoNavigator.Support"
-                text="Support"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* downloads */}
             <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
                 onPress={() => {
                   toggleDrawer()
-                  navigate({ name: "DemoDebug" })
+                  navigate({ name: "Downloads" })
                 }}
                 size="md"
                 tx="demoNavigator.Download"
                 style={[$title]}
               />
             </View>
+            <View style={$line} />
             {/* <View style={[$listContentContainer]}>
               <Text
                 weight="medium"
@@ -408,6 +421,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 tx="common.followus"
               />
             </View>
+            <View style={$line} />
           </View>
           <View style={{ flex: 0.1 }}>
             <View style={[$listContentContainer]}>
@@ -430,6 +444,7 @@ export const HomeScreen: FC<DemoTabScreenProps<"Home">> = function HomeScreen(_p
                 style={[$title, { color: colors.palette.red60 }]}
               />
             </View>
+            <View style={$line} />
           </View>
         </View>
       )}
@@ -499,6 +514,12 @@ const $drawer: ViewStyle = {
 
 const $listContentContainer: ContentStyle = {
   paddingHorizontal: spacing.lg,
+}
+
+const $line: ViewStyle = {
+  height: 0.5,
+  width: "100%",
+  backgroundColor: colors.border,
 }
 
 const $sectionListContentContainer: ViewStyle = {

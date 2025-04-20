@@ -2,7 +2,8 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useEffect, useRef, useState } from "react"
 import { ImageStyle, TextInput, TextStyle, View, ViewStyle } from "react-native"
 import {
-  Button, // @demo remove-current-line
+  Button,
+  Screen, // @demo remove-current-line
   Text,
   TextField,
 } from "../components"
@@ -79,7 +80,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         lastName: myLastName,
         email: authEmail,
         mobileNumber: myMobileNumber,
-        userName: myFirstName,
+        userName: myMobileNumber,
         role: "student",
         userPassword: "password",
         statusId: "ACTIVE",
@@ -89,6 +90,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         const loginResponse: { kind: "ok"; auth: AuthenticateSnapshotIn } | GeneralApiProblem =
           await login(authEmail, user.userPassword)
         if (loginResponse.kind == "ok") {
+          // navigation.pop()
           navigate("Demo", { screen: "Home" })
         } else {
           setSignInError("welcomeScreen.fillAllFields")
@@ -97,22 +99,35 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     }
   }
 
+  // if (isAuthenticated) {
   useHeader(
     {
       rightTx: "common.logOut",
       onRightPress: () => {
+        // navigation.pop()
         logout()
-        // navigate("Login")
+        setTimeout(() => {
+          navigate("Login")
+        }, 100)
       },
     },
     [logout],
   )
+  // }
+
+  function setMyMobileNumberWithLimit(value: string) {
+    const maxLength = 10
+    if (value.length <= maxLength) {
+      setMyMobileNumber(value)
+    }
+  }
+
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
   // const error = "Fill your details to continue"
   const error = undefined
   const err: any = signInError
   return (
-    <View style={$container}>
+    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
       <View style={$topContainer}>
         <Text
           testID="welcome-heading"
@@ -167,7 +182,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         <TextField
           ref={mobileNoRef}
           value={myMobileNumber}
-          onChangeText={setMyMobileNumber}
+          onChangeText={setMyMobileNumberWithLimit}
           containerStyle={$textField}
           autoCapitalize="none"
           autoComplete="off"
@@ -189,13 +204,13 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
           onPress={goNext}
         />
       </View>
-    </View>
+    </Screen>
   )
 })
 
 const $container: ViewStyle = {
-  flex: 1,
-  backgroundColor: colors.background,
+  paddingBottom: spacing.sm,
+  paddingHorizontal: spacing.lg,
 }
 
 const $topContainer: ViewStyle = {
@@ -206,10 +221,7 @@ const $topContainer: ViewStyle = {
 }
 
 const $bottomContainer: ViewStyle = {
-  flexShrink: 1,
-  flexGrow: 0,
   flexBasis: "10%",
-  backgroundColor: colors.palette.neutral100,
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
   paddingHorizontal: spacing.lg,

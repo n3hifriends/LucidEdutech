@@ -12,6 +12,7 @@ const mpsc = require("../../assets/images/mpsc.png")
 import { useStores } from "app/models"
 import { QuizeSnapshotOut } from "app/models/Course"
 import { useLanguage } from "app/i18n/LanguageContext"
+import { useHeader } from "app/utils/useHeader"
 
 interface ExamListScreenProps extends AppStackScreenProps<"ExamList"> {}
 
@@ -101,9 +102,16 @@ export const ExamListScreen: FC<ExamListScreenProps> = observer(function ExamLis
     navigate({ name: "GeneralInstruction", params: undefined })
   }
 
+  useHeader(
+    {
+      titleTx: "examList.testSeriesList",
+    },
+    [],
+  )
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-      <Text style={$title} preset="heading" tx="examList.testSeriesList" />
+      {/* <Text style={$title} preset="heading" tx="examList.testSeriesList" /> */}
       <View style={$itemsContainer}>
         {getAllQuizes.map((item, index) => (
           <ListItem

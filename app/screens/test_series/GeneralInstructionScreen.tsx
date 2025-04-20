@@ -6,7 +6,8 @@ import { Button, ListItem, Screen, Text } from "../../components"
 import { colors, spacing } from "../../theme"
 import { isRTL, TxKeyPath } from "../../i18n"
 import { useStores } from "../../models"
-import { AppStackScreenProps, navigate } from "./../../../app/navigators"
+import { AppStackScreenProps, navigate, navigationRef } from "./../../../app/navigators"
+import { useHeader } from "app/utils/useHeader"
 
 function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
@@ -61,9 +62,18 @@ export const GeneralInstructionScreen: FC<GeneralInstructionScreenProps> =
       "thirteen",
       "fourteen",
     ]
+    useHeader(
+      {
+        leftIcon: "back",
+        titleTx: "generalInstruction.generalInstructionTitle",
+        onLeftPress: () => {
+          navigationRef.current?.goBack()
+        },
+      },
+      [],
+    )
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="generalInstruction.generalInstructionTitle" />
+      <Screen preset="scroll" safeAreaEdges={["bottom"]} contentContainerStyle={$container}>
         <View style={$itemsContainer}>
           {numbers.map((item, index) => (
             <ListItem

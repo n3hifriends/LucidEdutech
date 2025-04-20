@@ -1,3 +1,5 @@
+import { DownloadsScreen } from "app/screens"
+
 const en = {
   common: {
     ok: "OK!",
@@ -50,8 +52,7 @@ const en = {
   },
   errorScreen: {
     title: "Something went wrong!",
-    friendlySubtitle:
-      "This is the screen that your users will see in production when an error is thrown. You'll want to customize this message (located in `app/i18n/en.ts`) and probably the layout as well (`app/screens/ErrorScreen`). If you want to remove this entirely, check `app/app.tsx` for the <ErrorBoundary> component.",
+    friendlySubtitle: "Oops!!! We couldn't find what you were looking for. Please try again.",
     reset: "RESET APP",
     traceTitle: "Error from %{name} stack", // @demo remove-current-line
   },
@@ -97,7 +98,7 @@ const en = {
     CurrentAffair: "Current Affairs",
     Books: "Books",
     Support: "Support",
-    Download: "Download",
+    Download: "Downloads",
     Welcome: "Welcome",
   },
   demoCommunityScreen: {
@@ -226,7 +227,7 @@ const en = {
     continue: "Continue",
   },
   subscriptionList: {
-    subscriptionList: "Subscription List",
+    subscription: "Subscription List",
   },
   referenceMaterial: {
     references: "References",
@@ -239,6 +240,30 @@ const en = {
     English: "English",
     Marathi: "Marathi",
     Hindi: "Hindi",
+  },
+  coursesScreen: {
+    courses: "Courses",
+    noCoursesAvailable: "No courses available",
+  },
+  liveClassesScreen: {
+    liveClasses: "Live Classes",
+    noLiveClassesAvailable: "No live classes available",
+  },
+  currentAffairScreen: {
+    currentAffairs: "Current Affairs",
+    noCurrentAffairsAvailable: "No current affairs available",
+  },
+  booksScreen: {
+    books: "Books",
+    noBooksAvailable: "No books available",
+  },
+  supportScreen: {
+    support: "Support",
+    noRequestsRaised: "No requests raised",
+  },
+  downloadsScreen: {
+    downloads: "Downloads",
+    noDownloadsAvailable: "No downloads available",
   },
   // @demo remove-block-end
 }

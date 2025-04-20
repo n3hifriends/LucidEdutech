@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { TextStyle, View, ViewStyle } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
+import { AppStackScreenProps, navigationRef } from "app/navigators"
 import { ListItem, Screen, Text } from "app/components"
 import { spacing } from "app/theme"
 import { openLinkInBrowser } from "app/utils/openLinkInBrowser"
 // import { useNavigation } from "@react-navigation/native"
 import { GovernmentExams, useStores } from "app/models"
 import { formatDate } from "app/utils/formatDate"
+import { useHeader } from "app/utils/useHeader"
 
 interface UpcomingExamsScreenProps extends AppStackScreenProps<"UpcomingExams"> {}
 
@@ -21,9 +22,18 @@ export const UpcomingExamsScreen: FC<UpcomingExamsScreenProps> = observer(
     // Pull in navigation via hook
     // const navigation = useNavigation()
     let noUpcomingExams: boolean = exams?.length == 0
+    useHeader(
+      {
+        leftIcon: "back",
+        titleTx: "referenceMaterial.upcomingExams",
+        onLeftPress: () => {
+          navigationRef.current?.goBack()
+        },
+      },
+      [],
+    )
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="referenceMaterial.upcomingExams" />
+      <Screen preset="scroll" safeAreaEdges={["bottom"]} contentContainerStyle={$container}>
         <View style={$itemsContainer}>
           {noUpcomingExams && (
             <Text

@@ -1,12 +1,13 @@
 import React, { FC } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, View, Linking, TextStyle, Platform } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
+import { AppStackScreenProps, navigationRef } from "app/navigators"
 import { Screen, Text } from "app/components"
 import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 import { colors, spacing } from "../theme"
 import { CardImage } from "app/components/CardImage"
+import { useHeader } from "app/utils/useHeader"
 interface FollowUsScreenProps extends AppStackScreenProps<"FollowUsScreen"> {}
 
 export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowUsScreen() {
@@ -43,9 +44,19 @@ export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowU
     }
   }
 
+  useHeader(
+    {
+      titleTx: "common.followus",
+      leftIcon: "back",
+      onLeftPress: () => {
+        navigationRef.current?.goBack()
+      },
+    },
+    [],
+  )
+
   return (
     <Screen style={$root} preset="scroll">
-      <Text preset="heading" tx={"common.followus"} style={$text} />
       <View style={$container}>
         <CardImage
           style={$follow}
@@ -103,7 +114,7 @@ export const FollowUsScreen: FC<FollowUsScreenProps> = observer(function FollowU
           onPress={() =>
             openApp(
               "org.telegram.messenger",
-              "https://www.instagram.com/central_police_bharti_guidance?igsh=bnp5NXM5MHF6N3pl&utm_source=qr",
+              "https://www.instagram.com/central_police_bharti_guidance/?igsh=bnp5NXM5MHF6N3pl",
             )
           }
         />

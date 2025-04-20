@@ -1,10 +1,11 @@
 import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Linking, TextStyle, View, ViewStyle } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
+import { AppStackScreenProps, navigationRef } from "app/navigators"
 import { ListItem, Screen, Text } from "app/components"
 import { spacing } from "app/theme"
 import { GovernmentExams, useStores } from "app/models"
+import { useHeader } from "app/utils/useHeader"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -33,10 +34,19 @@ export const ReferencePdfScreen: FC<ReferencePdfScreenProps> = observer(
     ]
     // Pull in navigation via hook
     // const navigation = useNavigation()
+    useHeader(
+      {
+        leftIcon: "back",
+        titleTx: "referenceMaterial.references",
+        onLeftPress: () => {
+          navigationRef.current?.goBack()
+        },
+      },
+      [],
+    )
     let noUpcomingExams: boolean = exams?.length == 0
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <Text style={$title} preset="heading" tx="referenceMaterial.references" />
+      <Screen preset="scroll" safeAreaEdges={["bottom"]} contentContainerStyle={$container}>
         <View style={$itemsContainer}>
           {noUpcomingExams && (
             <Text

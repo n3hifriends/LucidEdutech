@@ -13,7 +13,11 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 //Language provider component
-export const LanguageProvider: React.FC = ({ children }) => {
+type LanguageProviderProps = {
+  children: React.ReactNode
+}
+
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   // const [language, setLanguage] = useState<string>(I18n.locale)
   const [language, setLanguage] = useState<string>("en")
 

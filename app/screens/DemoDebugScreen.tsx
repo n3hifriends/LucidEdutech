@@ -10,6 +10,7 @@ import I18n from "i18n-js"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { navigate } from "app/navigators"
 import { useLanguage } from "app/i18n/LanguageContext"
+import { useHeader } from "app/utils/useHeader"
 
 /**
  * @param {string} url - The URL to open in the browser.
@@ -75,10 +76,18 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
   // useEffect(() => {
   //   changeLanguage()
   // }, [])
+  useHeader(
+    {
+      titleTx: "demoDebugScreen.title",
+      rightTx: "demoDebugScreen.reportBugs",
+      onRightPress: () => handleBugpress(),
+    },
+    [],
+  )
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-      <Text
+    <Screen preset="scroll" safeAreaEdges={["bottom"]} contentContainerStyle={$container}>
+      {/* <Text
         style={$reportBugsLink}
         tx="demoDebugScreen.reportBugs"
         onPress={() => {
@@ -86,7 +95,7 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           handleBugpress()
         }}
       />
-      <Text style={$title} preset="heading" tx="demoDebugScreen.title" />
+      <Text style={$title} preset="heading" tx="demoDebugScreen.title" /> */}
       <View style={$itemsContainer}>
         <ListItem
           LeftComponent={
@@ -112,14 +121,14 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
             </View>
           }
         />
-        <ListItem
+        {/* <ListItem
           LeftComponent={
             <View style={$item}>
               <Text preset="bold" tx="welcomeScreen.appBuildNumber"></Text>
               <Text>{Application.nativeBuildVersion}</Text>
             </View>
           }
-        />
+        /> */}
         <ListItem
           LeftComponent={
             <View style={$item}>
@@ -140,9 +149,21 @@ export const DemoDebugScreen: FC<DemoTabScreenProps<"DemoDebug">> = function Dem
           tx="common.logOut"
           onPress={() => {
             logout()
-            // navigate("Login")
+            // After logout "Login" screeen doesn't appear immediately in the stack, so putting delay to get it add to the stack
+            // and then navigate to it
+            setTimeout(() => {
+              navigate("Login")
+            }, 100)
           }}
         />
+      </View>
+      <View style={$buildNumber}>
+        <Text
+          style={{ margin: 0, padding: 0 }}
+          preset="default"
+          tx="welcomeScreen.appBuildNumber"
+        ></Text>
+        <Text>{" " + Application.nativeBuildVersion}</Text>
       </View>
     </Screen>
   )
@@ -168,6 +189,12 @@ const $item: ViewStyle = {
   marginBottom: spacing.md,
 }
 
+const $buildNumber: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "flex-end",
+  alignItems: "center",
+}
+
 const $itemsContainer: ViewStyle = {
   marginBottom: spacing.xl,
 }
@@ -177,7 +204,7 @@ const $button: ViewStyle = {
 }
 
 const $buttonContainer: ViewStyle = {
-  marginBottom: spacing.md,
+  // marginBottom: spacing.md,
 }
 
 const $hint: TextStyle = {

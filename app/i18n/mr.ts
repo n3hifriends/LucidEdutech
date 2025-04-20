@@ -49,7 +49,7 @@ const mr = {
   errorScreen: {
     title: "काहीतरी चुकलं!",
     friendlySubtitle:
-      "हे एक तुमच्या वापरकर्त्यांना उत्पन्न होणार्‍या त्रुटीप्रकारे प्रदर्शित होईल डिफॉल्ट स्थिती आहे. आपल्याला हे संदेश (ज्याचं स्थान `app/i18n/en.ts` आहे) आणि शायद लेआऊट आणि (`app/screens/ErrorScreen`). आपण हे पूर्णपणे काढच आपलं असलं तर, <ErrorBoundary> कॉम्पोनेंटसाठी `app/app.tsx` तपासा.",
+      "अरेरे!!! तुम्ही जे शोधत होता ते आम्हाला सापडले नाही. कृपया पुन्हा प्रयत्न करा.",
     reset: "एप रिसेट करा",
     traceTitle: "%{name} स्टॅकमधील त्रुटी", // @demo remove-current-line
   },
@@ -95,8 +95,8 @@ const mr = {
     LiveClasses: "थेट वर्ग",
     CurrentAffair: "चालू घडामोडी",
     Books: "पुस्तके",
-    Support: "समर्थन",
-    Download: "डाउनलोड करा",
+    Support: "सप्पोर्ट",
+    Download: "डाउनलोड",
     Welcome: "स्वागत आहे",
   },
   demoCommunityScreen: {
@@ -223,7 +223,7 @@ const mr = {
     continue: "सुरू ठेवा",
   },
   subscriptionList: {
-    subscriptionList: "सदस्यता यादी",
+    subscription: "सदस्यता यादी",
   },
   referenceMaterial: {
     references: "संदर्भ",
@@ -236,6 +236,30 @@ const mr = {
     English: "अंग्रेज़ी",
     Marathi: "मराठी",
     Hindi: "हिंदी",
+  },
+  coursesScreen: {
+    courses: "अभ्यासक्रम",
+    noCoursesAvailable: "कोणतेही अभ्यासक्रम उपलब्ध नाही",
+  },
+  liveClassesScreen: {
+    liveClasses: "लाइव्ह वर्ग",
+    noLiveClassesAvailable: "कोणतेही लाइव्ह वर्ग उपलब्ध नाही",
+  },
+  currentAffairScreen: {
+    currentAffairs: "चालू घडामोडी",
+    noCurrentAffairsAvailable: "कोणतेही चालू घडामोडी उपलब्ध नाही",
+  },
+  booksScreen: {
+    books: "पुस्तके",
+    noBooksAvailable: "कोणतीही पुस्तके उपलब्ध नाहीत",
+  },
+  supportScreen: {
+    support: "मदत",
+    noRequestsRaised: "कोणतीही विनंती केलेली नाही",
+  },
+  downloadsScreen: {
+    downloads: "डाउनलोड",
+    noDownloadsAvailable: "कोणतेही डाउनलोड उपलब्ध नाहीत",
   },
 }
 
