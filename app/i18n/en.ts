@@ -1,3 +1,5 @@
+import { DownloadsScreen } from "app/screens"
+
 const en = {
   common: {
     ok: "OK!",
@@ -96,7 +98,7 @@ const en = {
     CurrentAffair: "Current Affairs",
     Books: "Books",
     Support: "Support",
-    Download: "Download",
+    Download: "Downloads",
     Welcome: "Welcome",
   },
   demoCommunityScreen: {
@@ -238,6 +240,30 @@ const en = {
     English: "English",
     Marathi: "Marathi",
     Hindi: "Hindi",
+  },
+  coursesScreen: {
+    courses: "Courses",
+    noCoursesAvailable: "No courses available",
+  },
+  liveClassesScreen: {
+    liveClasses: "Live Classes",
+    noLiveClassesAvailable: "No live classes available",
+  },
+  currentAffairScreen: {
+    currentAffairs: "Current Affairs",
+    noCurrentAffairsAvailable: "No current affairs available",
+  },
+  booksScreen: {
+    books: "Books",
+    noBooksAvailable: "No books available",
+  },
+  supportScreen: {
+    support: "Support",
+    noRequestsRaised: "No requests raised",
+  },
+  downloadsScreen: {
+    downloads: "Downloads",
+    noDownloadsAvailable: "No downloads available",
   },
   // @demo remove-block-end
 }

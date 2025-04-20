@@ -33,7 +33,7 @@ export const SubscriptionStoreModel = types
       // Simulate an API call
       const response: { kind: "ok"; subscription: SubscriptionSnapshotIn[] } | GeneralApiProblem =
         await api.getSubscriptions()
-      console.log("🚀 ~ fetchQuize ~ response:", response)
+      console.log("🚀 ~ getSubscriptions ~ response:", response)
       if (response.kind === "ok") {
         self.setProp("suscription", response.subscription)
       } else {

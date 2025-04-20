@@ -55,7 +55,13 @@ export type AppStackParamList = {
   UpcomingExams: undefined
   Subscriptions: undefined
   Language: { lastScreen: "" } // from which screen Language being called
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Courses: undefined
+  LiveClasses: undefined
+	CurrentAffairs: undefined
+	Books: undefined
+	Support: undefined
+	Downloads: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -94,10 +100,16 @@ const AppStack = observer(function AppStack() {
         </>
       )}
       {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="LiveClasses" component={Screens.LiveClassesScreen} />
+			<Stack.Screen name="CurrentAffairs" component={Screens.CurrentAffairsScreen} />
+			<Stack.Screen name="Books" component={Screens.BooksScreen} />
+			<Stack.Screen name="Support" component={Screens.SupportScreen} />
+			<Stack.Screen name="Downloads" component={Screens.DownloadsScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
       {isAuthenticated ? (
         <>
           {/* <Stack.Screen name="Demo" component={DemoNavigator} /> */}
+          <Stack.Screen name="Courses" component={Screens.CoursesScreen} />
           <Stack.Screen name="FollowUsScreen" component={Screens.FollowUsScreen} />
           <Stack.Screen name="TestOverview" component={Screens.TestOverviewScreen} />
           <Stack.Screen name="QuestionScreen" component={Screens.QuestionScreen} />
